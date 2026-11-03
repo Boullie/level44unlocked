@@ -22,7 +22,7 @@ exports.handler=async(event)=>{
   let getStore;
   try{({getStore}=require('@netlify/blobs'))}catch(e){console.error('Party Blobs dependency missing',e);return reply(503,{error:'Opslagmodule ontbreekt in Netlify build. Controleer of npm dependencies geïnstalleerd zijn.'})}
   let store;
-  try{store=getStore('level44-party-v1')}catch(e){console.error('Party Blobs initialization failed',e);return reply(503,{error:'Netlify Blobs kon niet worden geïnitialiseerd. Controleer de siteconfiguratie en function logs.'})}
+  try{store=getStore('level44-party-v1')}catch(e){console.error('Party Blobs initialization failed',e);return reply(503,{error:'Netlify Blobs initialisatie mislukt',diagnose:{code:typeof e?.code==='string'?e.code.slice(0,80):null,name:typeof e?.name==='string'?e.name.slice(0,80):null,siteIdConfigured:!!(process.env.NETLIFY_SITE_ID||process.env.SITE_ID),blobsTokenConfigured:!!process.env.NETLIFY_BLOBS_TOKEN}})}
   const now=Date.now();
   if(data.op==='feed'){
    const [recent,approved]=await Promise.all([store.get('recent',{type:'json'}),store.get('approved',{type:'json'})]);
