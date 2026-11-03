@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="nl-BE"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Level 44 — Mission Control</title>
-<style>body{font:16px system-ui,sans-serif;background:#f8f0ff;color:#241449;margin:0}main{max-width:1050px;margin:auto;padding:36px 20px}h1{font-size:clamp(28px,5vw,44px)}.panel{background:#fff;border:2px solid #ded0f5;border-radius:18px;padding:22px;margin:18px 0}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}.stat{background:#fff0b7;border-radius:14px;padding:18px}.stat b{display:block;font-size:30px}table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:10px;border-bottom:1px solid #ddd}th{font-size:14px}button{background:#6d39e8;color:#fff;border:0;border-radius:10px;padding:12px 18px;cursor:pointer}input{padding:12px;max-width:100%;border:1px solid #aaa;border-radius:8px}#status{min-height:24px}.scroll{overflow:auto}.muted{color:#615773;font-size:14px}.hidden{display:none}</style>
+<style>body{font:16px system-ui,sans-serif;background:#f8f0ff;color:#241449;margin:0}main{max-width:1050px;margin:auto;padding:36px 20px}h1{font-size:clamp(28px,5vw,44px)}.panel{background:#fff;border:2px solid #ded0f5;border-radius:18px;padding:22px;margin:18px 0}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}.stat{background:#fff0b7;border-radius:14px;padding:18px}.stat b{display:block;font-size:30px}table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:10px;border-bottom:1px solid #ddd}th{font-size:14px}button{background:#6d39e8;color:#fff;border:0;border-radius:10px;padding:12px 18px;cursor:pointer}input{padding:12px;max-width:100%;border:1px solid #aaa;border-radius:8px}#status{min-height:24px}.scroll{overflow:auto}.muted{color:#615773;font-size:14px}.hidden{display:none}.planner-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}.planner-card{background:#f7f3ff;border-radius:12px;padding:14px}.planner-card h3{margin:0 0 10px}.planner-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid #ded0f5}.planner-row label{flex:1}.planner-row input{width:75px;box-sizing:border-box}.planner-actions{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.planner-note{font-size:14px;color:#615773}</style>
 <script src="https://accounts.google.com/gsi/client" async defer></script></head><body><main>
 <h1>🎮 Level 44 — Mission Control</h1><p>Privé RSVP-dashboard. Gegevens worden pas na Google-aanmelding opgehaald.</p>
 <section class="panel" id="login"><h2>🔐 Aanmelden</h2><div id="googleLogin"></div><p class="muted">Alleen het vooraf ingestelde Google-account krijgt toegang.</p></section>
@@ -8,6 +8,7 @@
 <div id="dashboard" class="hidden"><div class="stats" id="stats"></div>
 <section class="panel"><h2>Gastenlijst</h2><label>Zoeken <input id="search" type="search" placeholder="Naam zoeken"></label><div class="scroll"><table><thead><tr><th>Naam</th><th>Antwoord</th><th>Personen</th><th>Gewijzigd</th></tr></thead><tbody id="guests"></tbody></table></div></section>
 <section class="panel"><h2>Drankvoorkeuren</h2><div id="drinks"></div><p class="muted">Voorkeuren, geen exacte bestelhoeveelheden.</p></section>
+<section class="panel"><h2>🛒 Boodschappenplanner</h2><p id="plannerSummary"></p><p class="planner-note">Gebaseerd op de laatste antwoorden van bevestigde gasten. Voorkeuren zijn geen verbruikscijfers. Vul zelf de gewenste aankoopaantallen in; die worden niet opgeslagen.</p><div class="planner-grid" id="planner"></div><div class="planner-actions"><button type="button" id="exportShopping">⬇️ Download boodschappenlijst (CSV)</button><button type="button" id="copyShopping">📋 Kopieer boodschappenlijst</button></div><p id="plannerMessage" class="muted" role="status"></p></section>
 <section class="panel"><h2>Allergieën — vertrouwelijk</h2><div id="allergies"></div></section>
 <section class="panel"><h2>Muziekverzoeken</h2><div id="songs"></div></section></div></main>
 <script>
@@ -16,6 +17,32 @@ const el=id=>document.getElementById(id);
 const show=(id,yes)=>el(id).classList.toggle('hidden',!yes);
 const add=(parent,tag,text)=>{const node=document.createElement(tag);node.textContent=String(text??'');parent.appendChild(node);return node};
 function parsePeople(fields){try{const a=JSON.parse(fields.personen_json||'[]');return Array.isArray(a)?a:[]}catch{return []}}
+function makePlanner(yes){
+ const people=yes.flatMap(r=>r.people);
+ const tally=(values)=>{const map=new Map();for(const v of values){const name=String(v||'').trim();if(name)map.set(name,(map.get(name)||0)+1)}return [...map].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],'nl'))};
+ const groups=[
+  ['Drankvoorkeuren',tally(people.flatMap(p=>Array.isArray(p.drinks)?p.drinks:[]))],
+  ['Frisdranksuggesties',tally(people.map(p=>p.softdrink))],
+  ['Cocktailsuggesties',tally(people.map(p=>p.cocktail))],
+  ['Hapjes / dieetvoorkeur',tally(people.map(p=>({alles:'Alles is goed',vegetarisch:'Vegetarisch',vegan:'Veganistisch',anders:'Andere voorkeur'}[p.food]||p.food)))]
+ ];
+ el('plannerSummary').textContent=people.length+' bevestigde feestgangers · '+yes.length+' bevestigde RSVP-antwoorden';
+ const root=el('planner');root.replaceChildren();const inputs=[];
+ for(const [title,items] of groups){
+  const card=add(root,'div','');card.className='planner-card';add(card,'h3',title);
+  if(!items.length){add(card,'p','Nog geen voorkeuren');continue}
+  for(const [name,count] of items){
+   const line=add(card,'div','');line.className='planner-row';
+   const label=add(line,'label',name+' ('+count+'× genoemd)');
+   const input=document.createElement('input');input.type='number';input.min='0';input.step='1';input.value='0';input.setAttribute('aria-label','Aantal kopen voor '+name);line.appendChild(input);
+   inputs.push({title,name,count,input});
+  }
+ }
+ const lines=()=>[['Categorie','Product / voorkeur','Aantal voorkeuren','Aantal kopen'],...inputs.map(x=>[x.title,x.name,x.count,x.input.value||'0'])];
+ const csv=()=>lines().map(row=>row.map(value=>'"'+String(value).replaceAll('"','""')+'"').join(';')).join('\r\n');
+ el('exportShopping').onclick=()=>{const blob=new Blob(['\ufeff'+csv()],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download='level44-boodschappenlijst.csv';document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);el('plannerMessage').textContent='Boodschappenlijst gedownload.'};
+ el('copyShopping').onclick=async()=>{try{await navigator.clipboard.writeText(lines().map(row=>row.join(' | ')).join('\n'));el('plannerMessage').textContent='Boodschappenlijst gekopieerd.'}catch{el('plannerMessage').textContent='Kopiëren lukte niet. Gebruik de CSV-download.'}};
+}
 function display(){
  const latest=new Map();
  for(const r of entries){const f=r.fields||{};const id=f.rsvp_id||r.submissionId;const time=Date.parse(r.createdAt)||0;if(!latest.has(id)||time>latest.get(id).time)latest.set(id,{f,time,people:parsePeople(f)})}
@@ -27,6 +54,7 @@ function display(){
  el('search').oninput=renderGuests;renderGuests();
  const drinks=new Map();for(const r of yes)for(const p of r.people)for(const d of p.drinks||[])drinks.set(d,(drinks.get(d)||0)+1);
  el('drinks').replaceChildren();for(const [name,count] of [...drinks].sort((a,b)=>b[1]-a[1]))add(el('drinks'),'p',name+': '+count);if(!drinks.size)add(el('drinks'),'p','Nog geen voorkeuren');
+ makePlanner(yes);
  el('allergies').replaceChildren();let allergies=0;for(const r of [...yes,...maybe])for(const p of r.people){if(p.allergy?.trim()){add(el('allergies'),'p',(p.name||r.f.naam||'Gast')+': '+p.allergy);allergies++}}if(!allergies)add(el('allergies'),'p','Geen allergieën opgegeven');
  el('songs').replaceChildren();let songs=0;for(const r of rows)if(r.f.muziekverzoeken?.trim()){add(el('songs'),'p',(r.f.naam||'Gast')+': '+r.f.muziekverzoeken);songs++}if(!songs)add(el('songs'),'p','Nog geen muziekwensen');
  show('dashboard',true);
