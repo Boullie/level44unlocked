@@ -21,7 +21,21 @@ exports.handler=async(event)=>{
  const data=parse(event);if(!data||typeof data.op!=='string')return reply(400,{error:'Ongeldige aanvraag'});
  try{
   let store;
-  try{store=getStore('level44-party-v1')}catch(e){console.error('Party Blobs initialization failed',e);return reply(503,{error:'Netlify Blobs initialisatie mislukt',diagnose:{code:typeof e?.code==='string'?e.code.slice(0,80):null,name:typeof e?.name==='string'?e.name.slice(0,80):null,siteIdConfigured:!!(process.env.NETLIFY_SITE_ID||process.env.SITE_ID),blobsTokenConfigured:!!process.env.NETLIFY_BLOBS_TOKEN}})}
+  try{store=getStore('level44-party-v1')}catch(e){
+   if(e?.name!=='MissingBlobsEnvironmentError')throw e;
+   // Fallback for deployments without automatic Blobs context.
+   // Reuse the existing server-side Netlify API token; never send it to clients.
+   const token=process.env.NETLIFY_API_TOKEN;
+   let siteID=process.env.NETLIFY_SITE_ID||process.env.SITE_ID;
+   if(!token) return reply(503,{error:'Netlify Blobs vereist serverconfiguratie. NETLIFY_API_TOKEN ontbreekt.'});
+   if(!siteID){
+    const response=await fetch('https://api.netlify.com/api/v1/sites/level44unlocked.netlify.app',{headers:{Authorization:'Bearer '+token},signal:AbortSignal.timeout(8000)});
+    if(!response.ok)return reply(503,{error:'Site-ID kon niet worden opgehaald via Netlify API (HTTP '+response.status+').'});
+    const site=await response.json();siteID=site.id;
+   }
+   if(!siteID)return reply(503,{error:'Netlify API gaf geen site-ID terug.'});
+   store=getStore({name:'level44-party-v1',siteID,token});
+  }
   const now=Date.now();
   if(data.op==='feed'){
    const [recent,approved]=await Promise.all([store.get('recent',{type:'json'}),store.get('approved',{type:'json'})]);
