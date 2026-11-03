@@ -1,6 +1,7 @@
 'use strict';
 
 const crypto=require('node:crypto');
+const {getStore}=require('@netlify/blobs');
 const headers={'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Access-Control-Allow-Origin':'https://level44unlocked.netlify.app'};
 const reply=(statusCode,body)=>({statusCode,headers,body:JSON.stringify(body)});
 const actions=['confetti','cheer','dance','levelup','heart','boss'];
@@ -19,8 +20,6 @@ exports.handler=async(event)=>{
  if((event.body||'').length>6000)return reply(413,{error:'Aanvraag te groot'});
  const data=parse(event);if(!data||typeof data.op!=='string')return reply(400,{error:'Ongeldige aanvraag'});
  try{
-  let getStore;
-  try{({getStore}=require('@netlify/blobs'))}catch(e){console.error('Party Blobs dependency missing',e);return reply(503,{error:'Opslagmodule ontbreekt in Netlify build. Controleer of npm dependencies geïnstalleerd zijn.'})}
   let store;
   try{store=getStore('level44-party-v1')}catch(e){console.error('Party Blobs initialization failed',e);return reply(503,{error:'Netlify Blobs initialisatie mislukt',diagnose:{code:typeof e?.code==='string'?e.code.slice(0,80):null,name:typeof e?.name==='string'?e.name.slice(0,80):null,siteIdConfigured:!!(process.env.NETLIFY_SITE_ID||process.env.SITE_ID),blobsTokenConfigured:!!process.env.NETLIFY_BLOBS_TOKEN}})}
   const now=Date.now();
