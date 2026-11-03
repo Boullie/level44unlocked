@@ -44,7 +44,7 @@
 .slot-reels{position:absolute;top:22%;display:flex;gap:2vw;background:#160904;border:12px ridge #e6aa42;padding:2vw}.slot-reel{width:clamp(80px,14vw,210px);height:clamp(120px,18vw,260px);background:#fff4cb;color:#311309;font-size:clamp(70px,10vw,140px);display:grid;place-items:center;border:5px solid #c88d29;animation:slotSpin .3s steps(2) 7}@keyframes slotSpin{50%{transform:translateY(-20px);filter:blur(5px)}}.jackpot-win{position:absolute;bottom:18%;font:clamp(20px,4vw,65px) 'Press Start 2P';color:#ffe477;animation:filmPulse .6s infinite}
 .glitch-static{position:absolute;inset:0;background:repeating-linear-gradient(0deg,#fff2 0 3px,#0009 4px 7px);animation:glitchShift .12s steps(2) infinite}@keyframes glitchShift{50%{transform:translate(3vw,-2vh);filter:hue-rotate(150deg)}}.glitch-error{position:absolute;top:34%;font:clamp(25px,5vw,80px) 'Press Start 2P';color:#fff;text-shadow:10px 0 #f04,-10px 0 #0ff;animation:bossGlitch .15s steps(2) infinite}
 </style><style>.film-stage.choreography-1{filter:saturate(1.5) contrast(1.2)}.film-stage.choreography-2{filter:hue-rotate(35deg)}.film-stage.choreography-3{filter:saturate(1.9) brightness(1.15)}.film-stage.choreography-2 .dancefloor-film{animation-duration:.2s}.film-stage.choreography-3 .dancefloor-film{background-size:6vw 6vw}.film-stage.glitch-film.choreography-1{animation:glitchShift .22s steps(2) infinite}.film-stage.glitch-film.choreography-2{animation:filmBlink .25s steps(2) infinite}.film-stage.glitch-film.choreography-3{animation:bossGlitch .14s steps(2) infinite}</style></head><body><div class="space"><div class="sun"></div><div class="gridfloor"></div></div><div class="particles" id="particles"></div>
-<div class="shell" id="shell"><header class="topbar"><span>★ LEVEL 44 • PARTY ARCADE ★</span><span id="connection">● CONNECTING…</span></header><main class="mainstage"><div class="eyebrow">★ ACHIEVEMENT UNLOCKED ★</div><h1>LEVEL <span>44</span><br>UNLOCKED!</h1><div class="subtitle" id="headline">INSERT CAKE TO CONTINUE</div><section class="feed"><div class="tag">▸ PARTY MESSAGE FEED ◂</div><p id="message">READY PLAYER 44?</p></section></main><footer class="footer"><div class="qrframe"><img class="qr" id="qr" alt="QR-code voor de Party Controller"></div><div class="join"><div class="tag">SCAN &amp; PLAY</div><p>📱 Pak je gsm. Unlock de party!</p><small>level44unlocked.netlify.app/party/play/</small></div></footer></div>
+<div class="shell" id="shell"><header class="topbar"><span>★ LEVEL 44 • PARTY ARCADE ★</span><span id="connection">● CONNECTING…</span></header><main class="mainstage"><div class="eyebrow">★ ACHIEVEMENT UNLOCKED ★</div><h1>LEVEL <span>44</span><br>UNLOCKED!</h1><div class="subtitle" id="headline">INSERT CAKE TO CONTINUE</div><section class="feed"><div class="tag">▸ PARTY MESSAGE FEED ◂</div><p id="message">READY PLAYER 44?</p></section></main><footer class="footer"><div class="qrframe"><img class="qr" id="qr" alt="QR-code voor de Party Controller"></div><div class="join"><div class="tag">SCAN &amp; PLAY</div><p>📱 Pak je gsm. Unlock de party!</p></div></footer></div>
 <div class="overlay" id="overlay" aria-live="polite"><div class="effect-card"><div class="effect-icon" id="effectIcon"></div><div class="effect-title" id="effectTitle"></div><div class="effect-sub" id="effectSub"></div></div></div><div class="toast" id="toast"></div><div id="scene" aria-live="polite"></div>
 <script>
 'use strict';
@@ -70,8 +70,9 @@ function particles(mode){
  for(let i=0;i<count;i++){const p=document.createElement('span');p.className='particle'+(emojis?' emoji-particle':'');p.style.left=Math.random()*100+'%';p.style.animationDelay=Math.random()*.65+'s';p.style.animationDuration=(2.5+Math.random()*1.5)+'s';p.style.setProperty('--drift',(Math.random()*240-120)+'px');if(emojis){p.textContent=emojis[i%emojis.length]}else{p.style.background=['#ff4da6','#48f6ed','#ffe477','#a96bff','#fff'][i%5];p.style.width=(8+Math.random()*13)+'px'}root.appendChild(p);setTimeout(()=>p.remove(),5000)}
 }
 const messageCounts=new Map(),messagePool=new Map();
-let currentMessageId='',messageRotationTimer=null,idlePromptIndex=-1;
-const idlePrompts=['INSERT MESSAGE','READY PLAYER 45?','INSERT MESSAGE HERE','SCAN QR FOR MESSAGE','YOUR MESSAGE COULD BE HERE','PRESS START TO SAY HELLO','SEND A SHOUT-OUT','UNLOCK A PARTY MESSAGE','SCAN • TYPE • SEND','NEXT MESSAGE: YOURS?'];
+let currentMessageId='',messageRotationTimer=null,idlePromptIndex=-1,lastMessageRotation=0;
+const MESSAGE_LIFETIME=30*60*1000;
+const idlePrompts=['INSERT MESSAGE','READY NEXT PLAYER?','INSERT MESSAGE HERE','SCAN QR FOR MESSAGE','YOUR MESSAGE COULD BE HERE','PRESS START TO SAY HELLO','SEND A SHOUT-OUT','UNLOCK A PARTY MESSAGE','SCAN • TYPE • SEND','NEXT MESSAGE: YOURS?'];
 function showIdlePrompt(){idlePromptIndex=(idlePromptIndex+1)%idlePrompts.length;const node=$('message');node.classList.add('swap');setTimeout(()=>{node.textContent='✦ '+idlePrompts[idlePromptIndex]+' ✦';node.classList.remove('swap')},300)}
 function sceneMarkup(name){
  switch(name){
@@ -108,7 +109,7 @@ function renderFilm(name,variant){
  const inner=document.createElement('div');inner.className='scene-inner';scene.appendChild(inner);
  const stage=document.createElement('div');stage.className='film-stage '+name+'-film choreography-'+pattern+' theme-'+family;inner.appendChild(stage);
  const title=document.createElement('div');title.className='scene-title';title.textContent=film.title;inner.appendChild(title);
- const subtitle=document.createElement('div');subtitle.className='scene-note';subtitle.textContent=film.words[family]+' • '+['CLASSIC','TURBO','MIRROR','CHAOS'][pattern]+' • '+(variant+1)+'/20';inner.appendChild(subtitle);
+ const subtitle=document.createElement('div');subtitle.className='scene-note';subtitle.textContent=film.words[family];inner.appendChild(subtitle);
  if(name==='dance'){const floor=document.createElement('div');floor.className='dancefloor-film';stage.appendChild(floor)}
  if(name==='jackpot'){const pin=document.createElement('div');pin.className='pinball';stage.appendChild(pin);const score=document.createElement('div');score.className='score';score.textContent=['777','444','💎','★★★','WIN!'][family];stage.appendChild(score)}
  if(name==='glitch'){const tv=document.createElement('div');tv.className='tvframe';stage.appendChild(tv)}
@@ -157,6 +158,7 @@ function renderFilm(name,variant){
   stage.appendChild(obj);
  }
 }
+const previewParams=new URLSearchParams(location.search);const isPreview=previewParams.has('preview');
 function runNext(){
  if(playing||!effectQueue.length)return;
  playing=true;const name=effectQueue.shift(),variant=chooseVariant(name);
@@ -166,20 +168,20 @@ function runNext(){
 function refreshMessages(messages){
  // Keep up to 30 approved messages; each message can be shown at most five times.
  const incoming=new Set();
- for(const msg of messages){if(!msg||typeof msg.id!=='string')continue;incoming.add(msg.id);if(!messageCounts.has(msg.id))messageCounts.set(msg.id,0);messagePool.set(msg.id,msg)}
+ for(const msg of messages){if(!msg||typeof msg.id!=='string'||!Number.isFinite(msg.at)||Date.now()-msg.at>=MESSAGE_LIFETIME)continue;incoming.add(msg.id);if(!messageCounts.has(msg.id))messageCounts.set(msg.id,0);messagePool.set(msg.id,msg)}
  for(const id of messagePool.keys()){if(!incoming.has(id)){messagePool.delete(id);messageCounts.delete(id)}}
 }
 function rotateMessage(){
  const available=[...messagePool.values()].filter(m=>(messageCounts.get(m.id)||0)<5);
- if(!available.length){currentMessageId='';showIdlePrompt();return}
+ if(!available.length){currentMessageId='';showIdlePrompt();lastMessageRotation=Date.now();return}
  const next=available.find(m=>m.id!==currentMessageId)||available[0];
- currentMessageId=next.id;messageCounts.set(next.id,(messageCounts.get(next.id)||0)+1);
+ currentMessageId=next.id;messageCounts.set(next.id,(messageCounts.get(next.id)||0)+1);lastMessageRotation=Date.now();
  const node=$('message');node.classList.add('swap');
  setTimeout(()=>{node.textContent='💬 '+next.name+': '+next.value;node.classList.remove('swap')},300);
  $('headline').textContent='MESSAGE UNLOCKED!';messageUntil=Date.now()+7500;
  if(messageCounts.get(next.id)===1){const toast=$('toast');toast.textContent='★ NEW MESSAGE FROM '+next.name.toUpperCase()+' ★';toast.classList.add('visible');setTimeout(()=>toast.classList.remove('visible'),3000)}
 }
-messageRotationTimer=setInterval(rotateMessage,8000);showIdlePrompt();
+messageRotationTimer=setInterval(rotateMessage,8000);showIdlePrompt();lastMessageRotation=Date.now();
 async function poll(){
  try{
   const r=await fetch('/.netlify/functions/party',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({op:'feed'}),cache:'no-store'});
@@ -189,9 +191,9 @@ async function poll(){
   if(!initialized){for(const event of events)seen.add(event.id);initialized=true}
   else{for(const event of events){if(!seen.has(event.id)){seen.add(event.id);effectQueue.push(event.value)}}runNext()}
   if(seen.size>250)seen=new Set(events.map(x=>x.id));
-  refreshMessages(Array.isArray(data.messages)?data.messages:[]);if(!currentMessageId&&messagePool.size)rotateMessage()
+  refreshMessages(Array.isArray(data.messages)?data.messages:[]);if(!lastMessageRotation&&messagePool.size)rotateMessage()
  }catch(e){$('connection').textContent='● RECONNECTING…';$('connection').classList.remove('online')}
 }
-poll();setInterval(poll,2500);
+if(!isPreview){poll();setInterval(poll,2500)}else{const name=previewParams.get('effect')||'confetti';const n=Number(previewParams.get('variant'));renderFilm(filmCatalog[name]?name:'confetti',Number.isInteger(n)&&n>=0&&n<20?n:0);}
 setInterval(()=>{if(Date.now()<messageUntil)return;$('headline').textContent=headlines[++headlineIndex%headlines.length]},8500);
 </script></body></html>
