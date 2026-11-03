@@ -1,0 +1,1 @@
+'use strict';exports.handler=async()=>({statusCode:process.env.GOOGLE_CLIENT_ID?200:503,headers:{'Content-Type':'application/json','Cache-Control':'no-store'},body:JSON.stringify(process.env.GOOGLE_CLIENT_ID?{clientId:process.env.GOOGLE_CLIENT_ID}:{error:'Google-login nog niet geconfigureerd'})});
