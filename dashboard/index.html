@@ -130,10 +130,11 @@ function display(){
  show('dashboard',true);if(!document.getElementById('spotifyConnect')){const wrap=document.createElement('section');wrap.style.cssText='margin:24px 0;padding:20px;border:2px solid #1db954;border-radius:12px';wrap.innerHTML='<h2>🎵 Spotify Party TV</h2><p>Verbind je Spotify Premium-account om het spelende nummer op de Party TV te tonen.</p><button id="spotifyConnect" type="button">Spotify verbinden</button>';document.getElementById('dashboard').prepend(wrap)}
 }
 async function signedIn(response){
- const spotifyButton=document.getElementById('spotifyConnect');if(spotifyButton){spotifyButton.onclick=async()=>{spotifyButton.disabled=true;try{const res=await fetch('/.netlify/functions/spotify-connect',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({idToken:response.credential})});const data=await res.json();if(!res.ok)throw Error(data.error||'Spotify-fout');location.href=data.url}catch(e){alert(e.message);spotifyButton.disabled=false}}}
 
  el('status').textContent='RSVP-gegevens veilig ophalen…';
- try{const res=await fetch('/.netlify/functions/rsvp-dashboard',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({idToken:response.credential}),cache:'no-store'});const data=await res.json();if(!res.ok)throw Error(data.error||'Ophalen mislukt');entries=data.records||[];display();show('login',false);el('status').textContent=data.warning||'Overzicht bijgewerkt.'}catch(e){el('status').textContent=e.message}
+ try{const res=await fetch('/.netlify/functions/rsvp-dashboard',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({idToken:response.credential}),cache:'no-store'});const data=await res.json();if(!res.ok)throw Error(data.error||'Ophalen mislukt');entries=data.records||[];display(); const spotifyButton=document.getElementById('spotifyConnect');if(spotifyButton){spotifyButton.onclick=async()=>{spotifyButton.disabled=true;try{const res=await fetch('/.netlify/functions/spotify-connect',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({idToken:response.credential})});const data=await res.json();if(!res.ok)throw Error(data.error||'Spotify-fout');location.href=data.url}catch(e){alert(e.message);spotifyButton.disabled=false}}}
+
+show('login',false);el('status').textContent=data.warning||'Overzicht bijgewerkt.'}catch(e){el('status').textContent=e.message}
 }
 async function init(){
  try{const r=await fetch('/.netlify/functions/rsvp-dashboard-config',{cache:'no-store'});const d=await r.json();if(!r.ok||!d.clientId)throw Error(d.error||'Login nog niet geconfigureerd');
