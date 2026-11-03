@@ -70,7 +70,9 @@ function particles(mode){
  for(let i=0;i<count;i++){const p=document.createElement('span');p.className='particle'+(emojis?' emoji-particle':'');p.style.left=Math.random()*100+'%';p.style.animationDelay=Math.random()*.65+'s';p.style.animationDuration=(2.5+Math.random()*1.5)+'s';p.style.setProperty('--drift',(Math.random()*240-120)+'px');if(emojis){p.textContent=emojis[i%emojis.length]}else{p.style.background=['#ff4da6','#48f6ed','#ffe477','#a96bff','#fff'][i%5];p.style.width=(8+Math.random()*13)+'px'}root.appendChild(p);setTimeout(()=>p.remove(),5000)}
 }
 const messageCounts=new Map(),messagePool=new Map();
-let currentMessageId='',messageRotationTimer=null;
+let currentMessageId='',messageRotationTimer=null,idlePromptIndex=-1;
+const idlePrompts=['INSERT MESSAGE','READY PLAYER 45?','INSERT MESSAGE HERE','SCAN QR FOR MESSAGE','YOUR MESSAGE COULD BE HERE','PRESS START TO SAY HELLO','SEND A SHOUT-OUT','UNLOCK A PARTY MESSAGE','SCAN • TYPE • SEND','NEXT MESSAGE: YOURS?'];
+function showIdlePrompt(){idlePromptIndex=(idlePromptIndex+1)%idlePrompts.length;const node=$('message');node.classList.add('swap');setTimeout(()=>{node.textContent='✦ '+idlePrompts[idlePromptIndex]+' ✦';node.classList.remove('swap')},300)}
 function sceneMarkup(name){
  switch(name){
  case 'confetti':return '<div class="scene-inner"><div class="scene-symbol">🎊</div><div class="scene-title">CONFETTI COMBO!</div><div class="scene-note">+100 PARTY POINTS</div></div>';
@@ -169,7 +171,7 @@ function refreshMessages(messages){
 }
 function rotateMessage(){
  const available=[...messagePool.values()].filter(m=>(messageCounts.get(m.id)||0)<5);
- if(!available.length){if(currentMessageId){currentMessageId='';$('message').textContent='READY PLAYER 44?';$('headline').textContent='INSERT CAKE TO CONTINUE'}return}
+ if(!available.length){currentMessageId='';showIdlePrompt();return}
  const next=available.find(m=>m.id!==currentMessageId)||available[0];
  currentMessageId=next.id;messageCounts.set(next.id,(messageCounts.get(next.id)||0)+1);
  const node=$('message');node.classList.add('swap');
@@ -177,7 +179,7 @@ function rotateMessage(){
  $('headline').textContent='MESSAGE UNLOCKED!';messageUntil=Date.now()+7500;
  if(messageCounts.get(next.id)===1){const toast=$('toast');toast.textContent='★ NEW MESSAGE FROM '+next.name.toUpperCase()+' ★';toast.classList.add('visible');setTimeout(()=>toast.classList.remove('visible'),3000)}
 }
-messageRotationTimer=setInterval(rotateMessage,8000);
+messageRotationTimer=setInterval(rotateMessage,8000);showIdlePrompt();
 async function poll(){
  try{
   const r=await fetch('/.netlify/functions/party',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({op:'feed'}),cache:'no-store'});
