@@ -16,7 +16,12 @@ exports.handler=async(event)=>{
   const res=await fetch('https://api.spotify.com/v1/me/player/currently-playing',{headers:{Authorization:'Bearer '+auth.access_token},signal:AbortSignal.timeout(8000)});
   if(res.status===204||!res.ok)return reply(200,{playing:false});
   const data=await res.json();const item=data.item;
-  if(!data.is_playing||!item||data.currently_playing_type!=='track')return reply(200,{playing:false});
-  return reply(200,{playing:true,title:String(item.name||'').slice(0,150),artist:(item.artists||[]).map(x=>x.name).join(', ').slice(0,150),cover:item.album?.images?.[0]?.url||null});
+  if(!data.is_playing||!item)return reply(200,{playing:false});
+  if(data.currently_playing_type==='episode'||item.type==='episode'){
+   const show=item.show||{};
+   return reply(200,{playing:true,kind:'podcast',title:String(item.name||'Podcastaflevering').slice(0,150),artist:String(show.name||'Podcast').slice(0,150),cover:item.images?.[0]?.url||show.images?.[0]?.url||null});
+  }
+  if(data.currently_playing_type!=='track'&&item.type!=='track')return reply(200,{playing:false});
+  return reply(200,{playing:true,kind:'track',title:String(item.name||'').slice(0,150),artist:(item.artists||[]).map(x=>x.name).join(', ').slice(0,150),cover:item.album?.images?.[0]?.url||null});
  }catch{return reply(200,{playing:false})}
 };
