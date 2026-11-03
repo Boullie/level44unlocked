@@ -15,12 +15,12 @@
 <label>Hapjes per gast <input id="calcSnacks" type="number" min="0" max="40" step="1" value="8"></label>
 <label>Extra marge (%) <input id="calcBuffer" type="number" min="0" max="100" step="5" value="10"></label>
 </div><div id="calcResults" class="planner-grid calc-results"></div>
-<p class="calc-footnote">Aannames: 1 bier = 1 flesje/blikje; 1 glas wijn of cava = 125 ml (6 glazen per fles van 75 cl); 1 frisdrank/alcoholvrij = 250 ml; 1 cocktail = 1 portie. Meerdere voorkeuren per persoon worden gelijk verdeeld. Water is apart voorzien. Hou rekening met duur van het feest, vervoer en werkelijke consumptie.</p></section>
-<section class="panel"><h2>🛒 Boodschappenplanner</h2><p id="plannerSummary"></p><p class="planner-note">Gebaseerd op de laatste antwoorden van bevestigde gasten. Voorkeuren zijn geen verbruikscijfers. Vul zelf de gewenste aankoopaantallen in; die worden niet opgeslagen.</p><div class="planner-grid" id="planner"></div><div class="planner-actions"><button type="button" id="exportShopping">⬇️ Download boodschappenlijst (CSV)</button><button type="button" id="copyShopping">📋 Kopieer boodschappenlijst</button></div><p id="plannerMessage" class="muted" role="status"></p></section>
+<div class="planner-actions"><button type="button" id="applyCalc" disabled>🛒 Neem berekende hoeveelheden over</button></div><p class="calc-footnote">Aannames: 1 bier = 1 flesje/blikje; 1 glas wijn of cava = 125 ml (6 glazen per fles van 75 cl); 1 frisdrank/alcoholvrij = 250 ml; 1 cocktail = 1 portie. Meerdere voorkeuren per persoon worden gelijk verdeeld. Water is apart voorzien. Hou rekening met duur van het feest, vervoer en werkelijke consumptie.</p></section>
+<section class="panel"><h2>🛒 Boodschappenplanner</h2><p id="plannerSummary"></p><p class="planner-note">Gebaseerd op de laatste antwoorden van bevestigde gasten. Voorkeuren zijn geen verbruikscijfers. Neem de berekende hoeveelheden over of vul zelf aankoopaantallen in. De aantallen worden niet opgeslagen.</p><div class="planner-grid" id="planner"></div><div class="planner-actions"><button type="button" id="exportShopping">⬇️ Download boodschappenlijst (CSV)</button><button type="button" id="copyShopping">📋 Kopieer boodschappenlijst</button></div><p id="plannerMessage" class="muted" role="status"></p></section>
 <section class="panel"><h2>Allergieën — vertrouwelijk</h2><div id="allergies"></div></section>
 <section class="panel"><h2>Muziekverzoeken</h2><div id="songs"></div></section></div></main>
 <script>
-'use strict';let entries=[];
+'use strict';let entries=[];let calculatedItems=null;let shoppingInputs=[];
 const el=id=>document.getElementById(id);
 const show=(id,yes)=>el(id).classList.toggle('hidden',!yes);
 const add=(parent,tag,text)=>{const node=document.createElement(tag);node.textContent=String(text??'');parent.appendChild(node);return node};
@@ -39,10 +39,21 @@ function makeCalculator(yes){
  const render=()=>{
   const n=people.length,drinks=Math.max(0,Math.min(20,Number(drinksInput.value)||0)),snacks=Math.max(0,Math.min(40,Number(snacksInput.value)||0)),margin=1+Math.max(0,Math.min(100,Number(bufferInput.value)||0))/100;
   const root=el('calcResults');root.replaceChildren();
-  if(!n){add(root,'p','Nog geen bevestigde gasten. Zodra er RSVP’s binnenkomen, verschijnt hier een raming.');return}
+  el('applyCalc').disabled=!n;
+  if(!n){calculatedItems=null;add(root,'p','Nog geen bevestigde gasten. Zodra er RSVP’s binnenkomen, verschijnt hier een raming.');return}
   const total=Math.ceil(n*drinks*margin),totalWeight=weights.reduce((a,b)=>a+b,0);
   const values=weights.map(w=>totalWeight?Math.ceil(total*w/totalWeight):0);
   const snackTotal=Math.ceil(n*snacks*margin);
+  calculatedItems=[
+   ['Bier (flesjes/blikjes)',values[0]],
+   ['Wijn (flessen 75 cl)',Math.ceil(values[1]/6)],
+   ['Cava / bubbels (flessen 75 cl)',Math.ceil(values[2]/6)],
+   ['Frisdrank (liter)',Math.ceil(values[3]*0.25*2)/2],
+   ['Alcoholvrij (liter)',Math.ceil(values[4]*0.25*2)/2],
+   ['Cocktails (porties)',values[5]],
+   ['Hapjes (stuks)',snackTotal],
+   ['Water (liter)',Math.ceil(n*0.5*margin*2)/2]
+  ];
   const data=[
    ['🍺 Bier',values[0]+' flesjes/blikjes'],
    ['🍷 Wijn',Math.ceil(values[1]/6)+' flessen (75 cl)',values[1]+' glazen'],
@@ -72,6 +83,20 @@ function makePlanner(yes){
  ];
  el('plannerSummary').textContent=people.length+' bevestigde feestgangers · '+yes.length+' bevestigde RSVP-antwoorden';
  const root=el('planner');root.replaceChildren();const inputs=[];
+ const estimated=add(root,'div','');estimated.className='planner-card';add(estimated,'h3','📦 Berekende aankoophoeveelheden');
+ const estimatedInputs=new Map();
+ for(const name of ['Bier (flesjes/blikjes)','Wijn (flessen 75 cl)','Cava / bubbels (flessen 75 cl)','Frisdrank (liter)','Alcoholvrij (liter)','Cocktails (porties)','Hapjes (stuks)','Water (liter)']){
+  const line=add(estimated,'div','');line.className='planner-row';add(line,'label',name);
+  const input=document.createElement('input');input.type='number';input.min='0';input.step=name.includes('(liter)')?'0.5':'1';input.value='0';input.setAttribute('aria-label','Aantal kopen: '+name);line.appendChild(input);
+  estimatedInputs.set(name,input);inputs.push({title:'Berekende aankoophoeveelheden',name,count:'',input});
+ }
+ shoppingInputs=[...estimatedInputs];
+ el('applyCalc').onclick=()=>{
+  if(!calculatedItems)return;
+  for(const [name,quantity] of calculatedItems){const input=estimatedInputs.get(name);if(input)input.value=String(quantity)}
+  el('plannerMessage').textContent='Berekende hoeveelheden overgenomen. Je kunt ze nog aanpassen of de lijst downloaden.';
+  el('planner').scrollIntoView({behavior:'smooth',block:'start'});
+ };
  for(const [title,items] of groups){
   const card=add(root,'div','');card.className='planner-card';add(card,'h3',title);
   if(!items.length){add(card,'p','Nog geen voorkeuren');continue}
