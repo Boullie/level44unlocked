@@ -4,7 +4,7 @@ const crypto=require('node:crypto');
 const {getStore}=require('@netlify/blobs');
 const headers={'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Access-Control-Allow-Origin':'https://level44unlocked.netlify.app'};
 const reply=(statusCode,body)=>({statusCode,headers,body:JSON.stringify(body)});
-const actions=['confetti','cheer','dance','levelup','heart','boss'];
+const actions=['confetti','cheer','dance','levelup','heart','boss','fireworks','laser','jackpot','glitch'];
 const parse=e=>{try{return JSON.parse(e.body||'{}')}catch{return null}};
 const clean=s=>String(s||'').trim().slice(0,180);
 async function authorized(token){
