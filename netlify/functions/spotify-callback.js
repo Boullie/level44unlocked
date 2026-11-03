@@ -3,7 +3,7 @@ const crypto=require('node:crypto');
 const {getStore}=require('@netlify/blobs');
 async function store(){try{return getStore('level44-spotify-v1')}catch(e){if(e?.name!=='MissingBlobsEnvironmentError')throw e;const token=process.env.NETLIFY_API_TOKEN;let siteID=process.env.NETLIFY_SITE_ID||process.env.SITE_ID;if(!token)throw Error('Blobs token ontbreekt');if(!siteID){const r=await fetch('https://api.netlify.com/api/v1/sites/level44unlocked.netlify.app',{headers:{Authorization:'Bearer '+token}});if(!r.ok)throw Error('Site ID ontbreekt');siteID=(await r.json()).id}return getStore({name:'level44-spotify-v1',siteID,token})}}
 exports.handler=async(event)=>{
- const redirect=(msg)=>({statusCode:302,headers:{Location:'/dashboard/?spotify='+encodeURIComponent(msg),'Cache-Control':'no-store'},body:''});
+ const redirect=(msg)=>({statusCode:302,headers:{Location:'/party/spotify-status/?result='+encodeURIComponent(msg),'Cache-Control':'no-store'},body:''});
  const {SPOTIFY_CLIENT_ID:id,SPOTIFY_CLIENT_SECRET:secret}=process.env;
  try{
   if(!id||!secret||event.queryStringParameters?.error)return redirect('error');
