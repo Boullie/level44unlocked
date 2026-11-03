@@ -39,7 +39,7 @@ exports.handler=async(event)=>{
   const now=Date.now();
   if(data.op==='feed'){
    const [recent,approved]=await Promise.all([store.get('recent',{type:'json'}),store.get('approved',{type:'json'})]);
-   return reply(200,{events:(recent||[]).filter(x=>now-x.at<120000).slice(-30),messages:(approved||[]).slice(-12)});
+   return reply(200,{events:(recent||[]).filter(x=>now-x.at<120000).slice(-30),messages:(approved||[]).slice(0,30)});
   }
   if(data.op==='send'){
    const kind=data.kind==='action'?'action':data.kind==='message'?'message':null;
