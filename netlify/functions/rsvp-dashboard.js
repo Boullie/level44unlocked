@@ -12,12 +12,26 @@ exports.handler=async(event)=>{
     if(!verify.ok)return respond(401,{error:'Ongeldige of verlopen aanmelding'});
     const identity=await verify.json();
     if(identity.aud!==GOOGLE_CLIENT_ID||identity.email_verified!=='true'||identity.email?.toLowerCase()!==ADMIN_GOOGLE_EMAIL.trim().toLowerCase()||!['accounts.google.com','https://accounts.google.com'].includes(identity.iss))return respond(403,{error:'Geen toegang'});
-    const api=await fetch('https://api.netlify.com/api/v1/forms/'+encodeURIComponent(NETLIFY_FORM_ID)+'/submissions?per_page=100',{headers:{Authorization:'Bearer '+NETLIFY_API_TOKEN},signal:AbortSignal.timeout(12000)});
-    if(!api.ok)return respond(502,{error:'Netlify Forms kon niet worden gelezen (HTTP '+api.status+')'});
-    const submissions=await api.json();
-    if(!Array.isArray(submissions))return respond(502,{error:'Onverwacht antwoord van Netlify'});
-    // No raw submission metadata or IP addresses are returned to the browser.
-    const records=submissions.map(s=>({submissionId:s.id,createdAt:s.created_at,fields:s.data||{}}));
-    return respond(200,{records,warning:submissions.length===100?'Er zijn mogelijk meer dan 100 inzendingen; paginering moet nog worden toegevoegd.':null});
+    // Netlify pagineert inzendingen. Haal alle pagina's op, ook wanneer
+    // meerdere antwoorden dezelfde RSVP-code gebruiken.
+    const records=[];
+    const seen=new Set();
+    const pageSize=100;
+    const maxPages=20; // Veiligheidslimiet: nooit stilzwijgend onvolledige statistieken tonen.
+    for(let page=1;page<=maxPages;page++){
+      const url='https://api.netlify.com/api/v1/forms/'+encodeURIComponent(NETLIFY_FORM_ID)+'/submissions?per_page='+pageSize+'&page='+page;
+      const api=await fetch(url,{headers:{Authorization:'Bearer '+NETLIFY_API_TOKEN},signal:AbortSignal.timeout(12000)});
+      if(!api.ok)return respond(502,{error:'Netlify Forms kon niet worden gelezen (HTTP '+api.status+')'});
+      const submissions=await api.json();
+      if(!Array.isArray(submissions))return respond(502,{error:'Onverwacht antwoord van Netlify'});
+      // Alleen noodzakelijke RSVP-velden; geen IP-adressen of overige metadata.
+      for(const s of submissions){
+        if(s.id&&seen.has(s.id))continue;
+        if(s.id)seen.add(s.id);
+        records.push({submissionId:s.id,createdAt:s.created_at,fields:s.data||{}});
+      }
+      if(submissions.length<pageSize)return respond(200,{records,warning:null});
+    }
+    return respond(503,{error:'Er zijn meer inzendingen dan de ingestelde veiligheidslimiet. Het overzicht wordt niet onvolledig getoond.'});
   }catch(e){return respond(502,{error:'De gegevens konden niet veilig worden opgehaald'})}
 };
