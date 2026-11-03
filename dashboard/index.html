@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="nl-BE"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Level 44 — Mission Control</title>
-<style>body{font:16px system-ui,sans-serif;background:#f8f0ff;color:#241449;margin:0}main{max-width:1050px;margin:auto;padding:36px 20px}h1{font-size:clamp(28px,5vw,44px)}.panel{background:#fff;border:2px solid #ded0f5;border-radius:18px;padding:22px;margin:18px 0}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}.stat{background:#fff0b7;border-radius:14px;padding:18px}.stat b{display:block;font-size:30px}table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:10px;border-bottom:1px solid #ddd}th{font-size:14px}button{background:#6d39e8;color:#fff;border:0;border-radius:10px;padding:12px 18px;cursor:pointer}input{padding:12px;max-width:100%;border:1px solid #aaa;border-radius:8px}#status{min-height:24px}.scroll{overflow:auto}.muted{color:#615773;font-size:14px}.hidden{display:none}.planner-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}.planner-card{background:#f7f3ff;border-radius:12px;padding:14px}.planner-card h3{margin:0 0 10px}.planner-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid #ded0f5}.planner-row label{flex:1}.planner-row input{width:75px;box-sizing:border-box}.planner-actions{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.planner-note{font-size:14px;color:#615773}</style>
+<style>body{font:16px system-ui,sans-serif;background:#f8f0ff;color:#241449;margin:0}main{max-width:1050px;margin:auto;padding:36px 20px}h1{font-size:clamp(28px,5vw,44px)}.panel{background:#fff;border:2px solid #ded0f5;border-radius:18px;padding:22px;margin:18px 0}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}.stat{background:#fff0b7;border-radius:14px;padding:18px}.stat b{display:block;font-size:30px}table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:10px;border-bottom:1px solid #ddd}th{font-size:14px}button{background:#6d39e8;color:#fff;border:0;border-radius:10px;padding:12px 18px;cursor:pointer}input{padding:12px;max-width:100%;border:1px solid #aaa;border-radius:8px}#status{min-height:24px}.scroll{overflow:auto}.muted{color:#615773;font-size:14px}.hidden{display:none}.planner-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}.planner-card{background:#f7f3ff;border-radius:12px;padding:14px}.planner-card h3{margin:0 0 10px}.planner-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid #ded0f5}.planner-row label{flex:1}.planner-row input{width:75px;box-sizing:border-box}.planner-actions{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.planner-note{font-size:14px;color:#615773}.calc-controls{display:flex;gap:14px;flex-wrap:wrap;align-items:end}.calc-controls label{display:grid;gap:6px;font-size:14px;font-weight:600}.calc-controls input{width:95px;box-sizing:border-box}.calc-results{margin-top:15px}.calc-results strong{font-size:22px}.calc-results .planner-card p{margin:8px 0}.calc-footnote{font-size:13px;color:#615773}</style>
 <script src="https://accounts.google.com/gsi/client" async defer></script></head><body><main>
 <h1>🎮 Level 44 — Mission Control</h1><p>Privé RSVP-dashboard. Gegevens worden pas na Google-aanmelding opgehaald.</p>
 <section class="panel" id="login"><h2>🔐 Aanmelden</h2><div id="googleLogin"></div><p class="muted">Alleen het vooraf ingestelde Google-account krijgt toegang.</p></section>
@@ -8,6 +8,14 @@
 <div id="dashboard" class="hidden"><div class="stats" id="stats"></div>
 <section class="panel"><h2>Gastenlijst</h2><label>Zoeken <input id="search" type="search" placeholder="Naam zoeken"></label><div class="scroll"><table><thead><tr><th>Naam</th><th>Antwoord</th><th>Personen</th><th>Gewijzigd</th></tr></thead><tbody id="guests"></tbody></table></div></section>
 <section class="panel"><h2>Drankvoorkeuren</h2><div id="drinks"></div><p class="muted">Voorkeuren, geen exacte bestelhoeveelheden.</p></section>
+<section class="panel"><h2>🍻 Slimme feestcalculator</h2>
+<p class="planner-note">Indicatieve planning op basis van bevestigde gasten en hun opgegeven drankvoorkeuren. Geen automatische bestelling. Pas de aannames gerust aan.</p>
+<div class="calc-controls">
+<label>Drankjes per gast <input id="calcDrinks" type="number" min="0" max="20" step="0.5" value="4"></label>
+<label>Hapjes per gast <input id="calcSnacks" type="number" min="0" max="40" step="1" value="8"></label>
+<label>Extra marge (%) <input id="calcBuffer" type="number" min="0" max="100" step="5" value="10"></label>
+</div><div id="calcResults" class="planner-grid calc-results"></div>
+<p class="calc-footnote">Aannames: 1 bier = 1 flesje/blikje; 1 glas wijn of cava = 125 ml (6 glazen per fles van 75 cl); 1 frisdrank/alcoholvrij = 250 ml; 1 cocktail = 1 portie. Meerdere voorkeuren per persoon worden gelijk verdeeld. Water is apart voorzien. Hou rekening met duur van het feest, vervoer en werkelijke consumptie.</p></section>
 <section class="panel"><h2>🛒 Boodschappenplanner</h2><p id="plannerSummary"></p><p class="planner-note">Gebaseerd op de laatste antwoorden van bevestigde gasten. Voorkeuren zijn geen verbruikscijfers. Vul zelf de gewenste aankoopaantallen in; die worden niet opgeslagen.</p><div class="planner-grid" id="planner"></div><div class="planner-actions"><button type="button" id="exportShopping">⬇️ Download boodschappenlijst (CSV)</button><button type="button" id="copyShopping">📋 Kopieer boodschappenlijst</button></div><p id="plannerMessage" class="muted" role="status"></p></section>
 <section class="panel"><h2>Allergieën — vertrouwelijk</h2><div id="allergies"></div></section>
 <section class="panel"><h2>Muziekverzoeken</h2><div id="songs"></div></section></div></main>
@@ -17,6 +25,42 @@ const el=id=>document.getElementById(id);
 const show=(id,yes)=>el(id).classList.toggle('hidden',!yes);
 const add=(parent,tag,text)=>{const node=document.createElement(tag);node.textContent=String(text??'');parent.appendChild(node);return node};
 function parsePeople(fields){try{const a=JSON.parse(fields.personen_json||'[]');return Array.isArray(a)?a:[]}catch{return []}}
+function makeCalculator(yes){
+ const people=yes.flatMap(r=>r.people);
+ const drinksInput=el('calcDrinks'),snacksInput=el('calcSnacks'),bufferInput=el('calcBuffer');
+ const types=['Bier','Wijn','Cava / bubbels','Frisdrank','Alcoholvrij','Cocktails'];
+ const keyFor=s=>{const t=String(s).toLowerCase();return t.includes('bier')?0:t.includes('wijn')?1:t.includes('cava')||t.includes('bubbel')?2:t.includes('frisdrank')?3:t.includes('alcoholvrij')?4:t.includes('cocktail')?5:-1};
+ const weights=Array(6).fill(0);let unspecified=0;
+ for(const p of people){
+  const chosen=[...new Set((Array.isArray(p.drinks)?p.drinks:[]).map(keyFor).filter(i=>i>=0))];
+  if(!chosen.length){unspecified++;continue}
+  for(const i of chosen)weights[i]+=1/chosen.length;
+ }
+ const render=()=>{
+  const n=people.length,drinks=Math.max(0,Math.min(20,Number(drinksInput.value)||0)),snacks=Math.max(0,Math.min(40,Number(snacksInput.value)||0)),margin=1+Math.max(0,Math.min(100,Number(bufferInput.value)||0))/100;
+  const root=el('calcResults');root.replaceChildren();
+  if(!n){add(root,'p','Nog geen bevestigde gasten. Zodra er RSVP’s binnenkomen, verschijnt hier een raming.');return}
+  const total=Math.ceil(n*drinks*margin),totalWeight=weights.reduce((a,b)=>a+b,0);
+  const values=weights.map(w=>totalWeight?Math.ceil(total*w/totalWeight):0);
+  const snackTotal=Math.ceil(n*snacks*margin);
+  const data=[
+   ['🍺 Bier',values[0]+' flesjes/blikjes'],
+   ['🍷 Wijn',Math.ceil(values[1]/6)+' flessen (75 cl)',values[1]+' glazen'],
+   ['🥂 Cava / bubbels',Math.ceil(values[2]/6)+' flessen (75 cl)',values[2]+' glazen'],
+   ['🥤 Frisdrank',((values[3]*0.25).toLocaleString('nl-BE',{maximumFractionDigits:2}))+' liter',values[3]+' porties'],
+   ['🌿 Alcoholvrij',((values[4]*0.25).toLocaleString('nl-BE',{maximumFractionDigits:2}))+' liter',values[4]+' porties'],
+   ['🍸 Cocktails',values[5]+' porties'],
+   ['🥨 Hapjes',snackTotal+' stuks'],
+   ['💧 Water',Math.ceil(n*0.5*margin*2)/2+' liter','Basisraming: 0,5 l per gast']
+  ];
+  for(const [name,value,detail] of data){const card=add(root,'div','');card.className='planner-card';add(card,'h3',name);add(card,'strong',value);if(detail)add(card,'p',detail)}
+  const note=add(root,'p',n+' bevestigde gasten · '+total+' geraamde drankporties · '+unspecified+' zonder drankvoorkeur.');note.className='planner-note';
+  if(!totalWeight){add(root,'p','Geen drankvoorkeuren beschikbaar: vul zelf een verdeling in via de boodschappenplanner.')}
+  else if(unspecified){add(root,'p','Let op: de drankverdeling is gebaseerd op '+(n-unspecified)+' gasten met een opgegeven voorkeur. Voor de overige '+unspecified+' is dezelfde verdeling aangenomen.')}
+ };
+ for(const input of [drinksInput,snacksInput,bufferInput])input.oninput=render;
+ render();
+}
 function makePlanner(yes){
  const people=yes.flatMap(r=>r.people);
  const tally=(values)=>{const map=new Map();for(const v of values){const name=String(v||'').trim();if(name)map.set(name,(map.get(name)||0)+1)}return [...map].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],'nl'))};
@@ -54,6 +98,7 @@ function display(){
  el('search').oninput=renderGuests;renderGuests();
  const drinks=new Map();for(const r of yes)for(const p of r.people)for(const d of p.drinks||[])drinks.set(d,(drinks.get(d)||0)+1);
  el('drinks').replaceChildren();for(const [name,count] of [...drinks].sort((a,b)=>b[1]-a[1]))add(el('drinks'),'p',name+': '+count);if(!drinks.size)add(el('drinks'),'p','Nog geen voorkeuren');
+ makeCalculator(yes);
  makePlanner(yes);
  el('allergies').replaceChildren();let allergies=0;for(const r of [...yes,...maybe])for(const p of r.people){if(p.allergy?.trim()){add(el('allergies'),'p',(p.name||r.f.naam||'Gast')+': '+p.allergy);allergies++}}if(!allergies)add(el('allergies'),'p','Geen allergieën opgegeven');
  el('songs').replaceChildren();let songs=0;for(const r of rows)if(r.f.muziekverzoeken?.trim()){add(el('songs'),'p',(r.f.naam||'Gast')+': '+r.f.muziekverzoeken);songs++}if(!songs)add(el('songs'),'p','Nog geen muziekwensen');
