@@ -1,6 +1,15 @@
 <!doctype html>
 <html lang="nl-BE"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Level 44 — Mission Control</title>
-<style>body{font:16px system-ui,sans-serif;background:#f8f0ff;color:#241449;margin:0}main{max-width:1050px;margin:auto;padding:36px 20px}h1{font-size:clamp(28px,5vw,44px)}.panel{background:#fff;border:2px solid #ded0f5;border-radius:18px;padding:22px;margin:18px 0}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}.stat{background:#fff0b7;border-radius:14px;padding:18px}.stat b{display:block;font-size:30px}table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:10px;border-bottom:1px solid #ddd}th{font-size:14px}button{background:#6d39e8;color:#fff;border:0;border-radius:10px;padding:12px 18px;cursor:pointer}input{padding:12px;max-width:100%;border:1px solid #aaa;border-radius:8px}#status{min-height:24px}.scroll{overflow:auto}.muted{color:#615773;font-size:14px}.hidden{display:none}.planner-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}.planner-card{background:#f7f3ff;border-radius:12px;padding:14px}.planner-card h3{margin:0 0 10px}.planner-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid #ded0f5}.planner-row label{flex:1}.planner-row input{width:75px;box-sizing:border-box}.planner-actions{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.planner-note{font-size:14px;color:#615773}.calc-controls{display:flex;gap:14px;flex-wrap:wrap;align-items:end}.calc-controls label{display:grid;gap:6px;font-size:14px;font-weight:600}.calc-controls input{width:95px;box-sizing:border-box}.calc-results{margin-top:15px}.calc-results strong{font-size:22px}.calc-results .planner-card p{margin:8px 0}.calc-footnote{font-size:13px;color:#615773}</style>
+<style>body{font:16px system-ui,sans-serif;background:#f8f0ff;color:#241449;margin:0}main{max-width:1050px;margin:auto;padding:36px 20px}h1{font-size:clamp(28px,5vw,44px)}.panel{background:#fff;border:2px solid #ded0f5;border-radius:18px;padding:22px;margin:18px 0}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}.stat{background:#fff0b7;border-radius:14px;padding:18px}.stat b{display:block;font-size:30px}table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:10px;border-bottom:1px solid #ddd}th{font-size:14px}button{background:#6d39e8;color:#fff;border:0;border-radius:10px;padding:12px 18px;cursor:pointer}input{padding:12px;max-width:100%;border:1px solid #aaa;border-radius:8px}#status{min-height:24px}.scroll{overflow:auto}.muted{color:#615773;font-size:14px}.hidden{display:none}.planner-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}.planner-card{background:#f7f3ff;border-radius:12px;padding:14px}.planner-card h3{margin:0 0 10px}.planner-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid #ded0f5}.planner-row label{flex:1}.planner-row input{width:75px;box-sizing:border-box}.planner-actions{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.planner-note{font-size:14px;color:#615773}.calc-controls{display:flex;gap:14px;flex-wrap:wrap;align-items:end}.calc-controls label{display:grid;gap:6px;font-size:14px;font-weight:600}.calc-controls input{width:95px;box-sizing:border-box}.calc-results{margin-top:15px}.calc-results strong{font-size:22px}.calc-results .planner-card p{margin:8px 0}.calc-footnote{font-size:13px;color:#615773}
+.mail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.mail-card{background:#f7f3ff;border:1px solid #ded0f5;border-radius:14px;padding:18px}
+.mail-card textarea,.mail-card input{box-sizing:border-box;width:100%;max-width:none;margin:5px 0 12px}
+.mail-card textarea{min-height:170px;padding:12px;border:1px solid #aaa;border-radius:8px;font:inherit}
+.mail-card label{display:block;font-weight:600;font-size:14px}
+.mail-card button{margin:4px 6px 4px 0}
+.mail-card button:disabled{opacity:.5;cursor:not-allowed}
+.mail-preview{white-space:pre-wrap;background:white;border:1px solid #ded0f5;border-radius:10px;padding:16px;overflow-wrap:anywhere}
+</style>
 <script src="https://accounts.google.com/gsi/client" async defer></script></head><body><main>
 <h1>🎮 Level 44 — Mission Control</h1><p>Privé RSVP-dashboard. Gegevens worden pas na Google-aanmelding opgehaald.</p>
 <section class="panel" id="login"><h2>🔐 Aanmelden</h2><div id="googleLogin"></div><p class="muted">Alleen het vooraf ingestelde Google-account krijgt toegang.</p></section>
@@ -17,6 +26,47 @@
 </div><div id="calcResults" class="planner-grid calc-results"></div>
 <div class="planner-actions"><button type="button" id="applyCalc" disabled>🛒 Neem berekende hoeveelheden over</button></div><p class="calc-footnote">Aannames: 1 bier = 1 flesje/blikje; 1 glas wijn of cava = 125 ml (6 glazen per fles van 75 cl); 1 frisdrank/alcoholvrij = 250 ml; 1 cocktail = 1 portie. Meerdere voorkeuren per persoon worden gelijk verdeeld. Water is apart voorzien. Hou rekening met duur van het feest, vervoer en werkelijke consumptie.</p></section>
 <section class="panel"><h2>🛒 Boodschappenplanner</h2><p id="plannerSummary"></p><p class="planner-note">Gebaseerd op de laatste antwoorden van bevestigde gasten. Voorkeuren zijn geen verbruikscijfers. Neem de berekende hoeveelheden over of vul zelf aankoopaantallen in. De aantallen worden niet opgeslagen.</p><div class="planner-grid" id="planner"></div><div class="planner-actions"><button type="button" id="exportShopping">⬇️ Download boodschappenlijst (CSV)</button><button type="button" id="copyShopping">📋 Kopieer boodschappenlijst</button></div><p id="plannerMessage" class="muted" role="status"></p></section>
+
+<section class="panel" id="mailCenter"><h2>✉️ MAIL CENTER — concepten</h2>
+<p class="muted">Voorbereiding voor 14 en 25 december 2026. Hier wordt niets automatisch of rechtstreeks verzonden. Concepten blijven alleen in deze browser bewaard. Controleer ontvangers en inhoud vóór je via Gmail verzendt.</p>
+<p id="mailRecipientInfo" role="status">Ontvangers worden geteld zodra de RSVP-gegevens zijn geladen.</p>
+<div class="mail-card" style="margin-bottom:16px"><label for="recipientFilter">Ontvangers</label>
+<select id="recipientFilter" style="padding:10px;max-width:100%;margin:8px 8px 8px 0"><option value="all">Iedereen met e-mailadres (ook afmeldingen)</option><option value="attending">Alleen aanwezigen</option><option value="attendingMaybe">Aanwezigen en misschien</option><option value="notAttending">Alleen afmeldingen</option></select>
+<button type="button" id="copyRecipients" disabled>📋 Kopieer e-mailadressen voor BCC</button>
+<p class="muted">Alleen de meest recente inschrijving per RSVP telt. Dubbels worden verwijderd. Plak de adressen in het BCC-veld van Gmail, niet in Aan of CC.</p>
+<textarea id="recipientOutput" readonly rows="3" style="width:100%;box-sizing:border-box" placeholder="E-mailadressen verschijnen hier na het ophalen van de RSVP's"></textarea></div>
+<div class="mail-grid">
+<div class="mail-card"><h3>🎉 14 december — Opwarmmail</h3>
+<label for="warmSubject">Onderwerp</label><input id="warmSubject" value="LEVEL 44 — Wie komt er allemaal? 🎉">
+<label for="warmBody">Bericht</label><textarea id="warmBody">Hey!
+
+Vrijdag 18 december is het zover: LEVEL 44! 🎉
+
+Benieuwd wie er allemaal bij zal zijn? Ontdek het via deze link:
+
+{{GASTENLIJST_LINK}}
+
+Ge zijt welkom vanaf 19.00u. Tot vrijdag!
+
+🥳</textarea>
+<button type="button" data-preview="warm">Voorbeeld bekijken</button><button type="button" data-copy="warm">Kopieer mailtekst</button>
+<div id="warmPreview" class="mail-preview hidden"></div></div>
+<div class="mail-card"><h3>📸 25 december — Fotomail</h3>
+<label for="photoSubject">Onderwerp</label><input id="photoSubject" value="LEVEL 44 — De foto's! 📸">
+<label for="albumUrl">Google Photos-albumlink (later invullen)</label><input id="albumUrl" type="url" placeholder="https://photos.app.goo.gl/...">
+<label for="photoBody">Bericht</label><textarea id="photoBody">Hey!
+
+Nog eens merci om van LEVEL 44 zo'n fijne avond te maken! 🥳
+
+De foto's staan klaar in Google Photos:
+
+{{FOTO_LINK}}
+
+Veel kijkplezier en tot snel!</textarea>
+<button type="button" data-preview="photo">Voorbeeld bekijken</button><button type="button" data-copy="photo">Kopieer mailtekst</button>
+<div id="photoPreview" class="mail-preview hidden"></div></div></div>
+<p id="mailMessage" class="muted" role="status"></p>
+</section>
 <section class="panel"><h2>Allergieën — vertrouwelijk</h2><div id="allergies"></div></section>
 <section class="panel"><h2>Muziekverzoeken</h2><div id="songs"></div></section></div></main>
 <script>
@@ -112,10 +162,66 @@ function makePlanner(yes){
  el('exportShopping').onclick=()=>{const blob=new Blob(['\ufeff'+csv()],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download='level44-boodschappenlijst.csv';document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);el('plannerMessage').textContent='Boodschappenlijst gedownload.'};
  el('copyShopping').onclick=async()=>{try{await navigator.clipboard.writeText(lines().map(row=>row.join(' | ')).join('\n'));el('plannerMessage').textContent='Boodschappenlijst gekopieerd.'}catch{el('plannerMessage').textContent='Kopiëren lukte niet. Gebruik de CSV-download.'}};
 }
+
+function initMailCenter(){
+ const keys=['warmSubject','warmBody','photoSubject','photoBody','albumUrl'];
+ for(const id of keys){
+  const input=el(id);const saved=localStorage.getItem('level44-mail-v12-'+id);
+  if(saved!==null)input.value=saved;
+  input.addEventListener('input',()=>localStorage.setItem('level44-mail-v12-'+id,input.value));
+ }
+ function content(kind){
+  const isWarm=kind==='warm';
+  const subject=el(isWarm?'warmSubject':'photoSubject').value;
+  const base=el(isWarm?'warmBody':'photoBody').value;
+  const url=isWarm?(location.protocol==='file:'?'[URL van je gepubliceerde LEVEL 44-website]#gastenlijst':location.origin+'/#gastenlijst'):(el('albumUrl').value.trim()||'[GOOGLE PHOTOS-ALBUMLINK NOG INVULLEN]');
+  return {subject,body:base.replaceAll(isWarm?'{{GASTENLIJST_LINK}}':'{{FOTO_LINK}}',url)};
+ }
+ for(const kind of ['warm','photo']){
+  document.querySelector('[data-preview="'+kind+'"]').addEventListener('click',()=>{
+   const d=content(kind),box=el(kind+'Preview');
+   box.textContent='Onderwerp: '+d.subject+'\n\n'+d.body;box.classList.remove('hidden');
+  });
+  document.querySelector('[data-copy="'+kind+'"]').addEventListener('click',async()=>{
+   const d=content(kind);
+   try{await navigator.clipboard.writeText('Onderwerp: '+d.subject+'\n\n'+d.body);el('mailMessage').textContent='Concept gekopieerd. Er is niets verzonden.'}
+   catch{el('mailMessage').textContent='Kopiëren mislukt; gebruik Voorbeeld bekijken.'}
+  });
+ }
+}
+let mailRecipientRows=[];
+function updateMailRecipients(rows){
+ mailRecipientRows=rows;
+ renderRecipientSelection();
+}
+function renderRecipientSelection(){
+ const filter=el('recipientFilter').value;
+ const emails=new Set();
+ for(const r of mailRecipientRows){
+  const status=String(r.f.aanwezigheid||'').trim();
+  if(filter==='attending'&&status!=='Komt')continue;
+  if(filter==='attendingMaybe'&&!['Komt','Misschien'].includes(status))continue;
+  if(filter==='notAttending'&&status!=='Komt niet')continue;
+  const email=String(r.f.email||r.f.emailadres||r.f.e_mail||r.f['e-mailadres']||'').trim().toLowerCase();
+  if(/^[^\s@,;]+@[^\s@,;]+\.[^\s@,;]+$/.test(email))emails.add(email);
+ }
+ const result=[...emails].sort();
+ el('recipientOutput').value=result.join(', ');
+ el('copyRecipients').disabled=result.length===0;
+ el('mailRecipientInfo').textContent=result.length+' unieke e-mailadressen voor de gekozen groep.';
+}
+async function copyRecipients(){
+ const value=el('recipientOutput').value;
+ if(!value){el('mailMessage').textContent='Geen e-mailadressen beschikbaar voor deze selectie.';return}
+ try{await navigator.clipboard.writeText(value);el('mailMessage').textContent='E-mailadressen gekopieerd. Plak ze in BCC in Gmail.'}
+ catch{el('recipientOutput').focus();el('recipientOutput').select();el('mailMessage').textContent='Selectie klaar: kopieer met Cmd+C of Ctrl+C en plak in BCC.'}
+}
+
 function display(){
  const latest=new Map();
  for(const r of entries){const f=r.fields||{};const id=f.rsvp_id||r.submissionId;const time=Date.parse(r.createdAt)||0;if(!latest.has(id)||time>latest.get(id).time)latest.set(id,{f,time,people:parsePeople(f)})}
  const rows=[...latest.values()].sort((a,b)=>b.time-a.time);
+ updateMailRecipients(rows);
  const yes=rows.filter(r=>r.f.aanwezigheid==='Komt'),maybe=rows.filter(r=>r.f.aanwezigheid==='Misschien'),no=rows.filter(r=>r.f.aanwezigheid==='Komt niet');
  const counts=[['Feestgangers',yes.reduce((n,r)=>n+r.people.length,0)],['Misschien',maybe.length],['Afzeggingen',no.length],['RSVP-antwoorden',rows.length]];
  el('stats').replaceChildren();for(const [label,value] of counts){const d=add(el('stats'),'div','');d.className='stat';add(d,'b',value);add(d,'span',label)}
@@ -141,5 +247,5 @@ async function init(){
  google.accounts.id.initialize({client_id:d.clientId,callback:signedIn,auto_select:false});google.accounts.id.renderButton(el('googleLogin'),{theme:'outline',size:'large',text:'signin_with'});
  }catch(e){el('status').textContent=e.message}
 }
-window.addEventListener('load',()=>{let attempts=0;const wait=()=>{if(window.google?.accounts?.id)init();else if(attempts++<40)setTimeout(wait,250);else el('status').textContent='Google-aanmelding kon niet geladen worden.'};wait()});
+window.addEventListener('load',()=>{initMailCenter();el('recipientFilter').addEventListener('change',renderRecipientSelection);el('copyRecipients').addEventListener('click',copyRecipients);let attempts=0;const wait=()=>{if(window.google?.accounts?.id)init();else if(attempts++<40)setTimeout(wait,250);else el('status').textContent='Google-aanmelding kon niet geladen worden.'};wait()});
 </script></body></html>
