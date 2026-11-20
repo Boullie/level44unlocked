@@ -519,6 +519,13 @@ function restoreReturningGuest(){
   const intro=$('#rsvp .section-sub');
   if(intro)intro.textContent='Welkom terug! Hier kunt ge uw inschrijving aanpassen.';
   unlockAfterRSVP();
+  // Zoals bij de gastenlijst: meteen naar het formulier zodra de pagina klaar is.
+  if(location.hash.toLowerCase()!=='#gastenlijst'){
+    window.addEventListener('load',()=>requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      $('#realForm').scrollIntoView({behavior:'auto',block:'start'});
+      scheduleScrollGuide();
+    })),{once:true});
+  }
 }
 restoreReturningGuest();
 
