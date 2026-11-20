@@ -562,6 +562,7 @@ renderScoreboard();
 
 // Rechtstreekse link vanuit de opwarmmail: #gastenlijst.
 // Alleen de scorebordsectie openen; het RSVP-formulier en de grap blijven ongewijzigd.
+// V12.4 branch deploy trigger — navigatie en scorebordtest.
 function openScoreboardFromMail(){
   const onlyBoard=location.hash.toLowerCase()==='#gastenlijst';
   const rsvp=document.getElementById('rsvp');
