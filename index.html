@@ -507,6 +507,28 @@ $('#rsvpForm').addEventListener('submit',async e=>{e.preventDefault();const btn=
 $('#editButton').addEventListener('click',()=>{$('#success').classList.remove('show');$('#formContent').classList.remove('hidden');$('#formCard').scrollIntoView({behavior:'smooth'});scheduleScrollGuide()});
 try{let d=JSON.parse(localStorage.getItem(STORE_KEY)||'null');if(d){$('#contactName').value=d.name||'';$('#contactEmail').value=d.email||'';let radio=document.querySelector(`input[name="attendance"][value="${d.attendance}"]`);if(radio)radio.checked=true;$('#guestCount').value=String(Math.min(8,Math.max(1,d.people?.length||1)));$('#message').value=d.message||'';$('#song').value=d.song||'';$('#scoreDecline').checked=false;renderPeople(d.people||[]);updateAttendance();}}catch(e){}
 
+// V12.4: terugkerende gasten zien meteen hun echte, vooraf ingevulde RSVP-formulier.
+// Alleen een lokaal bewaarde inschrijving is herkenbaar; op een ander toestel blijft de introductie zichtbaar.
+function restoreReturningGuest(){
+  let previous=null;
+  try{previous=JSON.parse(localStorage.getItem(STORE_KEY)||'null')}catch{}
+  if(!previous||!previous.id||!previous.name)return;
+  $('#prank').classList.remove('show');
+  $('#fakeForm').classList.add('hidden');
+  $('#realForm').classList.add('visible');
+  const intro=$('#rsvp .section-sub');
+  if(intro)intro.textContent='Welkom terug! Hier kunt ge uw inschrijving aanpassen.';
+  unlockAfterRSVP();
+  // Zoals bij de gastenlijst: meteen naar het formulier zodra de pagina klaar is.
+  if(location.hash.toLowerCase()!=='#gastenlijst'){
+    window.addEventListener('load',()=>requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      $('#realForm').scrollIntoView({behavior:'auto',block:'start'});
+      scheduleScrollGuide();
+    })),{once:true});
+  }
+}
+restoreReturningGuest();
+
 // Lokale gastenlijst: alleen op dit toestel, geen gedeelde online data.
 const SCORE_KEY='level44-scoreboard-demo-v1';
 function updateLocalScoreboard(data){
@@ -547,12 +569,17 @@ renderScoreboard();
 
 // Rechtstreekse link vanuit de opwarmmail: #gastenlijst.
 // Alleen de scorebordsectie openen; het RSVP-formulier en de grap blijven ongewijzigd.
+// V12.4 branch deploy trigger — navigatie en scorebordtest.
 function openScoreboardFromMail(){
-  if(location.hash.toLowerCase()!=='#gastenlijst')return;
+  const onlyBoard=location.hash.toLowerCase()==='#gastenlijst';
+  const rsvp=document.getElementById('rsvp');
+  // Een directe scorebordlink is een kijkmodus: geen nepformulier en geen RSVP-velden.
+  rsvp.hidden=onlyBoard;
+  if(!onlyBoard){scheduleScrollGuide();return;}
+  $('#prank').classList.remove('show');
   const board=document.getElementById('scoreboard');
   board.hidden=false;
   if(!LOCAL_PREVIEW)renderScoreboard();
-  // Na het vrijgeven van de verborgen sectie kan de browser ernaartoe scrollen.
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
     board.scrollIntoView({behavior:'auto',block:'start'});
     scheduleScrollGuide();
