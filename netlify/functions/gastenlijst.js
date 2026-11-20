@@ -47,3 +47,5 @@ exports.handler=async(event)=>{
     return reply(200,{yes,no});
   }catch{return reply(502,{error:'Scorebord tijdelijk niet beschikbaar'});}
 };
+
+// Branch deploy trigger: LEVEL 44 scoreboard test.
