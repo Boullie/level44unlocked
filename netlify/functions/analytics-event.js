@@ -19,5 +19,5 @@ exports.handler=async(event)=>{
   // Elke gebeurtenis krijgt alleen een willekeurige opslagkey, geen sessie- of bezoekers-ID.
   await store.setJSON('events/'+day+'/'+id,{event:data.event,day});
   return reply(202,{ok:true});
- }catch{return reply(503,{error:'Analytics unavailable'})}
+ }catch(e){console.error('V12.7 analytics event:',e?.name,e?.message,e?.status);return reply(503,{error:'Analytics unavailable',diagnostic:e?.name==='MissingBlobsEnvironmentError'?'blobs-config':e?.status===401?'blobs-auth':'blobs-write'})}
 };
