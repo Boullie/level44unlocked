@@ -9,25 +9,16 @@
 .mail-card button{margin:4px 6px 4px 0}
 .mail-card button:disabled{opacity:.5;cursor:not-allowed}
 .mail-preview{white-space:pre-wrap;background:white;border:1px solid #ded0f5;border-radius:10px;padding:16px;overflow-wrap:anywhere}
+
+/* V12.7: compact Mission Control */
+main{max-width:1120px;padding:18px 14px 35px}h1{margin:5px 0 8px}.panel{padding:14px 16px;margin:10px 0;border-radius:13px}.panel h2{font-size:20px;margin:0 0 10px}.panel p{margin:8px 0}.stats{gap:8px}.stat{padding:11px 13px;border-radius:10px}.stat b{font-size:25px}th,td{padding:6px 9px;font-size:13px}#search{padding:7px 10px;margin:4px 0 8px}#drinks{display:flex;flex-wrap:wrap;gap:6px}#drinks p{margin:0;padding:5px 9px;background:#f7f3ff;border-radius:8px;font-size:13px}.analytics-subpanel{margin-top:14px;padding-top:12px;border-top:1px solid #ded0f5}.analytics-subpanel h2{font-size:17px}.analytics-subpanel .stat{background:#f7f3ff}.mail-card{padding:12px}.mail-card textarea{min-height:120px}#spotifyPanel{border-color:#1db954}#spotifyPanel button{background:#168f40}@media(max-width:600px){main{padding:12px 9px 25px}.panel{padding:11px;margin:8px 0}th,td{padding:5px;font-size:12px}.stat{padding:9px}.stat b{font-size:22px}}
 </style>
 <script src="https://accounts.google.com/gsi/client" async defer></script></head><body><main>
 <h1>🎮 Level 44 — Mission Control</h1><p>Privé RSVP-dashboard. Gegevens worden pas na Google-aanmelding opgehaald.</p>
 <section class="panel" id="login"><h2>🔐 Aanmelden</h2><div id="googleLogin"></div><p class="muted">Alleen het vooraf ingestelde Google-account krijgt toegang.</p></section>
 <p id="status" role="status" aria-live="polite"></p>
-<div id="dashboard" class="hidden"><div class="stats" id="stats"></div><section class="panel" id="analyticsPanel"><!-- Netlify branch-deploy trigger na activeren testbranch --><h2>📊 Bezoekersanalyse (V12.7)</h2><p class="muted">Cookieloze gebeurtenistellingen van de laatste 30 dagen. Geen namen, sessie-opnames of unieke bezoekers. Percentages zijn indicatief, geen individuele funnel.</p><div class="stats" id="analyticsStats"><p>Gegevens laden…</p></div><p class="muted" id="analyticsNote"></p><button id="analyticsRefresh" type="button">Analyse vernieuwen</button></section>
-<section class="panel"><h2>Gastenlijst</h2><label>Zoeken <input id="search" type="search" placeholder="Naam zoeken"></label><div class="scroll"><table><thead><tr><th>Naam</th><th>Antwoord</th><th>Personen</th><th>Gewijzigd</th></tr></thead><tbody id="guests"></tbody></table></div></section>
-<section class="panel"><h2>Drankvoorkeuren</h2><div id="drinks"></div><p class="muted">Voorkeuren, geen exacte bestelhoeveelheden.</p></section>
-<section class="panel"><h2>🍻 Slimme feestcalculator</h2>
-<p class="planner-note">Indicatieve planning op basis van bevestigde gasten en hun opgegeven drankvoorkeuren. Geen automatische bestelling. Pas de aannames gerust aan.</p>
-<div class="calc-controls">
-<label>Drankjes per gast <input id="calcDrinks" type="number" min="0" max="20" step="0.5" value="4"></label>
-<label>Hapjes per gast <input id="calcSnacks" type="number" min="0" max="40" step="1" value="8"></label>
-<label>Extra marge (%) <input id="calcBuffer" type="number" min="0" max="100" step="5" value="10"></label>
-</div><div id="calcResults" class="planner-grid calc-results"></div>
-<div class="planner-actions"><button type="button" id="applyCalc" disabled>🛒 Neem berekende hoeveelheden over</button></div><p class="calc-footnote">Aannames: 1 bier = 1 flesje/blikje; 1 glas wijn of cava = 125 ml (6 glazen per fles van 75 cl); 1 frisdrank/alcoholvrij = 250 ml; 1 cocktail = 1 portie. Meerdere voorkeuren per persoon worden gelijk verdeeld. Water is apart voorzien. Hou rekening met duur van het feest, vervoer en werkelijke consumptie.</p></section>
-<section class="panel"><h2>🛒 Boodschappenplanner</h2><p id="plannerSummary"></p><p class="planner-note">Gebaseerd op de laatste antwoorden van bevestigde gasten. Voorkeuren zijn geen verbruikscijfers. Neem de berekende hoeveelheden over of vul zelf aankoopaantallen in. De aantallen worden niet opgeslagen.</p><div class="planner-grid" id="planner"></div><div class="planner-actions"><button type="button" id="exportShopping">⬇️ Download boodschappenlijst (CSV)</button><button type="button" id="copyShopping">📋 Kopieer boodschappenlijst</button></div><p id="plannerMessage" class="muted" role="status"></p></section>
-
-<section class="panel" id="mailCenter"><h2>✉️ MAIL CENTER — concepten</h2>
+<div id="dashboard" class="hidden"><section class="panel" id="spotifyPanel"><h2>🎵 Spotify koppelen</h2><p class="muted">Verbind je Spotify Premium-account om de muziek op Party TV te herkennen.</p><button id="spotifyConnect" type="button">Spotify verbinden</button></section><section class="panel" id="overviewPanel"><h2>📊 Overzicht</h2><div class="stats" id="stats"></div><div id="analyticsPanel" class="analytics-subpanel"><!-- Netlify branch-deploy trigger na activeren testbranch --><h2>📊 Bezoekersanalyse (V12.7)</h2><p class="muted">Cookieloze gebeurtenistellingen van de laatste 30 dagen. Geen namen, sessie-opnames of unieke bezoekers. Percentages zijn indicatief, geen individuele funnel.</p><div class="stats" id="analyticsStats"><p>Gegevens laden…</p></div><p class="muted" id="analyticsNote"></p><button id="analyticsRefresh" type="button">Analyse vernieuwen</button></div></section><section class="panel"><h2>Gastenlijst</h2><label>Zoeken <input id="search" type="search" placeholder="Naam zoeken"></label><div class="scroll"><table><thead><tr><th>Naam</th><th>Antwoord</th><th>Personen</th><th>Gewijzigd</th></tr></thead><tbody id="guests"></tbody></table></div></section>
+<section class="panel"><h2>Muziekverzoeken</h2><div id="songs"></div></section><section class="panel" id="mailCenter"><h2>✉️ MAIL CENTER — concepten</h2>
 <p class="muted">Voorbereiding voor 14 en 25 december 2026. Hier wordt niets automatisch of rechtstreeks verzonden. Concepten blijven alleen in deze browser bewaard. Controleer ontvangers en inhoud vóór je via Gmail verzendt.</p>
 <p id="mailRecipientInfo" role="status">Ontvangers worden geteld zodra de RSVP-gegevens zijn geladen.</p>
 <div class="mail-card" style="margin-bottom:16px"><label for="recipientFilter">Ontvangers</label>
@@ -68,7 +59,18 @@ Veel kijkplezier en tot snel!</textarea>
 <p id="mailMessage" class="muted" role="status"></p>
 </section>
 <section class="panel"><h2>Allergieën — vertrouwelijk</h2><div id="allergies"></div></section>
-<section class="panel"><h2>Muziekverzoeken</h2><div id="songs"></div></section></div></main>
+<section class="panel"><h2>Drankvoorkeuren</h2><div id="drinks"></div><p class="muted">Voorkeuren, geen exacte bestelhoeveelheden.</p></section>
+<section class="panel"><h2>🍻 Slimme feestcalculator</h2>
+<p class="planner-note">Indicatieve planning op basis van bevestigde gasten en hun opgegeven drankvoorkeuren. Geen automatische bestelling. Pas de aannames gerust aan.</p>
+<div class="calc-controls">
+<label>Drankjes per gast <input id="calcDrinks" type="number" min="0" max="20" step="0.5" value="4"></label>
+<label>Hapjes per gast <input id="calcSnacks" type="number" min="0" max="40" step="1" value="8"></label>
+<label>Extra marge (%) <input id="calcBuffer" type="number" min="0" max="100" step="5" value="10"></label>
+</div><div id="calcResults" class="planner-grid calc-results"></div>
+<div class="planner-actions"><button type="button" id="applyCalc" disabled>🛒 Neem berekende hoeveelheden over</button></div><p class="calc-footnote">Aannames: 1 bier = 1 flesje/blikje; 1 glas wijn of cava = 125 ml (6 glazen per fles van 75 cl); 1 frisdrank/alcoholvrij = 250 ml; 1 cocktail = 1 portie. Meerdere voorkeuren per persoon worden gelijk verdeeld. Water is apart voorzien. Hou rekening met duur van het feest, vervoer en werkelijke consumptie.</p></section>
+<section class="panel"><h2>🛒 Boodschappenplanner</h2><p id="plannerSummary"></p><p class="planner-note">Gebaseerd op de laatste antwoorden van bevestigde gasten. Voorkeuren zijn geen verbruikscijfers. Neem de berekende hoeveelheden over of vul zelf aankoopaantallen in. De aantallen worden niet opgeslagen.</p><div class="planner-grid" id="planner"></div><div class="planner-actions"><button type="button" id="exportShopping">⬇️ Download boodschappenlijst (CSV)</button><button type="button" id="copyShopping">📋 Kopieer boodschappenlijst</button></div><p id="plannerMessage" class="muted" role="status"></p></section>
+
+</div></main>
 <script>
 'use strict';let entries=[];let calculatedItems=null;let shoppingInputs=[];
 const el=id=>document.getElementById(id);
@@ -233,7 +235,7 @@ function display(){
  makePlanner(yes);
  el('allergies').replaceChildren();let allergies=0;for(const r of [...yes,...maybe])for(const p of r.people){if(p.allergy?.trim()){add(el('allergies'),'p',(p.name||r.f.naam||'Gast')+': '+p.allergy);allergies++}}if(!allergies)add(el('allergies'),'p','Geen allergieën opgegeven');
  el('songs').replaceChildren();let songs=0;for(const r of rows)if(r.f.muziekverzoeken?.trim()){add(el('songs'),'p',(r.f.naam||'Gast')+': '+r.f.muziekverzoeken);songs++}if(!songs)add(el('songs'),'p','Nog geen muziekwensen');
- show('dashboard',true);if(!document.getElementById('spotifyConnect')){const wrap=document.createElement('section');wrap.style.cssText='margin:24px 0;padding:20px;border:2px solid #1db954;border-radius:12px';wrap.innerHTML='<h2>🎵 Spotify Party TV</h2><p>Verbind je Spotify Premium-account om het spelende nummer op de Party TV te tonen.</p><button id="spotifyConnect" type="button">Spotify verbinden</button>';document.getElementById('dashboard').prepend(wrap)}
+ show('dashboard',true);
 }
 let analyticsToken=null;
 async function loadAnalytics(){
