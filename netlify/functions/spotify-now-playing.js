@@ -1,5 +1,6 @@
 'use strict';
 const {getStore}=require('@netlify/blobs');
+const wishStore=()=>getStore(process.env.NETLIFY_SITE_ID&&process.env.NETLIFY_API_TOKEN?{name:'level44-wishes-v1',siteID:process.env.NETLIFY_SITE_ID,token:process.env.NETLIFY_API_TOKEN}:'level44-wishes-v1');
 async function store(){try{return getStore('level44-spotify-v1')}catch(e){if(e?.name!=='MissingBlobsEnvironmentError')throw e;const token=process.env.NETLIFY_API_TOKEN;let siteID=process.env.NETLIFY_SITE_ID||process.env.SITE_ID;if(!token)throw Error('Blobs token ontbreekt');if(!siteID){const r=await fetch('https://api.netlify.com/api/v1/sites/level44unlocked.netlify.app',{headers:{Authorization:'Bearer '+token}});if(!r.ok)throw Error('Site ID ontbreekt');siteID=(await r.json()).id}return getStore({name:'level44-spotify-v1',siteID,token})}}
 exports.handler=async(event)=>{
  const reply=(code,data)=>({statusCode:code,headers:{'Content-Type':'application/json','Cache-Control':'no-store','Access-Control-Allow-Origin':'https://level44unlocked.netlify.app'},body:JSON.stringify(data)});
@@ -22,6 +23,25 @@ exports.handler=async(event)=>{
    return reply(200,{playing:true,kind:'podcast',title:String(item.name||'Podcastaflevering').slice(0,150),artist:String(show.name||'Podcast').slice(0,150),cover:item.images?.[0]?.url||show.images?.[0]?.url||null});
   }
   if(data.currently_playing_type!=='track'&&item.type!=='track')return reply(200,{playing:false});
-  return reply(200,{playing:true,kind:'track',trackId:String(item.id||''),uri:String(item.uri||''),startedAt:Number.isFinite(data.timestamp)?data.timestamp:null,progressMs:Number.isFinite(data.progress_ms)?data.progress_ms:null,durationMs:Number.isFinite(item.duration_ms)?item.duration_ms:null,title:String(item.name||'').slice(0,150),artist:(item.artists||[]).map(x=>x.name).join(', ').slice(0,150),artists:(item.artists||[]).map(x=>String(x.name||'').slice(0,100)).slice(0,8),cover:item.album?.images?.[0]?.url||null});
+  let wish=null;
+  try{
+   const ws=wishStore(),now=Date.now(),trackId=String(item.id||'');
+   if(trackId){
+    const active=await ws.get('active',{type:'json'});
+    const playKey=trackId+':'+String(data.timestamp||'');
+    if(active?.playKey===playKey&&now-active.at<25000){wish=active.wish}
+    else if(active?.playKey!==playKey){
+     const wishes=await ws.get('wishes',{type:'json'})||[];
+     const candidate=wishes.find(w=>w.approved&&w.spotifyId===trackId&&(!w.lastShownAt||now-w.lastShownAt>=7200000));
+     if(candidate){
+      candidate.lastShownAt=now;
+      wish={name:candidate.name,title:candidate.title,artist:candidate.artist,message:candidate.message};
+      await ws.setJSON('wishes',wishes);
+      await ws.setJSON('active',{playKey,at:now,wish});
+     }
+    }
+   }
+  }catch(e){console.error('wish match unavailable',e?.message)}
+  return reply(200,{playing:true,kind:'track',trackId:String(item.id||''),uri:String(item.uri||''),startedAt:Number.isFinite(data.timestamp)?data.timestamp:null,progressMs:Number.isFinite(data.progress_ms)?data.progress_ms:null,durationMs:Number.isFinite(item.duration_ms)?item.duration_ms:null,title:String(item.name||'').slice(0,150),artist:(item.artists||[]).map(x=>x.name).join(', ').slice(0,150),artists:(item.artists||[]).map(x=>String(x.name||'').slice(0,100)).slice(0,8),cover:item.album?.images?.[0]?.url||null,wish});
  }catch{return reply(200,{playing:false})}
 };
