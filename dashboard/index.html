@@ -240,7 +240,7 @@ async function loadAnalytics(){
  const area=el('analyticsStats');area.replaceChildren();add(area,'p','Analyse ophalen…');
  try{
   const r=await fetch('/.netlify/functions/analytics-dashboard',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({idToken:analyticsToken}),cache:'no-store'});
-  const d=await r.json();if(!r.ok)throw Error(d.error||'Analyse niet beschikbaar');
+  const d=await r.json();if(!r.ok)throw Error((d.error||'Analyse niet beschikbaar')+(d.diagnostic?' ['+d.diagnostic+']':''));
   area.replaceChildren();
   const labels=[['page_view','Pagina geopend'],['rsvp_view','RSVP bereikt'],['rsvp_start','Formulier gestart'],['rsvp_success','RSVP verstuurd'],['scoreboard_view','Gastenlijst gezien'],['gifts_view','Cadeautips gezien'],['practical_view','Praktische info gezien'],['edit_click','Antwoord aanpassen geklikt']];
   for(const [key,label] of labels){const box=document.createElement('div');box.className='stat';add(box,'b',d.totals?.[key]||0);add(box,'span',label);area.appendChild(box)}
