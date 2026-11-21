@@ -1,4 +1,5 @@
 'use strict';
+const {read:hasAdminSession}=require('./admin-session');
 const crypto=require('node:crypto');
 exports.handler=async(event)=>{
  const json=(code,obj)=>({statusCode:code,headers:{'Content-Type':'application/json','Cache-Control':'no-store'},body:JSON.stringify(obj)});
@@ -7,11 +8,13 @@ exports.handler=async(event)=>{
  if(!SPOTIFY_CLIENT_ID||!SPOTIFY_CLIENT_SECRET)return json(503,{error:'Spotify-variabelen ontbreken'});
  try{
   const {idToken}=JSON.parse(event.body||'{}');
-  if(typeof idToken!=='string'||idToken.length>5000)return json(403,{error:'Admin-login vereist'});
+  if(!hasAdminSession(event)&&(typeof idToken!=='string'||idToken.length>5000))return json(403,{error:'Admin-login vereist'});
+  if(!hasAdminSession(event)){
   const check=await fetch('https://oauth2.googleapis.com/tokeninfo?id_token='+encodeURIComponent(idToken),{signal:AbortSignal.timeout(8000)});
   if(!check.ok)return json(403,{error:'Ongeldige admin-login'});
   const user=await check.json();
   if(!GOOGLE_CLIENT_ID||!ADMIN_GOOGLE_EMAIL||user.aud!==GOOGLE_CLIENT_ID||user.email_verified!=='true'||user.email?.toLowerCase()!==ADMIN_GOOGLE_EMAIL.trim().toLowerCase())return json(403,{error:'Geen admin-toegang'});
+  }
   const payload=Buffer.from(JSON.stringify({at:Date.now(),nonce:crypto.randomBytes(16).toString('hex')})).toString('base64url');
   const signature=crypto.createHmac('sha256',SPOTIFY_CLIENT_SECRET).update(payload).digest('base64url');
   const url=new URL('https://accounts.spotify.com/authorize');

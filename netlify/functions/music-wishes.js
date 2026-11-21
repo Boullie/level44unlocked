@@ -1,4 +1,5 @@
 'use strict';
+const {read:hasAdminSession}=require('./admin-session');
 const crypto=require('node:crypto');
 const {getStore}=require('@netlify/blobs');
 const json=(code,data)=>({statusCode:code,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'},body:JSON.stringify(data)});
@@ -20,7 +21,7 @@ exports.handler=async event=>{
  try{
   const op=data.op;
   if(!['list','save','remove'].includes(op))return json(400,{error:'Onbekende actie'});
-  if(!await admin(data.idToken))return json(403,{error:'Geen admin-toegang'});
+  if(!hasAdminSession(event)&&!await admin(data.idToken))return json(403,{error:'Geen admin-toegang'});
   const s=store();
   if(op==='list'){
    const wishes=await s.get('wishes',{type:'json'})||[];
