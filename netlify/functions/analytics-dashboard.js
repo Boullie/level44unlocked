@@ -1,3 +1,4 @@
+// V12.7: redeploy after configuring NETLIFY_SITE_ID on Netlify.
 'use strict';
 const {getStore}=require('@netlify/blobs');
 const headers={'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'};
