@@ -30,5 +30,5 @@ exports.handler=async(event)=>{
    cursor=result.cursor;
   }while(cursor);
   return reply(200,{totals,period:'Laatste 30 dagen',note:'Cookieloze eventtellingen, geen unieke bezoekers. Sectieweergaven zijn benaderingen.'});
- }catch{return reply(503,{error:'Analytics konden niet worden opgehaald'})}
+ }catch(e){console.error('V12.7 analytics dashboard:',e?.name,e?.message,e?.status);return reply(503,{error:'Analytics konden niet worden opgehaald',diagnostic:e?.name==='MissingBlobsEnvironmentError'?'blobs-config':e?.status===401?'blobs-auth':'blobs-read'})}
 };
