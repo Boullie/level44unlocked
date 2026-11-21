@@ -22,6 +22,6 @@ exports.handler=async(event)=>{
    return reply(200,{playing:true,kind:'podcast',title:String(item.name||'Podcastaflevering').slice(0,150),artist:String(show.name||'Podcast').slice(0,150),cover:item.images?.[0]?.url||show.images?.[0]?.url||null});
   }
   if(data.currently_playing_type!=='track'&&item.type!=='track')return reply(200,{playing:false});
-  return reply(200,{playing:true,kind:'track',title:String(item.name||'').slice(0,150),artist:(item.artists||[]).map(x=>x.name).join(', ').slice(0,150),cover:item.album?.images?.[0]?.url||null});
+  return reply(200,{playing:true,kind:'track',trackId:String(item.id||''),uri:String(item.uri||''),startedAt:Number.isFinite(data.timestamp)?data.timestamp:null,progressMs:Number.isFinite(data.progress_ms)?data.progress_ms:null,durationMs:Number.isFinite(item.duration_ms)?item.duration_ms:null,title:String(item.name||'').slice(0,150),artist:(item.artists||[]).map(x=>x.name).join(', ').slice(0,150),artists:(item.artists||[]).map(x=>String(x.name||'').slice(0,100)).slice(0,8),cover:item.album?.images?.[0]?.url||null});
  }catch{return reply(200,{playing:false})}
 };
