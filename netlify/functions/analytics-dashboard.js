@@ -17,6 +17,7 @@ exports.handler=async(event)=>{
   const store=getStore(process.env.NETLIFY_SITE_ID && process.env.NETLIFY_API_TOKEN ? {name:'level44-analytics',siteID:process.env.NETLIFY_SITE_ID,token:process.env.NETLIFY_API_TOKEN} : 'level44-analytics');
   const cutoff=new Date(Date.now()-30*86400000).toISOString().slice(0,10);
   const totals={};
+  const daily={};
   let cursor;
   let scanned=0;
   do{
@@ -25,11 +26,17 @@ exports.handler=async(event)=>{
     const day=item.key.split('/')[1];
     if(day<cutoff)continue;
     const data=await store.get(item.key,{type:'json'});
-    if(data&&typeof data.event==='string')totals[data.event]=(totals[data.event]||0)+1;
+    if(data&&typeof data.event==='string'){
+      totals[data.event]=(totals[data.event]||0)+1;
+      if(data.event==='page_view'||data.event==='rsvp_success'){
+       if(!daily[day])daily[day]={page_view:0,rsvp_success:0};
+       daily[day][data.event]++;
+      }
+    }
     if(++scanned>10000)return reply(503,{error:'Te veel events voor dit overzicht'});
    }
    cursor=result.cursor;
   }while(cursor);
-  return reply(200,{totals,period:'Laatste 30 dagen',note:'Cookieloze eventtellingen, geen unieke bezoekers. Sectieweergaven zijn benaderingen.'});
+  return reply(200,{totals,daily,period:'Laatste 30 dagen',note:'Cookieloze eventtellingen, geen unieke bezoekers. Sectieweergaven zijn benaderingen.'});
  }catch(e){console.error('V12.7 analytics dashboard:',e?.name,e?.message,e?.status);return reply(503,{error:'Analytics konden niet worden opgehaald',diagnostic:e?.name==='MissingBlobsEnvironmentError'?'blobs-config':e?.status===401?'blobs-auth':'blobs-read'})}
 };
