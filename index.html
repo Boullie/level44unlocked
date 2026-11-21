@@ -534,7 +534,7 @@ async function submitRemote(data){
   if(!response.ok)throw new Error('Netlify heeft het antwoord niet aanvaard ('+response.status+').');
   return true;
 }
-$('#rsvpForm').addEventListener('submit',async e=>{e.preventDefault();const btn=$('#rsvpForm button[type="submit"]');const data={id:localStorage.getItem(STORE_KEY+'-id')||((typeof crypto!=='undefined'&&crypto.randomUUID)?crypto.randomUUID():String(Date.now())+'-'+Math.random().toString(36).slice(2)),name:$('#contactName').value.trim(),email:$('#contactEmail').value.trim(),attendance:document.querySelector('input[name="attendance"]:checked').value,people:[],message:document.querySelector('input[name="attendance"]:checked').value==='no'?'':$('#message').value.trim(),song:document.querySelector('input[name="attendance"]:checked').value==='no'?'':$('#song').value.trim(),scoreVisible:false,updatedAt:new Date().toISOString()};if(!data.name){$('#contactName').focus();return}if(data.attendance!=='no'){data.people=collectPeople();if(data.people.slice(1).some(p=>!p.name)){alert('Vul ook de naam van uw gezelschap in.');document.querySelector('.person-name:placeholder-shown')?.focus();return}}btn.disabled=true;$('#saveStatus').textContent='Even verwerken…';try{const saved=LOCAL_PREVIEW?false:await submitRemote(data);localStorage.setItem(STORE_KEY,JSON.stringify(data));localStorage.setItem(STORE_KEY+'-id',data.id);if(LOCAL_PREVIEW)updateLocalScoreboard(data);showSuccess(data,saved);if(!LOCAL_PREVIEW)renderScoreboard()}catch(err){$('#saveStatus').textContent='Versturen mislukt. Probeer opnieuw. '+err.message}finally{btn.disabled=false}});
+$('#rsvpForm').addEventListener('submit',async e=>{e.preventDefault();const btn=$('#rsvpForm button[type="submit"]');const data={id:localStorage.getItem(STORE_KEY+'-id')||((typeof crypto!=='undefined'&&crypto.randomUUID)?crypto.randomUUID():String(Date.now())+'-'+Math.random().toString(36).slice(2)),name:$('#contactName').value.trim(),email:$('#contactEmail').value.trim(),attendance:document.querySelector('input[name="attendance"]:checked').value,people:[],message:document.querySelector('input[name="attendance"]:checked').value==='no'?'':$('#message').value.trim(),song:document.querySelector('input[name="attendance"]:checked').value==='no'?'':$('#song').value.trim(),scoreVisible:false,updatedAt:new Date().toISOString()};if(!data.name){$('#contactName').focus();return}if(data.attendance!=='no'){data.people=collectPeople();if(data.people.slice(1).some(p=>!p.name)){alert('Vul ook de naam van uw gezelschap in.');document.querySelector('.person-name:placeholder-shown')?.focus();return}}btn.disabled=true;$('#saveStatus').textContent='Even verwerken…';try{const saved=LOCAL_PREVIEW?false:await submitRemote(data);localStorage.setItem(STORE_KEY,JSON.stringify(data));localStorage.setItem(STORE_KEY+'-id',data.id);if(LOCAL_PREVIEW)updateLocalScoreboard(data);showSuccess(data,saved);window.level44Analytics?.('rsvp_success',false);if(!LOCAL_PREVIEW)renderScoreboard()}catch(err){$('#saveStatus').textContent='Versturen mislukt. Probeer opnieuw. '+err.message}finally{btn.disabled=false}});
 $('#editButton').addEventListener('click',()=>{$('#success').classList.remove('show');$('#formContent').classList.remove('hidden');$('#formCard').scrollIntoView({behavior:'smooth'});scheduleScrollGuide()});
 try{let d=JSON.parse(localStorage.getItem(STORE_KEY)||'null');if(d){$('#contactName').value=d.name||'';$('#contactEmail').value=d.email||'';let radio=document.querySelector(`input[name="attendance"][value="${d.attendance}"]`);if(radio)radio.checked=true;$('#guestCount').value=String(Math.min(8,Math.max(1,d.people?.length||1)));$('#message').value=d.message||'';$('#song').value=d.song||'';$('#scoreDecline').checked=false;renderPeople(d.people||[]);updateAttendance();}}catch(e){}
 
@@ -702,6 +702,32 @@ openScoreboardFromMail();
     }
   });
   observer.observe(document.body,{childList:true,characterData:true,subtree:true});
+})();
+</script>
+<script>
+/* V12.7: minimale cookieloze analytics, uitsluitend vooraf gedefinieerde events. */
+(()=>{
+ const sent=new Set();
+ const send=(name,once=true)=>{
+   if(once&&sent.has(name))return;
+   if(once)sent.add(name);
+   const payload=JSON.stringify({event:name});
+   try{
+     if(navigator.sendBeacon){const blob=new Blob([payload],{type:'application/json'});if(navigator.sendBeacon('/.netlify/functions/analytics-event',blob))return;}
+     fetch('/.netlify/functions/analytics-event',{method:'POST',headers:{'Content-Type':'application/json'},body:payload,keepalive:true}).catch(()=>{});
+   }catch{}
+ };
+ window.level44Analytics=send;
+ send('page_view');
+ const sections=[['rsvp','rsvp_view'],['scoreboard','scoreboard_view'],['gifts','gifts_view'],['practical','practical_view']];
+ if('IntersectionObserver' in window){
+  const observer=new IntersectionObserver(entries=>{
+   for(const entry of entries){if(entry.isIntersecting&&entry.target.getClientRects().length){const item=sections.find(x=>x[0]===entry.target.id);if(item){send(item[1]);observer.unobserve(entry.target)}}}
+  },{threshold:0.15});
+  sections.forEach(([id])=>{const node=document.getElementById(id);if(node)observer.observe(node)});
+ }
+ document.getElementById('rsvpForm')?.addEventListener('input',()=>send('rsvp_start'),{passive:true});
+ document.getElementById('editButton')?.addEventListener('click',()=>send('edit_click'));
 })();
 </script>
 </body></html>
