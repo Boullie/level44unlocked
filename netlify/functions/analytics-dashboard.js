@@ -13,7 +13,7 @@ exports.handler=async(event)=>{
   if(!verify.ok)return reply(401,{error:'Ongeldige login'});
   const identity=await verify.json();
   if(identity.aud!==GOOGLE_CLIENT_ID||identity.email_verified!=='true'||identity.email?.toLowerCase()!==ADMIN_GOOGLE_EMAIL.trim().toLowerCase()||!['accounts.google.com','https://accounts.google.com'].includes(identity.iss))return reply(403,{error:'Geen toegang'});
-  const store=getStore('level44-analytics');
+  const store=getStore(process.env.NETLIFY_SITE_ID && process.env.NETLIFY_API_TOKEN ? {name:'level44-analytics',siteID:process.env.NETLIFY_SITE_ID,token:process.env.NETLIFY_API_TOKEN} : 'level44-analytics');
   const cutoff=new Date(Date.now()-30*86400000).toISOString().slice(0,10);
   const totals={};
   let cursor;
