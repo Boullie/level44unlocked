@@ -13,7 +13,7 @@ exports.handler=async(event)=>{
  let data;try{data=JSON.parse(event.body||'{}')}catch{return reply(400,{error:'Bad JSON'})}
  if(!allowed.has(data.event))return reply(400,{error:'Unknown event'});
  try{
-  const store=getStore('level44-analytics');
+  const store=getStore(process.env.NETLIFY_SITE_ID && process.env.NETLIFY_API_TOKEN ? {name:'level44-analytics',siteID:process.env.NETLIFY_SITE_ID,token:process.env.NETLIFY_API_TOKEN} : 'level44-analytics');
   const day=new Date().toISOString().slice(0,10);
   const id=require('node:crypto').randomUUID();
   // Elke gebeurtenis krijgt alleen een willekeurige opslagkey, geen sessie- of bezoekers-ID.
