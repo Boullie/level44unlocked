@@ -1699,7 +1699,7 @@ function nextSong(){
 }
 let level44DeferredSideChange=false;
 function level44AlternatePlaylistSide(){
- if(mode==='message'||activeMessage||pendingMessages.length){level44DeferredSideChange=!level44DeferredSideChange;return}
+ if(mode==='message'||activeMessage||pendingMessages.length){level44DeferredSideChange=true;return}
  const tv=$('tv');tv.classList.add('side-changing');
  setTimeout(()=>{playlistSide=playlistSide==='right'?'left':'right';updateLayers();setTimeout(()=>tv.classList.remove('side-changing'),120)},260);
 }
@@ -1795,7 +1795,13 @@ function powerStageHTML(source){
  .stage:after,.stage:before{display:none!important}
  canvas{display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:contain!important;border:0!important;margin:0!important}
  #buttons,#scenes,#tag,#caption,#replay,#next,#auto{display:none!important}`;
- return source.replace(/<\/head>/i,'<style>'+css+'</style></head>');
+ return source.replace(/<\/head>/i,'<style>'+css+'
+/* Showcase: taller pixel dancer, disco ball 1.5x, while keeping the stage within its card. */
+.music.showcase .nextsong.unknown-next .disco-ball{width:clamp(72px,11.25vh,132px)!important;height:clamp(72px,11.25vh,132px)!important;max-width:90%!important}
+.music.showcase .nextsong.unknown-next .mystery-dancer{width:72px!important;height:112px!important;flex:1 1 auto!important;min-height:112px!important;max-height:100%!important;align-self:center!important;transform-origin:50% 85%;scale:1.35}
+.music.showcase .nextsong.unknown-next{justify-content:space-between!important;gap:8px!important;overflow:hidden!important}
+.music .vinyl-svg .vinyl-spinning > circle:nth-child(6){stroke:#ffe46b!important}
+</style></head>');
 }
 function powerUp(k,spontaneous=false){if(fullPlaylist)closeFullPlaylist();lastIdlePower=performance.now();if(!spontaneous)lastGuestActivity=performance.now();clearTimeout(messageRotationTimer);if(mode==='message'&&activeMessage){pendingMessages.unshift(activeMessage);activeMessage=null}let idx=nextScene(k);mode='power';powerEnd=performance.now()+7800;messageEnd=0;let number=META[k].start+idx;$('powerlabel').textContent=META[k].label+' · '+number+'/50';$('powerframe').onload=()=>{try{let doc=$('powerframe').contentDocument;let root=doc.getElementById('buttons')||doc.getElementById('scenes');let buttons=root?[...root.querySelectorAll('button')]:[];buttons[idx]?.click()}catch(e){console.error('Power-up scene:',e)}};$('powerframe').srcdoc=powerStageHTML(LABS[k]);updateLayers();document.querySelectorAll('.sidebuttons button').forEach(b=>b.classList.toggle('active',b.dataset.key===k))}
 function returnToHome(){
@@ -1979,14 +1985,8 @@ function liveHistoryRender(){
  el.innerHTML=liveHistory.length?liveHistory.slice(0,3).map((x,i)=>'<div class="history-entry"><span class="history-number">'+String(i+1).padStart(2,'0')+'. </span><div class="history-meta"><span class="history-song">'+escapeHtml(x.title)+'</span><span class="history-artist">'+escapeHtml(x.artist)+'</span></div></div>').join(''):'<div class="history-entry">NOG GEEN VORIGE NUMMERS</div>';
 }
 function liveCancelInterruptedWishes(){
- // A wish interrupted by a new track must not be acknowledged as shown.
- // Keep ordinary guest messages in the queue.
- for(let i=pendingMessages.length-1;i>=0;i--)if(pendingMessages[i]?.level44Wish)pendingMessages.splice(i,1);
- if(activeMessage?.level44Wish){
-  clearTimeout(messageRotationTimer);activeMessage=null;messageEnd=0;
-  mode='music';nextMessageAt=performance.now()+400;
-  updateLayers();
- }
+ // Track transitions never cancel a displayed wish or its five-show cycle.
+ // Each completed showing decrements level44Remaining; acknowledge only after five.
  updateQueueStatus();
 }
 function liveUpdateTrack(d){
@@ -2000,7 +2000,7 @@ function liveUpdateTrack(d){
   if(liveTrackId)level44AlternatePlaylistSide();
   liveTrackId=id;level44NextTrackVisual();window.level44LastTrack={title:d.title||'',artist:d.artist||''};
   $('track').textContent=d.title||'ONBEKEND NUMMER';$('artist').textContent=d.artist||'';
-  liveHistoryRender();requestAnimationFrame(fitRecordToSong);
+  liveHistoryRender();if(mode!=='message')requestAnimationFrame(fitRecordToSong);
  }
  // Playback progress bar is intentionally hidden in every player layout.
  if(d.wish&&d.kind==='track'){
