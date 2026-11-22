@@ -1367,6 +1367,26 @@ body>h1,body>.intro,body>.foot{display:none!important}
 }
 .tv.split-view .home>.below-feed-prompt{font-size:clamp(11px,1.45vw,22px)!important}
 .home.showing-message>.below-feed-prompt{display:none!important}
+
+/* Compact jukebox: balanced spacing and a larger, track-reactive vinyl. */
+.music{--vinyl-outer:#50eaf3;--vinyl-center:#ffe36b;--vinyl-center-border:#f43caa}
+.music .vinyl-svg circle:first-child{stroke:var(--vinyl-outer)!important}
+.music .record-rim{border-color:var(--vinyl-outer)!important;box-shadow:0 0 0 3px var(--vinyl-center),0 0 18px var(--vinyl-outer)!important}
+.music .song-title-pair{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:clamp(2px,.6vh,7px)!important;min-height:0!important;width:100%!important;break-inside:avoid!important}
+.music .song-title-pair .track,.music .song-title-pair .artist{position:relative!important;max-width:100%!important;overflow-wrap:anywhere!important;text-align:center!important}
+.music.compact .music-header{flex:0 0 auto!important}
+.music.compact .nextsong{flex:0 0 auto!important;min-height:9%!important;max-height:14%!important}
+.music.compact .music-main{flex:1 1 auto!important;min-height:0!important;gap:clamp(5px,1.3vh,13px)!important;justify-content:space-evenly!important}
+.music.compact .record-deck{flex:0 1 auto!important;max-height:46%!important;min-height:0!important}
+.music.compact .record-rim{height:clamp(70px,12vw,185px)!important;max-height:min(100%,23vh)!important}
+.music.compact .song-info{flex:1 1 auto!important;min-height:0!important;justify-content:space-evenly!important;gap:clamp(4px,.7vh,9px)!important}
+.music.compact .song-title-pair{flex:0 1 auto!important;gap:3px!important}
+.music.compact .playlist{flex:0 0 auto!important;max-height:19%!important;overflow:hidden!important}
+.music .music-meter{width:100%!important;max-width:100%!important;justify-content:space-between!important;gap:clamp(1px,.23vw,4px)!important;overflow:hidden!important}
+.music .music-meter i{flex:1 1 0!important;width:auto!important;min-width:1px!important;max-width:none!important}
+.music.compact .music-meter{width:100%!important;min-height:17px!important;height:clamp(17px,2.8vh,28px)!important;gap:2px!important}
+.music.compact .music-meter i{width:auto!important;flex:1 1 0!important;min-width:1px!important}
+.music .nextsong-heading strong{display:block!important;white-space:normal!important;overflow-wrap:break-word!important}
 </style><link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet"></head><body><h1>★ LEVEL 44 UNLOCKED ★</h1><p class="intro">PARTY TV · ORIGINELE ARCADE LOOK · 20 UNIEKE ACHTERGRONDEN · 50 POWER-UPS</p><main class="layout"><section><div class="tv" id="tv"><canvas id="ambient" width="1280" height="720"></canvas><div class="scan"></div><div class="home" id="home"><div class="arcade-corners"><span>★ LEVEL 44 • PARTY ARCADE ★</span><span>● PARTY ONLINE</span></div><div class="hero-stack"><div class="achievement">★ ACHIEVEMENT UNLOCKED ★</div><div class="hero"><div class="topline"><span class="hero-first">LEVEL <span class="age">44</span></span><span class="hero-second">UNLOCKED!</span></div></div><div class="insertcake" id="cakePrompt">INSERT CAKE TO CONTINUE</div></div><div class="message-marquee"><div class="caption"><div class="ticker-track" aria-label="PARTY MESSAGE FEED"><span class="ticker-copy">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span><span class="ticker-copy" aria-hidden="true">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span></div></div><div class="insert" id="messagePrompt">✦ INSERT MESSAGE ✦</div><div class="msg" id="message"><div class="name-line"><span class="message-symbol" id="symbolBefore" aria-hidden="true">✦</span><div class="who" id="who"></div><span class="message-symbol" id="symbolAfter" aria-hidden="true">✦</span></div><div class="message-line"><div class="words" id="words"></div></div></div></div><div class="below-feed-prompt" id="belowFeedPrompt">INSERT CAKE TO CONTINUE</div><div class="scanplay"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUAQAAAABdRz15AAABS0lEQVR4nM2WQW4kQQgEg5HvyQ/6/8/qHyQvyD3U2LK88sHLSOuqUyMRokigqfD1zOMvE/w/W1X1VPX00FXVS54SmvjiAiW7+N6ghIbK0O7SmgcMTQ/uH/l+bzOG0H4FL0YePFET73iVAn18Duje8EiSQCwrSRLveEokITtGZstLFBsb+0S644EJxiGJlrw3COlMirTrJ77fvFfCJnaQYm3jg5SN2qZpLeNDJ4MKQlnmr9JwiwZgUmJVzw/gvqqZG8PgF+jh6DRdZO30ILLlAMRiz0sIKLJIWPMISuzg2CzrjzxDlBNsadtvmgIqM4hObfWV5CCESMIL3qszSxVgPU+T5FkwVrTU9/w/DNOhBHi1v5x573NRWObvAdUAc92tKZb7xrtNui/f+F98P5+zb4ge3QI06/pL5EhRElj2x9F3/AzSoJW+9cv33T+Au/yGE9/wPgAAAABJRU5ErkJggg==" alt="QR-code voor gastbediening"><div><strong>SCAN &amp; PLAY</strong><span>📱 Pak je gsm. Unlock de party!</span></div></div></div><div class="music" id="music">
 <div class="music-bulbs" aria-hidden="true"></div>
 <div class="music-header"><div class="music-kicker">★ LEVEL 44 ★ PLAYER ONE RADIO ★</div><div class="eyebrow">♫ PARTY PLAYLIST ♫</div><div class="music-subtitle">NOW LOADING THE NEXT BANGER...</div></div>
@@ -1474,7 +1494,7 @@ function nextSong(){
      artist.textContent=song[1];artist.classList.remove('song-field-leave');artist.classList.add('song-field-enter');requestAnimationFrame(fitRecordToSong);
    },300);
  },300);
- document.querySelector('.music').dataset.recordColor=String(songIndex%5);
+ level44NextTrackVisual();
  const bar=document.querySelector('.pixel-progress span');
  bar.style.animation='none';void bar.offsetWidth;bar.style.animation='';
  renderPreviousHits();
@@ -1751,7 +1771,7 @@ function liveUpdateTrack(d){
  const id=String(d.trackId||d.uri||d.title+'|'+d.artist);
  if(id!==liveTrackId){
   if(liveTrackId&&window.level44LastTrack){liveHistory.unshift(window.level44LastTrack);liveHistory=liveHistory.slice(0,3);try{sessionStorage.setItem('level44-tv-history',JSON.stringify(liveHistory))}catch(e){}}
-  liveTrackId=id;window.level44LastTrack={title:d.title||'',artist:d.artist||''};
+  liveTrackId=id;level44NextTrackVisual();window.level44LastTrack={title:d.title||'',artist:d.artist||''};
   $('track').textContent=d.title||'ONBEKEND NUMMER';$('artist').textContent=d.artist||'';
   liveHistoryRender();requestAnimationFrame(fitRecordToSong);
  }
@@ -1771,6 +1791,36 @@ async function livePoll(){
 $('autobg').checked=true;$('automsg').checked=false;$('idlepower').checked=false;$('autofull').checked=true;
 liveHistoryRender();$('track').textContent='WACHT OP SPOTIFY';$('artist').textContent='';
 document.querySelector('.pixel-progress span').style.animation='none';
+
+/* Jukebox variation is tied to the actual track change, not polling frequency. */
+const level44VinylPairs=[
+ ['#51eaf3','#ffe36b'],['#ffe36b','#f443ac'],['#f443ac','#58f0bd'],
+ ['#58f0bd','#aa82ff'],['#aa82ff','#ffb84b'],['#ffb84b','#51eaf3'],
+ ['#63b5ff','#ff8b6b'],['#ff8b6b','#58f0bd']
+];
+const level44Mysteries=[
+ '??? MYSTERY TRACK ???','NEXT LEVEL INCOMING','SECRET BANGER LOADING',
+ 'WHO DROPPED THIS BEAT?','BONUS TRACK UNLOCKED','THE NEXT BIG THING',
+ 'SURPRISE ON THE DECK','GUESS THAT GROOVE','READY FOR THE DROP?',
+ 'HIDDEN GEM AHEAD','PLAYER TWO SELECTS','ANOTHER HIT APPROACHES',
+ 'DANCEFLOOR WILDCARD','THE PLOT THICKENS','NEXT SONG: CLASSIFIED'
+];
+let level44VisualIndex=-1;
+function level44NextTrackVisual(){
+ level44VisualIndex=(level44VisualIndex+1)%level44Mysteries.length;
+ const music=document.getElementById('music');
+ const pair=level44VinylPairs[level44VisualIndex%level44VinylPairs.length];
+ music.style.setProperty('--vinyl-outer',pair[0]);music.style.setProperty('--vinyl-center',pair[1]);
+ music.style.setProperty('--vinyl-center-border',pair[0]);
+ const next=music.querySelector('.nextsong-heading strong');
+ if(next)next.textContent=level44Mysteries[level44VisualIndex];
+}
+(function(){
+ const meter=document.querySelector('#music .music-meter');
+ if(meter){meter.replaceChildren();for(let i=0;i<32;i++){const bar=document.createElement('i');bar.style.animationDelay=(-.11*(i%9))+'s';meter.appendChild(bar)}}
+ level44NextTrackVisual();
+})();
+
 livePoll();setInterval(livePoll,5000);
 
 /* Position status at actual midpoint of LED bottom and QR top, across screen sizes. */
