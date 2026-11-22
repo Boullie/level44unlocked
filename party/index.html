@@ -1496,6 +1496,19 @@ body>h1,body>.intro,body>.foot{display:none!important}
 .music.compact .record-deck{top:var(--vinyl-zone-top,0px)!important;left:0!important;width:100%!important;height:var(--vinyl-zone-height,0px)!important;max-height:none!important;overflow:hidden!important;z-index:2!important}
 .music.compact .record-rim{width:var(--compact-record-size,0px)!important;height:var(--compact-record-size,0px)!important;max-width:100%!important;max-height:100%!important;flex:0 0 auto!important}
 .message .level44-wish-name,#who.level44-wish-name{font-size:clamp(15px,2.3vw,30px)!important;line-height:1.35!important;letter-spacing:.04em!important}
+
+/* Stable TV frame geometry across idle and active messages. */
+.home.showing-message .hero-stack,.tv.split-view .home.showing-message .hero-stack{opacity:1!important;transform:none!important}
+.home .message-marquee,.home.showing-message .message-marquee,.tv.split-view .home .message-marquee,.tv.split-view .home.showing-message .message-marquee{position:absolute!important;top:var(--level44-feed-top,45%)!important;left:2%!important;right:auto!important;width:96%!important;max-width:96%!important;height:var(--level44-feed-height,23%)!important;min-height:0!important;max-height:none!important;margin:0!important;transform:none!important;display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:32px minmax(0,1fr)!important;row-gap:0!important;padding:10px clamp(12px,3vw,48px) 12px!important;overflow:hidden!important}
+.home .message-marquee .caption,.home.showing-message .message-marquee .caption,.tv.split-view .home .message-marquee .caption{top:0!important;grid-row:1!important;align-self:start!important;height:32px!important}
+.home .message-marquee .msg,.home .message-marquee .insert{grid-row:2!important;min-height:0!important;max-height:100%!important;overflow:hidden!important;align-self:center!important}
+.home .message-marquee .words{max-width:100%!important;overflow:hidden!important}
+.home .message-marquee .words.level44-long-message{white-space:nowrap!important;overflow:hidden!important}
+.home .message-marquee .words.level44-long-message>span{display:inline-block!important;white-space:nowrap!important;animation:level44WishTicker var(--wish-scroll-time,14s) linear infinite alternate!important}
+@keyframes level44WishTicker{0%,8%{transform:translateX(0)}92%,100%{transform:translateX(var(--wish-scroll-x,0px))}}
+.home .scanplay,.home.showing-message .scanplay,.tv.split-view .home .scanplay,.tv.split-view .home.showing-message .scanplay{display:flex!important;visibility:visible!important;opacity:1!important;z-index:12!important;bottom:2%!important}
+.home .below-feed-prompt,.home.showing-message .below-feed-prompt,.tv.split-view .home .below-feed-prompt{display:block!important;visibility:visible!important;top:var(--level44-prompt-top,76%)!important;bottom:auto!important;transform:translateY(-50%)!important}
+.music.compact .playlist{z-index:2!important;background:#0c071b!important}
 </style><link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet"></head><body><h1>★ LEVEL 44 UNLOCKED ★</h1><p class="intro">PARTY TV · ORIGINELE ARCADE LOOK · 20 UNIEKE ACHTERGRONDEN · 50 POWER-UPS</p><main class="layout"><section><div class="tv" id="tv"><canvas id="ambient" width="1280" height="720"></canvas><div class="scan"></div><div class="home" id="home"><div class="arcade-corners"><span>★ LEVEL 44 • PARTY ARCADE ★</span><span>● PARTY ONLINE</span></div><div class="hero-stack"><div class="achievement">★ ACHIEVEMENT UNLOCKED ★</div><div class="hero"><div class="topline"><span class="hero-first">LEVEL <span class="age">44</span></span><span class="hero-second">UNLOCKED!</span></div></div><div class="insertcake" id="cakePrompt">INSERT CAKE TO CONTINUE</div></div><div class="message-marquee"><div class="caption"><div class="ticker-track" aria-label="PARTY MESSAGE FEED"><span class="ticker-copy">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span><span class="ticker-copy" aria-hidden="true">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span></div></div><div class="insert" id="messagePrompt">✦ INSERT MESSAGE ✦</div><div class="msg" id="message"><div class="name-line"><span class="message-symbol" id="symbolBefore" aria-hidden="true">✦</span><div class="who" id="who"></div><span class="message-symbol" id="symbolAfter" aria-hidden="true">✦</span></div><div class="message-line"><div class="words" id="words"></div></div></div></div><div class="below-feed-prompt" id="belowFeedPrompt">INSERT CAKE TO CONTINUE</div><div class="scanplay"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUAQAAAABdRz15AAABS0lEQVR4nM2WQW4kQQgEg5HvyQ/6/8/qHyQvyD3U2LK88sHLSOuqUyMRokigqfD1zOMvE/w/W1X1VPX00FXVS54SmvjiAiW7+N6ghIbK0O7SmgcMTQ/uH/l+bzOG0H4FL0YePFET73iVAn18Duje8EiSQCwrSRLveEokITtGZstLFBsb+0S644EJxiGJlrw3COlMirTrJ77fvFfCJnaQYm3jg5SN2qZpLeNDJ4MKQlnmr9JwiwZgUmJVzw/gvqqZG8PgF+jh6DRdZO30ILLlAMRiz0sIKLJIWPMISuzg2CzrjzxDlBNsadtvmgIqM4hObfWV5CCESMIL3qszSxVgPU+T5FkwVrTU9/w/DNOhBHi1v5x573NRWObvAdUAc92tKZb7xrtNui/f+F98P5+zb4ge3QI06/pL5EhRElj2x9F3/AzSoJW+9cv33T+Au/yGE9/wPgAAAABJRU5ErkJggg==" alt="QR-code voor gastbediening"><div><strong>SCAN &amp; PLAY</strong><span>📱 Pak je gsm. Unlock de party!</span></div></div></div><div class="music" id="music">
 <div class="music-bulbs" aria-hidden="true"></div>
 <div class="music-header"><div class="music-kicker">★ LEVEL 44 ★ PLAYER ONE RADIO ★</div><div class="eyebrow">♫ PARTY PLAYLIST ♫</div><div class="music-subtitle">NOW LOADING THE NEXT BANGER...</div></div>
@@ -1659,8 +1672,8 @@ function playNextMessage(continueVisible=false){
  const el=$('message');
  el.classList.remove('led-arriving','queue-switch');
  if(continueVisible){el.classList.add('queue-switch')}
- $('who').textContent=(m.level44Wish?'AANGEVRAAGD DOOR ':'')+m[0].toUpperCase().replace(/:+\s*$/,'');
- $('who').classList.toggle('level44-wish-name',!!m.level44Wish);
+ $('who').textContent=m[0].toUpperCase().replace(/:+\s*$/,'');
+ $('who').classList.remove('level44-wish-name');
  $('words').textContent=m[1];
  const mark=['✦','★','♥','◆','♫','✧','⚡','✳'][Math.floor(Math.random()*8)];
  $('symbolBefore').textContent=mark;$('symbolAfter').textContent=mark;
@@ -1922,11 +1935,7 @@ liveHistoryRender();requestAnimationFrame(fitRecordToSong);$('track').textConten
 document.querySelector('.pixel-progress span').style.animation='none';
 
 /* Jukebox variation is tied to the actual track change, not polling frequency. */
-const level44VinylPairs=[
- ['#51eaf3','#ffe36b'],['#ffe36b','#f443ac'],['#f443ac','#58f0bd'],
- ['#58f0bd','#aa82ff'],['#aa82ff','#ffb84b'],['#ffb84b','#51eaf3'],
- ['#63b5ff','#ff8b6b'],['#ff8b6b','#58f0bd']
-];
+const level44VinylPairs=[['#00ffff','#ff00aa'],['#ff00aa','#ffff00'],['#ffff00','#00ff00'],['#00ff00','#ff5500'],['#ff5500','#00ffff'],['#00ffff','#ffff00'],['#ff00aa','#00ff00'],['#ffff00','#ff5500'],['#00ff00','#00ffff'],['#ff5500','#ff00aa']];
 const level44Mysteries=[
  '??? MYSTERY TRACK ???','NEXT LEVEL INCOMING','SECRET BANGER LOADING',
  'WHO DROPPED THIS BEAT?','BONUS TRACK UNLOCKED','THE NEXT BIG THING',
@@ -1940,9 +1949,9 @@ function level44NextTrackVisual(){
  const music=document.getElementById('music');
  const pair=level44VinylPairs[level44VisualIndex%level44VinylPairs.length];
  music.style.setProperty('--vinyl-outer',pair[0]);music.style.setProperty('--vinyl-center',pair[1]);
- music.style.setProperty('--vinyl-center-border','#aa82ff');
+ music.style.setProperty('--vinyl-center-border',pair[0]);
  const ring=music.querySelector('.vinyl-svg circle:nth-child(2)');
- if(ring)ring.setAttribute('stroke',pair[0]=== '#ffe36b'?'#51eaf3':'#ffe36b');
+ if(ring)ring.setAttribute('stroke',pair[0]==='#ffff00'?'#00ffff':'#ffff00');
  const center=music.querySelector('.vinyl-svg circle:nth-child(9)');
  if(center)center.setAttribute('stroke',pair[0]);
  const next=music.querySelector('.nextsong-heading strong');
@@ -2081,5 +2090,31 @@ function level44RefreshSongMarquees(){
  const obs=new ResizeObserver(()=>requestAnimationFrame(place));
  obs.observe(music);obs.observe(next);obs.observe(badge);obs.observe(music.querySelector('.music-main'));const history=music.querySelector('.playlist');if(history)obs.observe(history);
  window.addEventListener('resize',place);setInterval(place,1200);requestAnimationFrame(place);
+})();
+
+(function(){
+ const home=document.getElementById('home'),hero=home?.querySelector('.hero-stack'),feed=home?.querySelector('.message-marquee'),prompt=document.getElementById('belowFeedPrompt'),qr=home?.querySelector('.scanplay'),words=document.getElementById('words');
+ if(!home||!hero||!feed||!prompt||!qr||!words)return;
+ function layout(){
+  const h=home.getBoundingClientRect(),title=hero.getBoundingClientRect(),qrRect=qr.getBoundingClientRect();
+  const upper=Math.max(0,title.bottom-h.top+Math.max(8,h.height*.018));
+  const lower=Math.min(h.height*.83,qrRect.top-h.top-Math.max(30,h.height*.055));
+  const available=Math.max(80,lower-upper),promptH=Math.max(20,prompt.getBoundingClientRect().height);
+  const feedH=Math.max(70,Math.min(available*.70,Math.max(95,h.height*.25)));
+  const feedTop=upper+Math.max(0,(available-feedH-promptH-8)*.35);
+  home.style.setProperty('--level44-feed-top',feedTop+'px');
+  home.style.setProperty('--level44-feed-height',feedH+'px');
+  home.style.setProperty('--level44-prompt-top',Math.min(lower-promptH/2,feedTop+feedH+Math.max(8,(lower-feedTop-feedH)/2))+'px');
+  const inner=words.querySelector(':scope > span');
+  if(inner){const overflow=Math.max(0,inner.scrollWidth-words.clientWidth+8);words.style.setProperty('--wish-scroll-x',(-overflow)+'px');words.style.setProperty('--wish-scroll-time',Math.max(9,overflow/45)+'s')}
+ }
+ const watcher=new MutationObserver(()=>{
+  const value=words.textContent||'';if(words.dataset.lastMessage===value)return;words.dataset.lastMessage=value;
+  words.classList.remove('level44-long-message');words.textContent=value;
+  if(value.length>55){const span=document.createElement('span');span.textContent=value;words.replaceChildren(span);words.classList.add('level44-long-message')}
+  requestAnimationFrame(layout);
+ });watcher.observe(words,{childList:true,characterData:true,subtree:true});
+ const ro=new ResizeObserver(()=>requestAnimationFrame(layout));ro.observe(home);ro.observe(hero);ro.observe(qr);
+ window.addEventListener('resize',layout);setInterval(layout,1300);requestAnimationFrame(layout);
 })();
 </script></body></html>
