@@ -1490,6 +1490,11 @@ body>h1,body>.intro,body>.foot{display:none!important}
 .music.compact .song-title-pair .track,.music.compact .song-title-pair .artist{max-height:2.6em!important;overflow:hidden!important}
 .music.compact .song-title-pair .is-scrolling{display:block!important;white-space:nowrap!important;max-height:1.35em!important;text-align:left!important;overflow:hidden!important}
 .music.compact .song-title-pair .scroll-inner{display:inline-block!important;white-space:nowrap!important;animation:level44SongMarquee var(--scroll-duration,12s) linear infinite alternate!important}
+
+/* Boundary-based vinyl layout: zero offset outside its dedicated main area. */
+.music.compact .music-main{position:relative!important;isolation:isolate!important;overflow:hidden!important}
+.music.compact .record-deck{top:var(--vinyl-zone-top,0px)!important;left:0!important;width:100%!important;height:var(--vinyl-zone-height,0px)!important;max-height:none!important;overflow:hidden!important;z-index:2!important}
+.music.compact .record-rim{width:var(--compact-record-size,0px)!important;height:var(--compact-record-size,0px)!important;max-width:100%!important;max-height:100%!important;flex:0 0 auto!important}
 </style><link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet"></head><body><h1>★ LEVEL 44 UNLOCKED ★</h1><p class="intro">PARTY TV · ORIGINELE ARCADE LOOK · 20 UNIEKE ACHTERGRONDEN · 50 POWER-UPS</p><main class="layout"><section><div class="tv" id="tv"><canvas id="ambient" width="1280" height="720"></canvas><div class="scan"></div><div class="home" id="home"><div class="arcade-corners"><span>★ LEVEL 44 • PARTY ARCADE ★</span><span>● PARTY ONLINE</span></div><div class="hero-stack"><div class="achievement">★ ACHIEVEMENT UNLOCKED ★</div><div class="hero"><div class="topline"><span class="hero-first">LEVEL <span class="age">44</span></span><span class="hero-second">UNLOCKED!</span></div></div><div class="insertcake" id="cakePrompt">INSERT CAKE TO CONTINUE</div></div><div class="message-marquee"><div class="caption"><div class="ticker-track" aria-label="PARTY MESSAGE FEED"><span class="ticker-copy">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span><span class="ticker-copy" aria-hidden="true">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span></div></div><div class="insert" id="messagePrompt">✦ INSERT MESSAGE ✦</div><div class="msg" id="message"><div class="name-line"><span class="message-symbol" id="symbolBefore" aria-hidden="true">✦</span><div class="who" id="who"></div><span class="message-symbol" id="symbolAfter" aria-hidden="true">✦</span></div><div class="message-line"><div class="words" id="words"></div></div></div></div><div class="below-feed-prompt" id="belowFeedPrompt">INSERT CAKE TO CONTINUE</div><div class="scanplay"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUAQAAAABdRz15AAABS0lEQVR4nM2WQW4kQQgEg5HvyQ/6/8/qHyQvyD3U2LK88sHLSOuqUyMRokigqfD1zOMvE/w/W1X1VPX00FXVS54SmvjiAiW7+N6ghIbK0O7SmgcMTQ/uH/l+bzOG0H4FL0YePFET73iVAn18Duje8EiSQCwrSRLveEokITtGZstLFBsb+0S644EJxiGJlrw3COlMirTrJ77fvFfCJnaQYm3jg5SN2qZpLeNDJ4MKQlnmr9JwiwZgUmJVzw/gvqqZG8PgF+jh6DRdZO30ILLlAMRiz0sIKLJIWPMISuzg2CzrjzxDlBNsadtvmgIqM4hObfWV5CCESMIL3qszSxVgPU+T5FkwVrTU9/w/DNOhBHi1v5x573NRWObvAdUAc92tKZb7xrtNui/f+F98P5+zb4ge3QI06/pL5EhRElj2x9F3/AzSoJW+9cv33T+Au/yGE9/wPgAAAABJRU5ErkJggg==" alt="QR-code voor gastbediening"><div><strong>SCAN &amp; PLAY</strong><span>📱 Pak je gsm. Unlock de party!</span></div></div></div><div class="music" id="music">
 <div class="music-bulbs" aria-hidden="true"></div>
 <div class="music-header"><div class="music-kicker">★ LEVEL 44 ★ PLAYER ONE RADIO ★</div><div class="eyebrow">♫ PARTY PLAYLIST ♫</div><div class="music-subtitle">NOW LOADING THE NEXT BANGER...</div></div>
@@ -1556,8 +1561,8 @@ function fitRecordToSong(){
    // height determines the record diameter; do not double-count its children.
    const style=getComputedStyle(deck);
    const pad=(parseFloat(style.paddingTop)||0)+(parseFloat(style.paddingBottom)||0);
-   const diameter=Math.max(0,Math.floor(Math.min(deck.clientHeight-pad-8,deck.clientWidth*.88,245)));
-   music.style.setProperty('--compact-record-size',diameter+'px');
+   // Vinyl diameter is owned by the panel-boundary positioning routine below.
+   // Do not overwrite it with the deck's previous size.
    level44RefreshSongMarquees();
  }else{
    const panel=music.querySelector('.playlist');
@@ -2041,16 +2046,22 @@ function level44RefreshSongMarquees(){
  if(!music||!deck||!next||!badge)return;
  function place(){
   if(!music.classList.contains('compact'))return;
-  const m=music.getBoundingClientRect(),n=next.getBoundingClientRect(),p=badge.getBoundingClientRect();
-  const upper=n.bottom+Math.max(6,m.height*.012),lower=p.top-Math.max(6,m.height*.012);
+  const main=music.querySelector('.music-main'),playlist=music.querySelector('.playlist');
+  if(!main)return;
+  const m=main.getBoundingClientRect(),n=next.getBoundingClientRect(),p=badge.getBoundingClientRect();
+  // The deck is absolutely positioned relative to .music-main, NOT .music.
+  // Previous Hits / Jam alter main's height; badge position is the lower boundary.
+  const clearance=Math.max(9,Math.min(20,m.height*.035));
+  const upper=Math.max(m.top,n.bottom+clearance);
+  const lower=Math.min(m.bottom,p.top-clearance);
   const zone=Math.max(0,lower-upper);
-  const diameter=Math.max(0,Math.floor(Math.min(zone-8,m.width*.83,245)));
-  music.style.setProperty('--vinyl-zone-top',(upper-m.top)+'px');
+  const diameter=Math.max(0,Math.floor(Math.min(zone-2*clearance,m.width*.86,245)));
+  music.style.setProperty('--vinyl-zone-top',Math.max(0,upper-m.top)+'px');
   music.style.setProperty('--vinyl-zone-height',zone+'px');
   music.style.setProperty('--compact-record-size',diameter+'px');
  }
  const obs=new ResizeObserver(()=>requestAnimationFrame(place));
- obs.observe(music);obs.observe(next);obs.observe(badge);
+ obs.observe(music);obs.observe(next);obs.observe(badge);obs.observe(music.querySelector('.music-main'));const history=music.querySelector('.playlist');if(history)obs.observe(history);
  window.addEventListener('resize',place);setInterval(place,1200);requestAnimationFrame(place);
 })();
 </script></body></html>
