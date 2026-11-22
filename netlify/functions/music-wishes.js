@@ -20,7 +20,7 @@ exports.handler=async event=>{
  let data;try{data=JSON.parse(event.body||'{}')}catch{return json(400,{error:'Ongeldige JSON'})}
  try{
   const op=data.op;
-  if(!['list','save','remove','release'].includes(op))return json(400,{error:'Onbekende actie'});
+  if(!['list','save','remove','release','release-all'].includes(op))return json(400,{error:'Onbekende actie'});
   if(!hasAdminSession(event)&&!await admin(data.idToken))return json(403,{error:'Geen admin-toegang'});
   const s=store();
   if(op==='list'){
@@ -39,6 +39,13 @@ exports.handler=async event=>{
    const next={id,name,title,artist,message,spotifyId,sourceKey,approved:data.approved===true,lastShownAt:old?.spotifyId===spotifyId?old.lastShownAt||0:0};
    await s.setJSON('wishes',[...wishes.filter(w=>w.id!==id),next]);
    return json(200,{ok:true,id});
+  }
+  if(op==='release-all'){
+   const wishes=await s.get('wishes',{type:'json'})||[];
+   const now=Date.now();let released=0;
+   for(const w of wishes){if(w.approved&&w.lastShownAt&&w.lastShownAt+7200000>now){w.lastShownAt=0;released++}}
+   if(released)await s.setJSON('wishes',wishes);
+   return json(200,{ok:true,released});
   }
   if(op==='release'){
    const id=clean(data.id,80);
