@@ -2040,6 +2040,22 @@ function level44NextTrackVisual(){
  level44NextTrackVisual();
 })();
 
+/* Online guest messages: automatic, deduplicated, no approval step. */
+const level44OnlineSeen=new Set();
+async function level44PollOnlineMessages(){
+ try{
+  const response=await fetch('/.netlify/functions/party',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({op:'feed'}),cache:'no-store'});
+  if(!response.ok)return;
+  const feed=await response.json();
+  for(const item of feed.messages||[]){
+   if(!item?.id||level44OnlineSeen.has(item.id))continue;
+   level44OnlineSeen.add(item.id);
+   enqueueMessage(item.name||'Gast',item.value||'');
+  }
+  if(level44OnlineSeen.size>400)level44OnlineSeen.clear();
+ }catch(e){console.warn('Online berichten tijdelijk niet beschikbaar',e)}
+}
+level44PollOnlineMessages();setInterval(level44PollOnlineMessages,5000);
 livePoll();setInterval(livePoll,5000);
 
 
