@@ -1618,6 +1618,18 @@ body>h1,body>.intro,body>.foot{display:none!important}
 .music.showcase .playlist{justify-content:flex-start!important;overflow:hidden!important}
 .music.showcase #playlist{gap:clamp(4px,.6vh,9px)!important}
 .music.compact #playlist{gap:clamp(2px,.3vh,5px)!important}
+
+/* V65: energetic stationary dance, feet always above the glowing floor. */
+@keyframes level44-dance-body{0%,100%{transform:translateY(0) rotate(-8deg)}20%{transform:translateY(-12px) rotate(12deg)}45%{transform:translateY(-5px) rotate(-12deg)}70%{transform:translateY(-15px) rotate(10deg)}}
+@keyframes level44-dance-left-arm{0%,100%{transform:rotate(-65deg)}50%{transform:rotate(70deg)}}
+@keyframes level44-dance-right-arm{0%,100%{transform:rotate(70deg)}50%{transform:rotate(-65deg)}}
+@keyframes level44-dance-left-leg{0%,100%{transform:rotate(-18deg)}50%{transform:rotate(38deg)}}
+@keyframes level44-dance-right-leg{0%,100%{transform:rotate(38deg)}50%{transform:rotate(-18deg)}}
+.music.showcase .mystery-dancer{animation:level44-dance-body .8s ease-in-out infinite!important}
+.music.showcase .mystery-dancer .dancer-arm.left{animation:level44-dance-left-arm .55s ease-in-out infinite!important}
+.music.showcase .mystery-dancer .dancer-arm.right{animation:level44-dance-right-arm .55s ease-in-out infinite!important}
+.music.showcase .mystery-dancer .dancer-leg.left{animation:level44-dance-left-leg .6s ease-in-out infinite!important}
+.music.showcase .mystery-dancer .dancer-leg.right{animation:level44-dance-right-leg .6s ease-in-out infinite!important}
 </style><link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet"></head><body><h1>★ LEVEL 44 UNLOCKED ★</h1><p class="intro">PARTY TV · ORIGINELE ARCADE LOOK · 20 UNIEKE ACHTERGRONDEN · 50 POWER-UPS</p><main class="layout"><section><div class="tv" id="tv"><canvas id="ambient" width="1280" height="720"></canvas><div class="scan"></div><div class="home" id="home"><div class="arcade-corners"><span>★ LEVEL 44 • PARTY ARCADE ★</span><span>● PARTY ONLINE</span></div><div class="hero-stack"><div class="achievement">★ ACHIEVEMENT UNLOCKED ★</div><div class="hero"><div class="topline"><span class="hero-first">LEVEL <span class="age">44</span></span><span class="hero-second">UNLOCKED!</span></div></div><div class="insertcake" id="cakePrompt">INSERT CAKE TO CONTINUE</div></div><div class="message-marquee"><div class="caption"><div class="ticker-track" aria-label="PARTY MESSAGE FEED"><span class="ticker-copy">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span><span class="ticker-copy" aria-hidden="true">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span></div></div><div class="insert" id="messagePrompt">✦ INSERT MESSAGE ✦</div><div class="msg" id="message"><div class="name-line"><span class="message-symbol" id="symbolBefore" aria-hidden="true">✦</span><div class="who" id="who"></div><span class="message-symbol" id="symbolAfter" aria-hidden="true">✦</span></div><div class="message-line"><div class="words" id="words"></div></div></div></div><div class="below-feed-prompt" id="belowFeedPrompt">INSERT CAKE TO CONTINUE</div><div class="scanplay"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUAQAAAABdRz15AAABS0lEQVR4nM2WQW4kQQgEg5HvyQ/6/8/qHyQvyD3U2LK88sHLSOuqUyMRokigqfD1zOMvE/w/W1X1VPX00FXVS54SmvjiAiW7+N6ghIbK0O7SmgcMTQ/uH/l+bzOG0H4FL0YePFET73iVAn18Duje8EiSQCwrSRLveEokITtGZstLFBsb+0S644EJxiGJlrw3COlMirTrJ77fvFfCJnaQYm3jg5SN2qZpLeNDJ4MKQlnmr9JwiwZgUmJVzw/gvqqZG8PgF+jh6DRdZO30ILLlAMRiz0sIKLJIWPMISuzg2CzrjzxDlBNsadtvmgIqM4hObfWV5CCESMIL3qszSxVgPU+T5FkwVrTU9/w/DNOhBHi1v5x573NRWObvAdUAc92tKZb7xrtNui/f+F98P5+zb4ge3QI06/pL5EhRElj2x9F3/AzSoJW+9cv33T+Au/yGE9/wPgAAAABJRU5ErkJggg==" alt="QR-code voor gastbediening"><div><strong>SCAN &amp; PLAY</strong><span>📱 Pak je gsm. Unlock de party!</span></div></div></div><div class="music" id="music">
 <div class="music-bulbs" aria-hidden="true"></div>
 <div class="music-header"><div class="music-kicker">★ LEVEL 44 ★ PLAYER ONE RADIO ★</div><div class="eyebrow">♫ PARTY PLAYLIST ♫</div><div class="music-subtitle">NOW LOADING THE NEXT BANGER...</div></div>
@@ -1804,7 +1816,7 @@ function playNextMessage(continueVisible=false){
 function showMessage(){const m=messages[msgIndex++%messages.length];enqueueMessage(m[0],m[1])}
 function openFullPlaylist(){
  if(mode!=='music'||pendingMessages.length||!showHitParade)return;
- fullPlaylist=true;fullPlaylistUntil=performance.now()+25000;lastFullPlaylist=performance.now();updateLayers();
+ fullPlaylist=true;fullPlaylistUntil=performance.now()+120000;lastFullPlaylist=performance.now();updateLayers();
 }
 function closeFullPlaylist(){fullPlaylist=false;fullPlaylistUntil=0;updateLayers()}
 function updateLayers(){
@@ -1837,8 +1849,10 @@ function powerStageHTML(source){
  .stage:after,.stage:before{display:none!important}
  canvas{display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:contain!important;border:0!important;margin:0!important}
  #buttons,#scenes,#tag,#caption,#replay,#next,#auto{display:none!important}`;
- const completion='<script>window.addEventListener("message",function(e){if(e.data&&e.data.type==="level44-start-scene"){setTimeout(function(){parent.postMessage({type:"level44-scene-finished",serial:e.data.serial},"*")},8000)}});<\/script>';
- return source.replace(/<\/head>/i,'<style>'+css+'</style></head>').replace(/<\/body>/i,completion+'</body>');
+ const completion='<script>window.__level44SceneSerial=null;window.__level44SceneDone=false;window.__level44SceneFinish=function(){if(window.__level44SceneSerial!==null&&!window.__level44SceneDone){window.__level44SceneDone=true;parent.postMessage({type:"level44-scene-finished",serial:window.__level44SceneSerial},"*")}};window.addEventListener("message",function(e){if(e.data&&e.data.type==="level44-start-scene"){window.__level44SceneSerial=e.data.serial;window.__level44SceneDone=false}});<\/script>';
+ let instrumented=source.replace(/if\(t>7(?:\.1|\.2|\.5)?\)\{start=now;/g,m=>m.replace('start=now;','window.__level44SceneFinish?.();start=now;'));
+ instrumented=instrumented.replace('let t=((now-start)/1000)%8;','let t=((now-start)/1000)%8;if((now-start)/1000>=8)window.__level44SceneFinish?.();');
+ return instrumented.replace(/<\/head>/i,'<style>'+css+'</style></head>').replace(/<\/body>/i,completion+'</body>');
 }
 const level44PowerDurations={confetti:10500,cheer:9500,dance:11500,levelup:9500,heart:11000,boss:12500,fireworks:12000,laser:11500,jackpot:10000,glitch:9000};
 let level44PowerSerial=0;
@@ -2049,7 +2063,7 @@ function drawAmbient(t,now){
  mainCtx.fillStyle="rgba(5,4,24,0.20)";
  mainCtx.fillRect(0,0,W,H);
 }
-function tick(now){let t=now/1000;let dt=Math.min(.1,(now-lastFrame)/1000||0);lastFrame=now;drawAmbient(t,now);if(mode==='message'&&now>=messageEnd)finishMessage();if(mode==='music'&&pendingMessages.length&&now>=nextMessageAt&&!level44ActionQueue.length)playNextMessage();if(introEnd&&now>=introEnd){introEnd=0;updateLayers()}if(now-lastPromptAt>=6500){lastPromptAt=now;rotateMessagePrompt()}if(now-lastCakeAt>=9500){lastCakeAt=now;rotateCakePrompt()}if($('autobg').checked&&now-lastBg>=900000)nextBackground();if($('automsg').checked&&now-lastQueuedDemo>=12000){lastQueuedDemo=now;showMessage()}if(auto&&now>=autoAt){autoAt=now+14000;if(mode==='music'&&!pendingMessages.length)powerUp(Object.keys(META)[Math.floor(Math.random()*10)])}if(level44ActionQueue.length&&mode==='music'){powerUp(level44ActionQueue.shift(),true)}if(now-level44LastGuestMessageAt>=7200000&&now-level44LastJokeAt>=600000&&mode==='music'&&!pendingMessages.length&&!fullPlaylist){level44LastJokeAt=now;const joke=level44Jokes[level44JokeIndex++%level44Jokes.length];enqueueMessage(joke[0],joke[1])}if($('idlepower').checked&&mode==='music'&&!fullPlaylist&&!pendingMessages.length&&!activeMessage&&now-lastIdlePower>=1200000){powerUp(Object.keys(META)[Math.floor(Math.random()*10)],true)}if(fullPlaylist&&now>=fullPlaylistUntil)closeFullPlaylist();if($('autofull').checked&&mode==='music'&&!fullPlaylist&&!pendingMessages.length&&now-lastFullPlaylist>=720000)openFullPlaylist();let fraction=mode==='power'?1:mode==='message'?Math.max(0,(messageEnd-now)/8000):0;$('progress').style.width=(fraction*100)+'%';requestAnimationFrame(tick)}
+function tick(now){let t=now/1000;let dt=Math.min(.1,(now-lastFrame)/1000||0);lastFrame=now;drawAmbient(t,now);if(mode==='message'&&now>=messageEnd)finishMessage();if(mode==='music'&&pendingMessages.length&&now>=nextMessageAt&&!level44ActionQueue.length)playNextMessage();if(introEnd&&now>=introEnd){introEnd=0;updateLayers()}if(now-lastPromptAt>=6500){lastPromptAt=now;rotateMessagePrompt()}if(now-lastCakeAt>=9500){lastCakeAt=now;rotateCakePrompt()}if($('autobg').checked&&now-lastBg>=900000)nextBackground();if($('automsg').checked&&now-lastQueuedDemo>=12000){lastQueuedDemo=now;showMessage()}if(auto&&now>=autoAt){autoAt=now+14000;if(mode==='music'&&!pendingMessages.length)powerUp(Object.keys(META)[Math.floor(Math.random()*10)])}if(level44ActionQueue.length&&mode==='music'){powerUp(level44ActionQueue.shift(),true)}if(now-level44LastGuestMessageAt>=7200000&&now-level44LastJokeAt>=600000&&mode==='music'&&!pendingMessages.length&&!fullPlaylist){level44LastJokeAt=now;const joke=level44Jokes[level44JokeIndex++%level44Jokes.length];enqueueMessage(joke[0],joke[1])}if($('idlepower').checked&&mode==='music'&&!fullPlaylist&&!pendingMessages.length&&!activeMessage&&now-lastIdlePower>=1200000){powerUp(Object.keys(META)[Math.floor(Math.random()*10)],true)}if(fullPlaylist&&fullPlaylistUntil>0&&now>=fullPlaylistUntil)closeFullPlaylist();if($('autofull').checked&&mode==='music'&&!fullPlaylist&&!pendingMessages.length&&now-lastFullPlaylist>=720000)openFullPlaylist();let fraction=mode==='power'?1:mode==='message'?Math.max(0,(messageEnd-now)/8000):0;$('progress').style.width=(fraction*100)+'%';requestAnimationFrame(tick)}
 nextBackground();updateLayers();requestAnimationFrame(tick);
 
 renderPreviousHits();
@@ -2180,7 +2194,7 @@ async function level44PollOnlineMessages(){
    level44ActionSeen.add(item.id);
    if(META[item.value])level44ActionQueue.push(item.value);
   }
-  if(level44ActionSeen.size>400)level44ActionSeen.clear();
+  if(level44ActionSeen.size>400){const recent=[...level44ActionSeen].slice(-200);level44ActionSeen.clear();recent.forEach(id=>level44ActionSeen.add(id))}
   for(const item of feed.messages||[]){
    if(!item?.id||level44OnlineSeen.has(item.id))continue;
    level44OnlineSeen.add(item.id);
@@ -2206,7 +2220,7 @@ async function level44PollAdminControl(){
    case 'playlist-switch':playlistSide=playlistSide==='right'?'left':'right';updateLayers();break;
    case 'queue-clear':pendingMessages.length=0;activeMessage=null;clearTimeout(messageRotationTimer);mode='music';messageEnd=0;nextMessageAt=performance.now()+1000;updateLayers();break;
    case 'power-clear':level44ActionQueue.length=0;break;
-   case 'power-stop':level44ActionQueue.length=0;powerEnd=0;break;
+   case 'power-stop':level44ActionQueue.length=0;finishPowerUp();break;
    case 'message-demo':enqueueMessage('LEVEL 44 TEST','DIT IS EEN TESTBERICHT VANUIT MISSION CONTROL.');break;
    default:if(command.action.startsWith('power-'))level44ActionQueue.push(command.action.slice(6));
   }
@@ -2394,11 +2408,11 @@ function level44RefreshSongMarquees(){
   if(!music.classList.contains('showcase'))return;
   const stage=music.querySelector('.nextsong.unknown-next');if(!stage)return;
   const h=stage.clientHeight,w=stage.clientWidth;
-  const scale=Math.max(.7,Math.min(3.2,Math.min(w*.34/60,h*.52/96)));
+  const ball=stage.querySelector('.disco-ball');const ballBottom=ball?ball.getBoundingClientRect().bottom-stage.getBoundingClientRect().top:Math.round(h*.25);const available=Math.max(75,h-ballBottom-Math.max(10,h*.035));const scale=Math.max(.7,Math.min(4,Math.min(w*.38/60,available/110)));
   const lineBottom=Math.max(9,Math.round(h*.035));
   music.style.setProperty('--robot-scale',String(scale));
   music.style.setProperty('--robot-line-bottom',lineBottom+'px');
-  music.style.setProperty('--robot-floor-bottom',(lineBottom+Math.max(3,h*.006))+'px');
+  music.style.setProperty('--robot-floor-bottom',(lineBottom+Math.max(6,scale*10))+'px');
   music.style.setProperty('--robot-floor-width',Math.round(60*scale*1.12)+'px');
   music.style.setProperty('--robot-floor-height',Math.max(3,Math.round(h*.008))+'px');
  }
