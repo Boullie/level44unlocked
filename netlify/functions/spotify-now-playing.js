@@ -1,4 +1,5 @@
 'use strict';
+const crypto=require('node:crypto');
 const {getStore}=require('@netlify/blobs');
 const wishStore=()=>getStore(process.env.NETLIFY_SITE_ID&&process.env.NETLIFY_API_TOKEN?{name:'level44-wishes-v1',siteID:process.env.NETLIFY_SITE_ID,token:process.env.NETLIFY_API_TOKEN}:'level44-wishes-v1');
 async function store(){try{return getStore('level44-spotify-v1')}catch(e){if(e?.name!=='MissingBlobsEnvironmentError')throw e;const token=process.env.NETLIFY_API_TOKEN;let siteID=process.env.NETLIFY_SITE_ID||process.env.SITE_ID;if(!token)throw Error('Blobs token ontbreekt');if(!siteID){const r=await fetch('https://api.netlify.com/api/v1/sites/level44unlocked.netlify.app',{headers:{Authorization:'Bearer '+token}});if(!r.ok)throw Error('Site ID ontbreekt');siteID=(await r.json()).id}return getStore({name:'level44-spotify-v1',siteID,token})}}

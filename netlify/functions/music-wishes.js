@@ -20,7 +20,7 @@ exports.handler=async event=>{
  let data;try{data=JSON.parse(event.body||'{}')}catch{return json(400,{error:'Ongeldige JSON'})}
  try{
   const op=data.op;
-  if(!['list','save','remove'].includes(op))return json(400,{error:'Onbekende actie'});
+  if(!['list','save','remove','release'].includes(op))return json(400,{error:'Onbekende actie'});
   if(!hasAdminSession(event)&&!await admin(data.idToken))return json(403,{error:'Geen admin-toegang'});
   const s=store();
   if(op==='list'){
@@ -38,6 +38,16 @@ exports.handler=async event=>{
    if(sourceKey&&wishes.some(w=>w.sourceKey===sourceKey&&w.id!==id))return json(409,{error:'Dit RSVP-verzoek is al overgenomen. Bewerk de bestaande wens.'});
    const next={id,name,title,artist,message,spotifyId,sourceKey,approved:data.approved===true,lastShownAt:old?.spotifyId===spotifyId?old.lastShownAt||0:0};
    await s.setJSON('wishes',[...wishes.filter(w=>w.id!==id),next]);
+   return json(200,{ok:true,id});
+  }
+  if(op==='release'){
+   const id=clean(data.id,80);
+   const wishes=await s.get('wishes',{type:'json'})||[];
+   const wish=wishes.find(w=>w.id===id);
+   if(!wish)return json(404,{error:'Wens niet gevonden'});
+   if(!wish.approved)return json(409,{error:'Wens is nog niet goedgekeurd'});
+   wish.lastShownAt=0;
+   await s.setJSON('wishes',wishes);
    return json(200,{ok:true,id});
   }
   if(op==='remove'){

@@ -15,6 +15,9 @@ main{max-width:1120px;padding:18px 14px 35px}h1{margin:5px 0 8px}.panel{padding:
 
 .analytics-conversions{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:12px 0}.analytics-rate{background:#f3edff;padding:10px 12px;border-radius:10px}.analytics-rate strong{display:block;font-size:22px}.analytics-rate span{font-size:12px}.analytics-chart-wrap{margin-top:16px}.analytics-chart-wrap h3{font-size:15px;margin:0 0 8px}.analytics-chart{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:5px;height:150px;padding:10px 0 0;border-bottom:1px solid #ded0f5}.chart-day{min-width:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center}.chart-bars{height:110px;width:100%;display:flex;gap:2px;align-items:end;justify-content:center}.chart-bar{width:42%;max-width:20px;min-height:2px;border-radius:3px 3px 0 0}.chart-bar.visit{background:#6d39e8}.chart-bar.signup{background:#1db954}.chart-day small{font-size:10px;color:#615773;margin:5px 0}.analytics-chart-wrap:after{content:"■ Bezoeken (paars)   ■ RSVP verstuurd (groen)";display:block;font-size:12px;margin-top:9px;color:#615773}
 .wish-form{display:grid;gap:9px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin:10px 0}.wish-form label{display:flex;flex-direction:column;gap:4px;font-size:13px}.wish-form label:has([type=checkbox]){flex-direction:row;align-items:center}.wish-form textarea,.wish-form input{box-sizing:border-box;width:100%}.wish-form input[type=checkbox]{width:auto}.wish-source{border:1px solid #ded0f5;padding:10px;border-radius:9px;margin:7px 0;overflow-wrap:anywhere}.wish-source button{margin:5px 6px 0 0;padding:7px 10px;font-size:12px}.wish-source p{margin:4px 0}
+
+/* V12.8 compact music review tables */
+.wish-table{width:100%;font-size:13px}.wish-table th,.wish-table td{padding:6px 7px;vertical-align:middle}.wish-table button{font-size:12px;padding:5px 8px;margin:2px;border-radius:6px;white-space:nowrap}.wish-table td:last-child{min-width:180px}.wish-source{padding:8px 10px!important;margin:6px 0!important}.wish-source p{margin:3px 0!important}
 </style>
 <script src="https://accounts.google.com/gsi/client" async defer></script><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23241449%22%2F%3E%3Ctext%20x%3D%2232%22%20y%3D%2246%22%20text-anchor%3D%22middle%22%20font-size%3D%2242%22%3E%F0%9F%95%B9%EF%B8%8F%3C%2Ftext%3E%3C%2Fsvg%3E"></head><body><main>
 <h1>🎮 Level 44 — Mission Control</h1><p>Privé RSVP-dashboard. Gegevens worden pas na Google-aanmelding opgehaald.</p>
@@ -304,7 +307,29 @@ async function loadAnalytics(){
 let managedWishes=[];
 async function wishesApi(payload){const r=await fetch('/.netlify/functions/music-wishes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...payload,idToken:analyticsToken}),cache:'no-store'});const d=await r.json();if(!r.ok)throw Error(d.error||'Muziekwensen niet beschikbaar');return d}
 async function loadWishes(){try{const d=await wishesApi({op:'list'});managedWishes=d.wishes||[];renderWishes();if(el('songs').children.length){for(const card of el('songs').querySelectorAll('.wish-source')){const button=card.querySelector('button');if(button&&button.textContent==='Afzonderlijk overnemen')button.title='Kies dit nummer en sla het afzonderlijk op'}}}catch(e){el('wishStatus').textContent=e.message}}
-function renderWishes(){const root=el('wishList');root.replaceChildren();el('wishListHeading').textContent='Beheerde wensen ('+managedWishes.length+')';if(!managedWishes.length){add(root,'p','Nog geen beheerde wensen');return}for(const w of managedWishes){const card=add(root,'div','');card.className='wish-source';add(card,'strong',w.name+' — '+w.title+(w.artist?' · '+w.artist:''));add(card,'p',w.approved?'✅ Goedgekeurd':'⏳ Nog niet goedgekeurd');if(w.availableAt>Date.now())add(card,'small','Opnieuw beschikbaar: '+new Date(w.availableAt).toLocaleTimeString('nl-BE'));const edit=add(card,'button','Bewerken');edit.type='button';edit.onclick=()=>{el('wishId').value=w.id;el('wishSourceKey').value=w.sourceKey||'';el('wishName').value=w.name;el('wishTitle').value=w.title;el('wishArtist').value=w.artist||'';el('wishSpotify').value='https://open.spotify.com/track/'+w.spotifyId;el('wishMessage').value=w.message||'';el('wishApproved').checked=!!w.approved;el('wishForm').scrollIntoView({behavior:'smooth',block:'center'})};const remove=add(card,'button','Verwijderen');remove.type='button';remove.onclick=async()=>{if(!confirm('Deze wens verwijderen?'))return;try{await wishesApi({op:'remove',id:w.id});await loadWishes()}catch(e){el('wishStatus').textContent=e.message}}}}
+function renderWishes(){
+ const root=el('wishList');root.replaceChildren();
+ el('wishListHeading').textContent='Beheerde wensen ('+managedWishes.length+')';
+ if(!managedWishes.length){add(root,'p','Nog geen beheerde wensen');return}
+ const wrap=add(root,'div','');wrap.className='scroll';
+ const table=document.createElement('table');table.className='wish-table';wrap.appendChild(table);
+ const thead=table.createTHead(),head=thead.insertRow();
+ for(const label of ['Gast','Nummer / artiest','Status','Beschikbaar','Acties']){const th=document.createElement('th');th.textContent=label;head.appendChild(th)}
+ const tbody=table.createTBody();
+ for(const w of managedWishes){
+  const tr=tbody.insertRow(),cell=t=>{const td=tr.insertCell();td.textContent=t;return td};
+  cell(w.name);const song=cell(w.title+(w.artist?' · '+w.artist:''));song.title=w.message||'';
+  cell(w.approved?'✓ Goedgekeurd':'In behandeling');
+  const waiting=w.approved&&w.availableAt>Date.now();
+  cell(waiting?'Tot '+new Date(w.availableAt).toLocaleTimeString('nl-BE'):(w.approved?'Mag op TV':'—'));
+  const actions=tr.insertCell();
+  const edit=add(actions,'button','Bewerk');edit.type='button';
+  edit.onclick=()=>{el('wishId').value=w.id;el('wishSourceKey').value=w.sourceKey||'';el('wishName').value=w.name;el('wishTitle').value=w.title;el('wishArtist').value=w.artist||'';el('wishSpotify').value='https://open.spotify.com/track/'+w.spotifyId;el('wishMessage').value=w.message||'';el('wishApproved').checked=!!w.approved;el('wishForm').scrollIntoView({behavior:'smooth',block:'center'})};
+  if(w.message){const details=add(actions,'button','Bericht');details.type='button';details.title='Persoonlijke boodschap bekijken';details.onclick=()=>alert(w.message)}
+  if(waiting){const release=add(actions,'button','Nu vrijgeven');release.type='button';release.title='Omzeil de wachttijd voor deze wens';release.onclick=async()=>{if(!confirm('Wachttijd voor deze wens opheffen?'))return;release.disabled=true;try{await wishesApi({op:'release',id:w.id});el('wishStatus').textContent='Wens opnieuw beschikbaar voor een volgende afspeelbeurt.';await loadWishes()}catch(e){el('wishStatus').textContent=e.message;release.disabled=false}}}
+  const remove=add(actions,'button','Verwijder');remove.type='button';remove.onclick=async()=>{if(!confirm('Deze wens verwijderen?'))return;try{await wishesApi({op:'remove',id:w.id});await loadWishes()}catch(e){el('wishStatus').textContent=e.message}}
+ }
+}
 function initWishes(){el('wishClear').onclick=()=>{el('wishForm').reset();el('wishId').value='';el('wishSourceKey').value=''};el('wishForm').onsubmit=async e=>{e.preventDefault();const button=el('wishForm').querySelector('button[type=submit]');button.disabled=true;try{await wishesApi({op:'save',id:el('wishId').value,sourceKey:el('wishSourceKey').value,name:el('wishName').value,title:el('wishTitle').value,artist:el('wishArtist').value,spotify:el('wishSpotify').value,message:el('wishMessage').value,approved:el('wishApproved').checked});el('wishStatus').textContent='Wens bewaard.';el('wishForm').reset();el('wishId').value='';el('wishSourceKey').value='';await loadWishes()}catch(err){el('wishStatus').textContent=err.message}finally{button.disabled=false}}}
 
 async function loadJam(){
