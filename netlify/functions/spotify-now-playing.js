@@ -14,6 +14,7 @@ exports.handler=async(event)=>{
    const wishes=await ws.get('wishes',{type:'json'})||[];
    const w=wishes.find(w=>w.id===active.wishId);
    if(!w)return reply(404,{ok:false});
+   // Only completed Party TV presentations start the two-hour cooldown.
    w.lastShownAt=Date.now();active.done=true;await ws.setJSON('wishes',wishes);await ws.setJSON('active',active);
    return reply(200,{ok:true});
   }catch(e){return reply(503,{ok:false})}

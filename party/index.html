@@ -1911,24 +1911,38 @@ nextBackground();updateLayers();requestAnimationFrame(tick);
 renderPreviousHits();
 
 /* Live Spotify, track history and approved wish messages. */
-let liveTrackId='',liveHistory=[],liveWishKeys=new Set(),liveLastResponse=0;
+let liveTrackId='',livePlayKey='',liveHistory=[],liveWishKeys=new Set(),liveLastResponse=0;
 try{liveHistory=JSON.parse(sessionStorage.getItem('level44-tv-history')||'[]')}catch(e){}
 function liveHistoryRender(){
  const el=$('playlist');if(!el)return;
  el.innerHTML=liveHistory.length?liveHistory.slice(0,3).map((x,i)=>'<div class="history-entry"><span class="history-number">'+String(i+1).padStart(2,'0')+'. </span><div class="history-meta"><span class="history-song">'+escapeHtml(x.title)+'</span><span class="history-artist">'+escapeHtml(x.artist)+'</span></div></div>').join(''):'<div class="history-entry">NOG GEEN VORIGE NUMMERS</div>';
 }
+function liveCancelInterruptedWishes(){
+ // A wish interrupted by a new track must not be acknowledged as shown.
+ // Keep ordinary guest messages in the queue.
+ for(let i=pendingMessages.length-1;i>=0;i--)if(pendingMessages[i]?.level44Wish)pendingMessages.splice(i,1);
+ if(activeMessage?.level44Wish){
+  clearTimeout(messageRotationTimer);activeMessage=null;messageEnd=0;
+  mode='music';nextMessageAt=performance.now()+400;
+  updateLayers();
+ }
+ updateQueueStatus();
+}
 function liveUpdateTrack(d){
  if(!d||!d.playing){$('track').textContent='WACHT OP SPOTIFY';$('artist').textContent='';return}
  const id=String(d.trackId||d.uri||d.title+'|'+d.artist);
+ const playKey=d.kind==='track'?id+':'+String(d.startedAt||''):id;
+ if(livePlayKey&&playKey!==livePlayKey)liveCancelInterruptedWishes();
+ livePlayKey=playKey;
  if(id!==liveTrackId){
   if(liveTrackId&&window.level44LastTrack){liveHistory.unshift(window.level44LastTrack);liveHistory=liveHistory.slice(0,3);try{sessionStorage.setItem('level44-tv-history',JSON.stringify(liveHistory))}catch(e){}}
   liveTrackId=id;level44NextTrackVisual();window.level44LastTrack={title:d.title||'',artist:d.artist||''};
   $('track').textContent=d.title||'ONBEKEND NUMMER';$('artist').textContent=d.artist||'';
   liveHistoryRender();requestAnimationFrame(fitRecordToSong);
  }
- if(d.durationMs>0&&Number.isFinite(d.progressMs)){const bar=document.querySelector('.pixel-progress span');bar.style.animation='none';bar.style.width=Math.min(100,Math.max(0,d.progressMs/d.durationMs*100))+'%'}
+ // Playback progress bar is intentionally hidden in every player layout.
  if(d.wish&&d.kind==='track'){
-  const key=id+':'+String(d.startedAt||'')+':'+String(d.wish.name||'');
+  const key=String(d.wish.ack||playKey+':'+String(d.wish.name||''));
   if(!liveWishKeys.has(key)){
    liveWishKeys.add(key);if(liveWishKeys.size>200)liveWishKeys=new Set([key]);
    const fallback=['HEEFT DIT NUMMER AANGEVRAAGD!','KOOS DEZE TRACK SPECIAAL VOOR VANAVOND!','ZORGT VOOR DE VOLGENDE PORTIE GOOD VIBES!','HEEFT DEZE HIT OP DE PLAYLIST GEZET!','GEEFT HET FEEST EEN MUZIKALE BOOST!'];
