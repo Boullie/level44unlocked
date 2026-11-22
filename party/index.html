@@ -1769,6 +1769,44 @@ body>h1,body>.intro,body>.foot{display:none!important}
 @keyframes l44-armR-9{0%{transform:rotate(35deg)}25%{transform:rotate(-65deg)}50%{transform:rotate(35deg)}75%{transform:rotate(-65deg)}100%{transform:rotate(35deg)}}
 @keyframes l44-legL-9{0%{transform:rotate(-15deg)}25%{transform:rotate(15deg)}50%{transform:rotate(-15deg)}75%{transform:rotate(15deg)}100%{transform:rotate(-15deg)}}
 @keyframes l44-legR-9{0%{transform:rotate(15deg)}25%{transform:rotate(-15deg)}50%{transform:rotate(15deg)}75%{transform:rotate(-15deg)}100%{transform:rotate(15deg)}}
+
+/* Newest played track always first in both layouts. */
+.music #playlist{display:flex!important;flex-direction:column!important;justify-content:flex-start!important}
+.music.compact #playlist{justify-content:flex-start!important}
+/* Keep the outer robot as a fixed, centered coordinate system. Animate torso/head independently. */
+.music.showcase .mystery-dancer[class*="level44-routine-"]{animation:none!important}
+.music.showcase .mystery-dancer[class*="level44-routine-"] .dancer-body{transform-origin:50% 15%!important}
+.music.showcase .mystery-dancer[class*="level44-routine-"] .dancer-head{transform-origin:50% 85%!important}
+.music.showcase .mystery-dancer.level44-routine-0 .dancer-body{animation:l44-torso-0 4.2s ease-in-out infinite!important}.music.showcase .mystery-dancer.level44-routine-0 .dancer-head{animation:l44-head-0 4.2s ease-in-out infinite!important}
+@keyframes l44-torso-0{0%,100%{transform:rotate(-8deg)}25%{transform:rotate(8deg)}50%{transform:rotate(-5deg)}75%{transform:rotate(5deg)}}
+@keyframes l44-head-0{0%,100%{transform:rotate(4deg)}25%{transform:rotate(-4deg)}50%{transform:rotate(3deg)}75%{transform:rotate(-2deg)}}
+.music.showcase .mystery-dancer.level44-routine-1 .dancer-body{animation:l44-torso-1 2.8s ease-in-out infinite!important}.music.showcase .mystery-dancer.level44-routine-1 .dancer-head{animation:l44-head-1 2.8s ease-in-out infinite!important}
+@keyframes l44-torso-1{0%,100%{transform:rotate(-4deg)}25%{transform:rotate(5deg)}50%{transform:rotate(-4deg)}75%{transform:rotate(5deg)}}
+@keyframes l44-head-1{0%,100%{transform:rotate(2deg)}25%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}75%{transform:rotate(-2deg)}}
+.music.showcase .mystery-dancer.level44-routine-2 .dancer-body{animation:l44-torso-2 3.8s ease-in-out infinite!important}.music.showcase .mystery-dancer.level44-routine-2 .dancer-head{animation:l44-head-2 3.8s ease-in-out infinite!important}
+@keyframes l44-torso-2{0%,100%{transform:rotate(-12deg)}25%{transform:rotate(12deg)}50%{transform:rotate(-12deg)}75%{transform:rotate(12deg)}}
+@keyframes l44-head-2{0%,100%{transform:rotate(6deg)}25%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}75%{transform:rotate(-6deg)}}
+.music.showcase .mystery-dancer.level44-routine-3 .dancer-body{animation:l44-torso-3 3.7s ease-in-out infinite!important}.music.showcase .mystery-dancer.level44-routine-3 .dancer-head{animation:l44-head-3 3.7s ease-in-out infinite!important}
+@keyframes l44-torso-3{0%,100%{transform:rotate(0deg)}25%{transform:rotate(7deg)}50%{transform:rotate(0deg)}75%{transform:rotate(-7deg)}}
+@keyframes l44-head-3{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-3deg)}50%{transform:rotate(0deg)}75%{transform:rotate(4deg)}}
+.music.showcase .mystery-dancer.level44-routine-4 .dancer-body{animation:l44-torso-4 4.2s ease-in-out infinite!important}.music.showcase .mystery-dancer.level44-routine-4 .dancer-head{animation:l44-head-4 4.2s ease-in-out infinite!important}
+@keyframes l44-torso-4{0%,100%{transform:rotate(-15deg)}25%{transform:rotate(15deg)}50%{transform:rotate(-15deg)}75%{transform:rotate(15deg)}}
+@keyframes l44-head-4{0%,100%{transform:rotate(8deg)}25%{transform:rotate(-7deg)}50%{transform:rotate(8deg)}75%{transform:rotate(-7deg)}}
+.music.showcase .mystery-dancer.level44-routine-5 .dancer-body{animation:l44-torso-5 3.6s ease-in-out infinite!important}.music.showcase .mystery-dancer.level44-routine-5 .dancer-head{animation:l44-head-5 3.6s ease-in-out infinite!important}
+@keyframes l44-torso-5{0%,100%{transform:rotate(-6deg)}25%{transform:rotate(6deg)}50%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}}
+@keyframes l44-head-5{0%,100%{transform:rotate(3deg)}25%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}75%{transform:rotate(-3deg)}}
+.music.showcase .mystery-dancer.level44-routine-6 .dancer-body{animation:l44-torso-6 4s ease-in-out infinite!important}.music.showcase .mystery-dancer.level44-routine-6 .dancer-head{animation:l44-head-6 4s ease-in-out infinite!important}
+@keyframes l44-torso-6{0%,100%{transform:rotate(-18deg)}25%{transform:rotate(15deg)}50%{transform:rotate(0deg)}75%{transform:rotate(-12deg)}}
+@keyframes l44-head-6{0%,100%{transform:rotate(9deg)}25%{transform:rotate(-7deg)}50%{transform:rotate(0deg)}75%{transform:rotate(6deg)}}
+.music.showcase .mystery-dancer.level44-routine-7 .dancer-body{animation:l44-torso-7 3s ease-in-out infinite!important}.music.showcase .mystery-dancer.level44-routine-7 .dancer-head{animation:l44-head-7 3s ease-in-out infinite!important}
+@keyframes l44-torso-7{0%,100%{transform:rotate(-8deg)}25%{transform:rotate(8deg)}50%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+@keyframes l44-head-7{0%,100%{transform:rotate(4deg)}25%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}75%{transform:rotate(-4deg)}}
+.music.showcase .mystery-dancer.level44-routine-8 .dancer-body{animation:l44-torso-8 3.1s ease-in-out infinite!important}.music.showcase .mystery-dancer.level44-routine-8 .dancer-head{animation:l44-head-8 3.1s ease-in-out infinite!important}
+@keyframes l44-torso-8{0%,100%{transform:rotate(-18deg)}25%{transform:rotate(18deg)}50%{transform:rotate(-12deg)}75%{transform:rotate(12deg)}}
+@keyframes l44-head-8{0%,100%{transform:rotate(9deg)}25%{transform:rotate(-9deg)}50%{transform:rotate(6deg)}75%{transform:rotate(-6deg)}}
+.music.showcase .mystery-dancer.level44-routine-9 .dancer-body{animation:l44-torso-9 4s ease-in-out infinite!important}.music.showcase .mystery-dancer.level44-routine-9 .dancer-head{animation:l44-head-9 4s ease-in-out infinite!important}
+@keyframes l44-torso-9{0%,100%{transform:rotate(-10deg)}25%{transform:rotate(10deg)}50%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}}
+@keyframes l44-head-9{0%,100%{transform:rotate(5deg)}25%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}75%{transform:rotate(-5deg)}}
 </style><link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet"></head><body><h1>★ LEVEL 44 UNLOCKED ★</h1><p class="intro">PARTY TV · ORIGINELE ARCADE LOOK · 20 UNIEKE ACHTERGRONDEN · 50 POWER-UPS</p><main class="layout"><section><div class="tv" id="tv"><canvas id="ambient" width="1280" height="720"></canvas><div class="scan"></div><div class="home" id="home"><div class="arcade-corners"><span>★ LEVEL 44 • PARTY ARCADE ★</span><span>● PARTY ONLINE</span></div><div class="hero-stack"><div class="achievement">★ ACHIEVEMENT UNLOCKED ★</div><div class="hero"><div class="topline"><span class="hero-first">LEVEL <span class="age">44</span></span><span class="hero-second">UNLOCKED!</span></div></div><div class="insertcake" id="cakePrompt">INSERT CAKE TO CONTINUE</div></div><div class="message-marquee"><div class="caption"><div class="ticker-track" aria-label="PARTY MESSAGE FEED"><span class="ticker-copy">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span><span class="ticker-copy" aria-hidden="true">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span></div></div><div class="insert" id="messagePrompt">✦ INSERT MESSAGE ✦</div><div class="msg" id="message"><div class="name-line"><span class="message-symbol" id="symbolBefore" aria-hidden="true">✦</span><div class="who" id="who"></div><span class="message-symbol" id="symbolAfter" aria-hidden="true">✦</span></div><div class="message-line"><div class="words" id="words"></div></div></div></div><div class="below-feed-prompt" id="belowFeedPrompt">INSERT CAKE TO CONTINUE</div><div class="scanplay"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUAQAAAABdRz15AAABS0lEQVR4nM2WQW4kQQgEg5HvyQ/6/8/qHyQvyD3U2LK88sHLSOuqUyMRokigqfD1zOMvE/w/W1X1VPX00FXVS54SmvjiAiW7+N6ghIbK0O7SmgcMTQ/uH/l+bzOG0H4FL0YePFET73iVAn18Duje8EiSQCwrSRLveEokITtGZstLFBsb+0S644EJxiGJlrw3COlMirTrJ77fvFfCJnaQYm3jg5SN2qZpLeNDJ4MKQlnmr9JwiwZgUmJVzw/gvqqZG8PgF+jh6DRdZO30ILLlAMRiz0sIKLJIWPMISuzg2CzrjzxDlBNsadtvmgIqM4hObfWV5CCESMIL3qszSxVgPU+T5FkwVrTU9/w/DNOhBHi1v5x573NRWObvAdUAc92tKZb7xrtNui/f+F98P5+zb4ge3QI06/pL5EhRElj2x9F3/AzSoJW+9cv33T+Au/yGE9/wPgAAAABJRU5ErkJggg==" alt="QR-code voor gastbediening"><div><strong>SCAN &amp; PLAY</strong><span>📱 Pak je gsm. Unlock de party!</span></div></div></div><div class="music" id="music">
 <div class="music-bulbs" aria-hidden="true"></div>
 <div class="music-header"><div class="music-kicker">★ LEVEL 44 ★ PLAYER ONE RADIO ★</div><div class="eyebrow">♫ PARTY PLAYLIST ♫</div><div class="music-subtitle">NOW LOADING THE NEXT BANGER...</div></div>
@@ -2241,8 +2279,8 @@ function level44RevealPreviousHits(){
 function liveHistoryRender(animate=false){
  const list=$('playlist');if(!list)return;
  const cap=level44HistoryCapacity();
- const records=liveHistory.slice(0,cap).reverse();if(list.closest('.music')?.classList.contains('compact'))list.closest('.playlist')?.style.setProperty('--compact-history-count',String(Math.max(1,records.length)));
- const markup=records.length?records.map((x,i)=>'<div class="history-entry" data-history-key="'+escapeHtml(x.key||x.title+'|'+x.artist)+'"><span class="history-number">'+String(records.length-i).padStart(2,'0')+'. </span><div class="history-meta"><span class="history-song">'+escapeHtml(x.title)+'</span><span class="history-artist">'+escapeHtml(x.artist)+'</span></div></div>').join(''):'<div class="history-entry">NOG GEEN VORIGE NUMMERS</div>';
+ const records=liveHistory.slice(0,cap);if(list.closest('.music')?.classList.contains('compact'))list.closest('.playlist')?.style.setProperty('--compact-history-count',String(Math.max(1,records.length)));
+ const markup=records.length?records.map((x,i)=>'<div class="history-entry" data-history-key="'+escapeHtml(x.key||x.title+'|'+x.artist)+'"><span class="history-number">'+String(i+1).padStart(2,'0')+'. </span><div class="history-meta"><span class="history-song">'+escapeHtml(x.title)+'</span><span class="history-artist">'+escapeHtml(x.artist)+'</span></div></div>').join(''):'<div class="history-entry">NOG GEEN VORIGE NUMMERS</div>';
  clearTimeout(level44HistoryAnimationTimer);
  if(!animate||!list.children.length){list.innerHTML=markup;return}
  const old=[...list.children],oldRects=new Map(old.map(el=>[el.dataset.historyKey,el.getBoundingClientRect()]));
