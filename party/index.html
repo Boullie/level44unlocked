@@ -2111,7 +2111,30 @@ async function level44PollOnlineMessages(){
   if(level44OnlineSeen.size>400)level44OnlineSeen.clear();
  }catch(e){console.warn('Online berichten tijdelijk niet beschikbaar',e)}
 }
+let level44LastAdminCommandId=null;
+async function level44PollAdminControl(){
+ try{
+  const r=await fetch('/.netlify/functions/party',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({op:'tv-control-poll'}),cache:'no-store'});
+  if(!r.ok)return;
+  const command=(await r.json()).command;
+  if(!command?.id)return;
+  if(level44LastAdminCommandId===null){level44LastAdminCommandId=command.id;return}
+  if(command.id===level44LastAdminCommandId)return;
+  level44LastAdminCommandId=command.id;
+  switch(command.action){
+   case 'playlist-large':mode='music';activeMessage=null;clearTimeout(messageRotationTimer);pendingMessages.length=0;showHitParade=true;fullPlaylist=true;fullPlaylistUntil=performance.now()+120000;updateLayers();break;
+   case 'playlist-small':fullPlaylist=false;showHitParade=true;mode='music';updateLayers();break;
+   case 'playlist-switch':playlistSide=playlistSide==='right'?'left':'right';updateLayers();break;
+   case 'queue-clear':pendingMessages.length=0;activeMessage=null;clearTimeout(messageRotationTimer);mode='music';messageEnd=0;nextMessageAt=performance.now()+1000;updateLayers();break;
+   case 'power-clear':level44ActionQueue.length=0;break;
+   case 'power-stop':level44ActionQueue.length=0;powerEnd=0;break;
+   case 'message-demo':enqueueMessage('LEVEL 44 TEST','DIT IS EEN TESTBERICHT VANUIT MISSION CONTROL.');break;
+   default:if(command.action.startsWith('power-'))level44ActionQueue.push(command.action.slice(6));
+  }
+ }catch(e){console.warn('TV testbediening:',e)}
+}
 level44PollOnlineMessages();setInterval(level44PollOnlineMessages,1000);
+level44PollAdminControl();setInterval(level44PollAdminControl,1000);
 livePoll();setInterval(livePoll,5000);
 
 
