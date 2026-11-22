@@ -1840,23 +1840,33 @@ livePoll();setInterval(livePoll,5000);
 })();
 
 
-/* Jam is optional. Supply a real Spotify Jam invitation via ?jam=... on TV.
-   Do not create or advertise an invented or expired Jam invitation. */
+/* Spotify Jam invitation is controlled from Mission Control and refreshed without reloading TV. */
 (function(){
- const params=new URLSearchParams(location.search);
- const candidate=params.get('jam')||'';
- const container=document.getElementById('jamJoin');
- if(!container||!candidate)return;
- try{
-  const u=new URL(candidate);
-  if(u.protocol!=='https:'||!/(^|\.)(spotify\.com|spotify\.link)$/.test(u.hostname))return;
-  const img=document.getElementById('jamQr');
-  img.src='https://api.qrserver.com/v1/create-qr-code/?size=180x180&data='+encodeURIComponent(u.href);
-  img.addEventListener('load',()=>container.classList.add('is-active'),{once:true});
- }catch(e){}
+ const container=document.getElementById('jamJoin'),img=document.getElementById('jamQr');
+ if(!container||!img)return;
+ let current='';
+ function apply(url){
+  if(url===current)return;
+  current=url;
+  container.classList.remove('is-active');img.removeAttribute('src');
+  if(!url)return;
+  try{
+   const u=new URL(url);
+   if(u.protocol!=='https:'||!['spotify.link','open.spotify.com','spotify.com'].includes(u.hostname))return;
+   img.onload=()=>{if(current===url)container.classList.add('is-active')};
+   img.onerror=()=>container.classList.remove('is-active');
+   img.src='https://api.qrserver.com/v1/create-qr-code/?size=180x180&data='+encodeURIComponent(u.href);
+  }catch(e){}
+ }
+ async function refresh(){
+  try{
+   const r=await fetch('/.netlify/functions/jam-config',{cache:'no-store'});
+   if(!r.ok)throw Error('Jam-config unavailable');
+   const data=await r.json();apply(data.url||'');
+  }catch(e){/* Keep last known invitation during transient network errors. */}
+ }
+ refresh();setInterval(refresh,15000);
 })();
-
-
 /* Mirror rotating cyan subheading below the LED frame, rather than below the hero. */
 (function(){
  const source=document.getElementById('cakePrompt'),target=document.getElementById('belowFeedPrompt');
