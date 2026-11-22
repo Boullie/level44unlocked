@@ -14,8 +14,9 @@ exports.handler=async(event)=>{
    const wishes=await ws.get('wishes',{type:'json'})||[];
    const w=wishes.find(w=>w.id===active.wishId);
    if(!w)return reply(404,{ok:false});
-   // Only completed Party TV presentations start the two-hour cooldown.
-   w.lastShownAt=Date.now();active.done=true;await ws.setJSON('wishes',wishes);await ws.setJSON('active',active);
+   // Acknowledgement never resets an already-started two-hour cooldown.
+   if(!w.lastShownAt){w.lastShownAt=Date.now();await ws.setJSON('wishes',wishes)}
+   active.done=true;await ws.setJSON('active',active);
    return reply(200,{ok:true});
   }catch(e){return reply(503,{ok:false})}
  }
@@ -44,14 +45,24 @@ exports.handler=async(event)=>{
    if(trackId){
     const active=await ws.get('active',{type:'json'});
     const playKey=trackId+':'+String(data.timestamp||'');
-    if(active?.playKey===playKey){wish=active.done?null:active.wish}
+    if(active?.playKey===playKey){
+     wish=active.done?null:active.wish;
+     // Ten seconds of actual Spotify playback starts the cooldown, regardless of TV message rotation.
+     if(!active.done&&Number(data.progress_ms)>=10000){
+      const wishes=await ws.get('wishes',{type:'json'})||[];
+      const matched=wishes.find(w=>w.id===active.wishId);
+      if(matched){matched.lastShownAt=now;await ws.setJSON('wishes',wishes);active.done=true;await ws.setJSON('active',active)}
+     }
+    }
     else if(active?.playKey!==playKey){
      const wishes=await ws.get('wishes',{type:'json'})||[];
      const candidate=wishes.find(w=>w.approved&&w.spotifyId===trackId&&(!w.lastShownAt||now-w.lastShownAt>=7200000));
      if(candidate){
       const ack=crypto.randomUUID();
       wish={name:candidate.name,title:candidate.title,artist:candidate.artist,message:candidate.message,ack};
-      await ws.setJSON('active',{playKey,at:now,wish,wishId:candidate.id,ack,done:false});
+      const newActive={playKey,at:now,wish,wishId:candidate.id,ack,done:false};
+      await ws.setJSON('active',newActive);
+      if(Number(data.progress_ms)>=10000){candidate.lastShownAt=now;await ws.setJSON('wishes',wishes);newActive.done=true;await ws.setJSON('active',newActive)}
      }
     }
    }
