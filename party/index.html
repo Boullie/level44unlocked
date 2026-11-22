@@ -1678,6 +1678,23 @@ body>h1,body>.intro,body>.foot{display:none!important}
 .music.showcase .mystery-dancer.dance-variant-1{animation-name:level44-eighties-robot!important}
 .music.showcase .mystery-dancer.dance-variant-1 .dancer-arm.left{animation-name:level44-eighties-disco!important}
 .music.showcase .mystery-dancer.dance-variant-1 .dancer-arm.right{animation-name:level44-eighties-wave!important}
+
+/* Robot stays fully inside its stage even during arm swings. */
+.music.showcase .nextsong.unknown-next{overflow:hidden!important;contain:paint!important}
+.music.showcase .nextsong.unknown-next .mystery-dancer{left:50%!important;right:auto!important;transform:translateX(-50%) scale(var(--robot-scale,1.7))!important}
+.music.showcase .mystery-dancer .dancer-leg.left{left:22px!important;right:auto!important;transform-origin:50% 0!important}
+.music.showcase .mystery-dancer .dancer-leg.right{left:38px!important;right:auto!important;transform-origin:50% 0!important}
+@keyframes level44-routine-2{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-3px) rotate(-5deg)}50%{transform:translateY(-1px) rotate(4deg)}75%{transform:translateY(-4px) rotate(0)}}
+@keyframes level44-routine-3{0%,100%{transform:translateY(0) rotate(3deg)}30%{transform:translateY(-5px) rotate(-3deg)}65%{transform:translateY(-2px) rotate(6deg)}}
+@keyframes level44-routine-4{0%,100%{transform:translateY(0) rotate(-3deg)}20%{transform:translateY(-4px) rotate(5deg)}40%{transform:translateY(0) rotate(-5deg)}60%{transform:translateY(-3px) rotate(4deg)}80%{transform:translateY(0) rotate(0)}}
+.music.showcase .mystery-dancer.dance-variant-2{animation:level44-routine-2 4s ease-in-out infinite!important}
+.music.showcase .mystery-dancer.dance-variant-3{animation:level44-routine-3 3.6s ease-in-out infinite!important}
+.music.showcase .mystery-dancer.dance-variant-4{animation:level44-routine-4 4.2s ease-in-out infinite!important}
+.music.showcase .mystery-dancer.dance-variant-2 .dancer-arm.left,.music.showcase .mystery-dancer.dance-variant-4 .dancer-arm.right{animation-name:level44-eighties-disco!important}
+.music.showcase .mystery-dancer.dance-variant-3 .dancer-arm.left,.music.showcase .mystery-dancer.dance-variant-4 .dancer-arm.left{animation-name:level44-eighties-wave!important}
+.music.compact .playlist{height:auto!important;min-height:0!important;max-height:min(35vh,280px)!important;flex:0 0 auto!important;overflow:hidden!important}
+.music.compact #playlist{flex:0 0 auto!important;height:auto!important;max-height:calc(5 * 39px + 24px)!important;overflow:hidden!important}
+.music.compact #playlist>.history-entry{min-height:0!important;max-height:39px!important;overflow:hidden!important}
 </style><link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet"></head><body><h1>★ LEVEL 44 UNLOCKED ★</h1><p class="intro">PARTY TV · ORIGINELE ARCADE LOOK · 20 UNIEKE ACHTERGRONDEN · 50 POWER-UPS</p><main class="layout"><section><div class="tv" id="tv"><canvas id="ambient" width="1280" height="720"></canvas><div class="scan"></div><div class="home" id="home"><div class="arcade-corners"><span>★ LEVEL 44 • PARTY ARCADE ★</span><span>● PARTY ONLINE</span></div><div class="hero-stack"><div class="achievement">★ ACHIEVEMENT UNLOCKED ★</div><div class="hero"><div class="topline"><span class="hero-first">LEVEL <span class="age">44</span></span><span class="hero-second">UNLOCKED!</span></div></div><div class="insertcake" id="cakePrompt">INSERT CAKE TO CONTINUE</div></div><div class="message-marquee"><div class="caption"><div class="ticker-track" aria-label="PARTY MESSAGE FEED"><span class="ticker-copy">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span><span class="ticker-copy" aria-hidden="true">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span></div></div><div class="insert" id="messagePrompt">✦ INSERT MESSAGE ✦</div><div class="msg" id="message"><div class="name-line"><span class="message-symbol" id="symbolBefore" aria-hidden="true">✦</span><div class="who" id="who"></div><span class="message-symbol" id="symbolAfter" aria-hidden="true">✦</span></div><div class="message-line"><div class="words" id="words"></div></div></div></div><div class="below-feed-prompt" id="belowFeedPrompt">INSERT CAKE TO CONTINUE</div><div class="scanplay"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUAQAAAABdRz15AAABS0lEQVR4nM2WQW4kQQgEg5HvyQ/6/8/qHyQvyD3U2LK88sHLSOuqUyMRokigqfD1zOMvE/w/W1X1VPX00FXVS54SmvjiAiW7+N6ghIbK0O7SmgcMTQ/uH/l+bzOG0H4FL0YePFET73iVAn18Duje8EiSQCwrSRLveEokITtGZstLFBsb+0S644EJxiGJlrw3COlMirTrJ77fvFfCJnaQYm3jg5SN2qZpLeNDJ4MKQlnmr9JwiwZgUmJVzw/gvqqZG8PgF+jh6DRdZO30ILLlAMRiz0sIKLJIWPMISuzg2CzrjzxDlBNsadtvmgIqM4hObfWV5CCESMIL3qszSxVgPU+T5FkwVrTU9/w/DNOhBHi1v5x573NRWObvAdUAc92tKZb7xrtNui/f+F98P5+zb4ge3QI06/pL5EhRElj2x9F3/AzSoJW+9cv33T+Au/yGE9/wPgAAAABJRU5ErkJggg==" alt="QR-code voor gastbediening"><div><strong>SCAN &amp; PLAY</strong><span>📱 Pak je gsm. Unlock de party!</span></div></div></div><div class="music" id="music">
 <div class="music-bulbs" aria-hidden="true"></div>
 <div class="music-header"><div class="music-kicker">★ LEVEL 44 ★ PLAYER ONE RADIO ★</div><div class="eyebrow">♫ PARTY PLAYLIST ♫</div><div class="music-subtitle">NOW LOADING THE NEXT BANGER...</div></div>
@@ -2126,7 +2143,7 @@ function level44HistoryCapacity(){
  const sample=list.querySelector('.history-entry');
  const row=sample?sample.getBoundingClientRect().height:38;
  const gap=parseFloat(getComputedStyle(list).rowGap)||5;
- return Math.max(1,Math.min(30,Math.floor((height+gap)/Math.max(20,row+gap))));
+ return Math.max(1,Math.min(list.closest('.music')?.classList.contains('compact')?5:30,Math.floor((height+gap)/Math.max(20,row+gap))));
 }
 
 let level44RevealTimer=null;
@@ -2150,7 +2167,7 @@ function level44RevealPreviousHits(){
 function liveHistoryRender(animate=false){
  const list=$('playlist');if(!list)return;
  const cap=level44HistoryCapacity();
- const records=liveHistory.slice(0,cap).reverse();
+ const records=liveHistory.slice(0,cap).reverse();if(list.closest('.music')?.classList.contains('compact'))list.closest('.playlist')?.style.setProperty('--compact-history-count',String(Math.max(1,records.length)));
  const markup=records.length?records.map((x,i)=>'<div class="history-entry" data-history-key="'+escapeHtml(x.key||x.title+'|'+x.artist)+'"><span class="history-number">'+String(records.length-i).padStart(2,'0')+'. </span><div class="history-meta"><span class="history-song">'+escapeHtml(x.title)+'</span><span class="history-artist">'+escapeHtml(x.artist)+'</span></div></div>').join(''):'<div class="history-entry">NOG GEEN VORIGE NUMMERS</div>';
  clearTimeout(level44HistoryAnimationTimer);
  if(!animate||!list.children.length){list.innerHTML=markup;return}
@@ -2475,7 +2492,7 @@ function level44RefreshSongMarquees(){
   if(!music.classList.contains('showcase'))return;
   const stage=music.querySelector('.nextsong.unknown-next');if(!stage)return;
   const h=stage.clientHeight,w=stage.clientWidth;
-  const ball=stage.querySelector('.disco-ball');const ballBottom=ball?ball.getBoundingClientRect().bottom-stage.getBoundingClientRect().top:Math.round(h*.25);const lineBottomTarget=Math.max(9,Math.round(h*.035));const headHeight=28;const baseScale=Math.max(.7,Math.min(4,Math.min(w*.38/60,Math.max(75,h-ballBottom-lineBottomTarget)/110)));const maxScale=Math.max(.5,(h-ballBottom-lineBottomTarget-12)/Math.max(1,96-headHeight));const scale=Math.max(.5,Math.min(baseScale*1.5,maxScale,5));
+  const ball=stage.querySelector('.disco-ball');const ballBottom=ball?ball.getBoundingClientRect().bottom-stage.getBoundingClientRect().top:Math.round(h*.25);const lineBottomTarget=Math.max(9,Math.round(h*.035));const headHeight=28;const baseScale=Math.max(.7,Math.min(4,Math.min(w*.38/60,Math.max(75,h-ballBottom-lineBottomTarget)/110)));const maxScale=Math.max(.5,(h-ballBottom-lineBottomTarget-12)/Math.max(1,96-headHeight));const scale=Math.max(.5,Math.min(baseScale*1.5,maxScale,Math.max(.6,(w-30)/110),5));
   const lineBottom=Math.max(9,Math.round(h*.035));
   music.style.setProperty('--robot-scale',String(scale));
   music.style.setProperty('--robot-line-bottom',lineBottom+'px');
@@ -2495,7 +2512,7 @@ function level44RefreshSongMarquees(){
  let last=-1;
  setInterval(()=>{
   if(!dancer.closest('.music')?.classList.contains('showcase'))return;
-  last=(last+1)%2;dancer.classList.toggle('dance-variant-1',last===1);
- },10500);
+  last=(last+1)%5;for(let n=1;n<=4;n++)dancer.classList.toggle('dance-variant-'+n,last===n);
+ },300000);
 })();
 </script></body></html>
