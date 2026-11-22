@@ -1523,13 +1523,29 @@ body>h1,body>.intro,body>.foot{display:none!important}
 
 /* V57: remove the yellow/pink playback progress bar in ALL Party TV player layouts. */
 .music .pixel-progress,.music.compact .pixel-progress,.music.showcase .pixel-progress{display:none!important;visibility:hidden!important}
+
+/* V58: reference vinyl — one purple outer accent, white inner ring, dark grooves, cyan label. */
+.music,.music[data-record-color="1"],.music[data-record-color="2"],.music[data-record-color="3"],.music[data-record-color="4"]{
+ --vinyl-outer:#b56bff!important;--vinyl-center:#55eced!important;--vinyl-center-border:#ffffff!important;
+}
+.music .record-rim{border-color:#ffffff!important;box-shadow:0 0 0 2px #ffffff,0 0 16px #a865ff99!important}
+.music .vinyl-svg > circle:first-child{stroke:var(--vinyl-outer)!important}
+.music .vinyl-svg > circle:nth-child(2){stroke:#ffffff!important}
+.music .vinyl-svg .vinyl-spinning > circle:nth-child(6){fill:var(--vinyl-center)!important;stroke:#ffffff!important}
+.music .pixel-progress{display:none!important}
+/* Compact jukebox alternates sides with a brief fade at the beginning of each track. */
+.tv.split-view.playlist-left .home{left:40%!important;right:0!important;width:60%!important}
+.tv.split-view.playlist-left .music.compact{left:0!important;right:60%!important;width:39.5%!important}
+.tv.split-view .home,.tv.split-view .music.compact{transition:left .65s ease,right .65s ease,opacity .3s ease!important}
+.tv.split-view.side-changing .music.compact{opacity:0!important}
+@media(prefers-reduced-motion:reduce){.tv.split-view .home,.tv.split-view .music.compact{transition:none!important}}
 </style><link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet"></head><body><h1>★ LEVEL 44 UNLOCKED ★</h1><p class="intro">PARTY TV · ORIGINELE ARCADE LOOK · 20 UNIEKE ACHTERGRONDEN · 50 POWER-UPS</p><main class="layout"><section><div class="tv" id="tv"><canvas id="ambient" width="1280" height="720"></canvas><div class="scan"></div><div class="home" id="home"><div class="arcade-corners"><span>★ LEVEL 44 • PARTY ARCADE ★</span><span>● PARTY ONLINE</span></div><div class="hero-stack"><div class="achievement">★ ACHIEVEMENT UNLOCKED ★</div><div class="hero"><div class="topline"><span class="hero-first">LEVEL <span class="age">44</span></span><span class="hero-second">UNLOCKED!</span></div></div><div class="insertcake" id="cakePrompt">INSERT CAKE TO CONTINUE</div></div><div class="message-marquee"><div class="caption"><div class="ticker-track" aria-label="PARTY MESSAGE FEED"><span class="ticker-copy">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span><span class="ticker-copy" aria-hidden="true">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span></div></div><div class="insert" id="messagePrompt">✦ INSERT MESSAGE ✦</div><div class="msg" id="message"><div class="name-line"><span class="message-symbol" id="symbolBefore" aria-hidden="true">✦</span><div class="who" id="who"></div><span class="message-symbol" id="symbolAfter" aria-hidden="true">✦</span></div><div class="message-line"><div class="words" id="words"></div></div></div></div><div class="below-feed-prompt" id="belowFeedPrompt">INSERT CAKE TO CONTINUE</div><div class="scanplay"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUAQAAAABdRz15AAABS0lEQVR4nM2WQW4kQQgEg5HvyQ/6/8/qHyQvyD3U2LK88sHLSOuqUyMRokigqfD1zOMvE/w/W1X1VPX00FXVS54SmvjiAiW7+N6ghIbK0O7SmgcMTQ/uH/l+bzOG0H4FL0YePFET73iVAn18Duje8EiSQCwrSRLveEokITtGZstLFBsb+0S644EJxiGJlrw3COlMirTrJ77fvFfCJnaQYm3jg5SN2qZpLeNDJ4MKQlnmr9JwiwZgUmJVzw/gvqqZG8PgF+jh6DRdZO30ILLlAMRiz0sIKLJIWPMISuzg2CzrjzxDlBNsadtvmgIqM4hObfWV5CCESMIL3qszSxVgPU+T5FkwVrTU9/w/DNOhBHi1v5x573NRWObvAdUAc92tKZb7xrtNui/f+F98P5+zb4ge3QI06/pL5EhRElj2x9F3/AzSoJW+9cv33T+Au/yGE9/wPgAAAABJRU5ErkJggg==" alt="QR-code voor gastbediening"><div><strong>SCAN &amp; PLAY</strong><span>📱 Pak je gsm. Unlock de party!</span></div></div></div><div class="music" id="music">
 <div class="music-bulbs" aria-hidden="true"></div>
 <div class="music-header"><div class="music-kicker">★ LEVEL 44 ★ PLAYER ONE RADIO ★</div><div class="eyebrow">♫ PARTY PLAYLIST ♫</div><div class="music-subtitle">NOW LOADING THE NEXT BANGER...</div></div>
 <div class="nextsong unknown-next"><span class="nextsong-heading">UP NEXT <strong>??? MYSTERY TRACK ???</strong></span><div class="disco-ball" aria-label="Glitterende discobal" role="img"><div class="disco-facets"></div></div><div class="mystery-dancer" aria-label="Dansend pixelmannetje" role="img"><div class="dancer-head"><i></i><i></i></div><div class="dancer-body"></div><div class="dancer-arm left"></div><div class="dancer-arm right"></div><div class="dancer-leg left"></div><div class="dancer-leg right"></div><div class="dancer-floor"></div></div><div class="dancer-stage-line" aria-hidden="true"></div></div>
 <div class="music-main"><div class="record-deck"><div class="record-rim" aria-label="Draaiende vinylplaat"><svg class="vinyl-svg" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 <circle cx="100" cy="100" r="94" fill="#21102f" stroke="var(--vinyl-outer,#ff5cb2)" stroke-width="7"/>
-<circle cx="100" cy="100" r="85" fill="#090911" stroke="#ffdd65" stroke-width="3"/>
+<circle cx="100" cy="100" r="85" fill="#090911" stroke="#ffffff" stroke-width="3"/>
 <g class="vinyl-spinning"><circle cx="100" cy="100" r="77" fill="#0b0a14" stroke="#393047" stroke-width="2"/>
 <circle cx="100" cy="100" r="68" fill="none" stroke="#29243b" stroke-width="2"/><circle cx="100" cy="100" r="58" fill="none" stroke="#29243b" stroke-width="2"/><circle cx="100" cy="100" r="48" fill="none" stroke="#29243b" stroke-width="2"/><circle cx="100" cy="100" r="38" fill="none" stroke="#29243b" stroke-width="2"/>
 <circle cx="100" cy="100" r="24" fill="var(--vinyl-center,#ff55ad)" stroke="var(--vinyl-center-border,#ffdd65)" stroke-width="3"/><circle cx="100" cy="100" r="8" fill="#f9e5ec"/><circle cx="100" cy="100" r="2.5" fill="#bd358a"/><circle cx="108" cy="91" r="3" fill="#fff5d9" opacity=".85"/>
@@ -1641,10 +1657,14 @@ function nextSong(){
  historyList.classList.remove('history-refresh');
  void historyList.offsetWidth;
  historyList.classList.add('history-refresh');
- if(songIndex%2===0){playlistSide=playlistSide==='right'?'left':'right'}
+ if(songIndex%2===0){level44AlternatePlaylistSide()}
  introEnd=0;updateLayers();requestAnimationFrame(fitRecordToSong);
 }
-function switchPlaylistSide(){playlistSide=playlistSide==='right'?'left':'right';updateLayers()}
+function level44AlternatePlaylistSide(){
+ const tv=$('tv');tv.classList.add('side-changing');
+ setTimeout(()=>{playlistSide=playlistSide==='right'?'left':'right';updateLayers();setTimeout(()=>tv.classList.remove('side-changing'),120)},260);
+}
+function switchPlaylistSide(){level44AlternatePlaylistSide()}
 
 function enqueueMessage(sender,body){
  if(fullPlaylist)closeFullPlaylist();
@@ -1936,6 +1956,7 @@ function liveUpdateTrack(d){
  livePlayKey=playKey;
  if(id!==liveTrackId){
   if(liveTrackId&&window.level44LastTrack){liveHistory.unshift(window.level44LastTrack);liveHistory=liveHistory.slice(0,3);try{sessionStorage.setItem('level44-tv-history',JSON.stringify(liveHistory))}catch(e){}}
+  if(liveTrackId)level44AlternatePlaylistSide();
   liveTrackId=id;level44NextTrackVisual();window.level44LastTrack={title:d.title||'',artist:d.artist||''};
   $('track').textContent=d.title||'ONBEKEND NUMMER';$('artist').textContent=d.artist||'';
   liveHistoryRender();requestAnimationFrame(fitRecordToSong);
@@ -1963,7 +1984,7 @@ liveHistoryRender();requestAnimationFrame(fitRecordToSong);$('track').textConten
 document.querySelector('.pixel-progress span').style.animation='none';
 
 /* Jukebox variation is tied to the actual track change, not polling frequency. */
-const level44VinylPairs=[['#00ffff','#ff00aa'],['#ff00aa','#ffff00'],['#ffff00','#00ff00'],['#00ff00','#ff5500'],['#ff5500','#00ffff'],['#00ffff','#ffff00'],['#ff00aa','#00ff00'],['#ffff00','#ff5500'],['#00ff00','#00ffff'],['#ff5500','#ff00aa']];
+const level44VinylPairs=[['#b56bff','#55eced'],['#ff68cc','#78e5ff'],['#8c7cff','#56f2df'],['#b56bff','#55eced']];
 const level44Mysteries=[
  '??? MYSTERY TRACK ???','NEXT LEVEL INCOMING','SECRET BANGER LOADING',
  'WHO DROPPED THIS BEAT?','BONUS TRACK UNLOCKED','THE NEXT BIG THING',
@@ -1977,11 +1998,11 @@ function level44NextTrackVisual(){
  const music=document.getElementById('music');
  const pair=level44VinylPairs[level44VisualIndex%level44VinylPairs.length];
  music.style.setProperty('--vinyl-outer',pair[0]);music.style.setProperty('--vinyl-center',pair[1]);
- music.style.setProperty('--vinyl-center-border',pair[0]);
+ music.style.setProperty('--vinyl-center-border','#ffffff');
  const ring=music.querySelector('.vinyl-svg circle:nth-child(2)');
- if(ring)ring.setAttribute('stroke',pair[0]==='#ffff00'?'#00ffff':'#ffff00');
+ if(ring)ring.setAttribute('stroke','#ffffff');
  const center=music.querySelector('.vinyl-svg circle:nth-child(9)');
- if(center)center.setAttribute('stroke',pair[0]);
+ if(center)center.setAttribute('stroke','#ffffff');
  const next=music.querySelector('.nextsong-heading strong');
  if(next)next.textContent=level44Mysteries[level44VisualIndex];
 }
