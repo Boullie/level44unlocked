@@ -1309,7 +1309,34 @@ body>h1,body>.intro,body>.foot{display:none!important}
  margin:0!important;padding:0!important;max-width:100%!important;
 }
 .home .message-marquee::before,.home .message-marquee::after{top:calc(50% + 16px)!important;transform:translateY(-50%)!important}
-</style><link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet"></head><body><h1>★ LEVEL 44 UNLOCKED ★</h1><p class="intro">PARTY TV · ORIGINELE ARCADE LOOK · 20 UNIEKE ACHTERGRONDEN · 50 POWER-UPS</p><main class="layout"><section><div class="tv" id="tv"><canvas id="ambient" width="1280" height="720"></canvas><div class="scan"></div><div class="home" id="home"><div class="arcade-corners"><span>★ LEVEL 44 • PARTY ARCADE ★</span><span>● PARTY ONLINE</span></div><div class="hero-stack"><div class="achievement">★ ACHIEVEMENT UNLOCKED ★</div><div class="hero"><div class="topline"><span class="hero-first">LEVEL <span class="age">44</span></span><span class="hero-second">UNLOCKED!</span></div></div><div class="insertcake" id="cakePrompt">INSERT CAKE TO CONTINUE</div></div><div class="message-marquee"><div class="caption"><div class="ticker-track" aria-label="PARTY MESSAGE FEED"><span class="ticker-copy">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span><span class="ticker-copy" aria-hidden="true">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span></div></div><div class="insert" id="messagePrompt">✦ INSERT MESSAGE ✦</div><div class="msg" id="message"><div class="name-line"><span class="message-symbol" id="symbolBefore" aria-hidden="true">✦</span><div class="who" id="who"></div><span class="message-symbol" id="symbolAfter" aria-hidden="true">✦</span></div><div class="message-line"><div class="words" id="words"></div></div></div></div><div class="scanplay"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUAQAAAABdRz15AAABS0lEQVR4nM2WQW4kQQgEg5HvyQ/6/8/qHyQvyD3U2LK88sHLSOuqUyMRokigqfD1zOMvE/w/W1X1VPX00FXVS54SmvjiAiW7+N6ghIbK0O7SmgcMTQ/uH/l+bzOG0H4FL0YePFET73iVAn18Duje8EiSQCwrSRLveEokITtGZstLFBsb+0S644EJxiGJlrw3COlMirTrJ77fvFfCJnaQYm3jg5SN2qZpLeNDJ4MKQlnmr9JwiwZgUmJVzw/gvqqZG8PgF+jh6DRdZO30ILLlAMRiz0sIKLJIWPMISuzg2CzrjzxDlBNsadtvmgIqM4hObfWV5CCESMIL3qszSxVgPU+T5FkwVrTU9/w/DNOhBHi1v5x573NRWObvAdUAc92tKZb7xrtNui/f+F98P5+zb4ge3QI06/pL5EhRElj2x9F3/AzSoJW+9cv33T+Au/yGE9/wPgAAAABJRU5ErkJggg==" alt="QR-code voor gastbediening"><div><strong>SCAN &amp; PLAY</strong><span>📱 Pak je gsm. Unlock de party!</span></div></div></div><div class="music" id="music">
+
+/* 2026-11-22: typography/spacing and ticker per approved design. */
+.home .message-marquee .ticker-track{opacity:1!important}
+.home .message-marquee .ticker-copy{
+ color:#f442b5!important;font-family:'Silkscreen',monospace!important;
+ font-weight:400!important;font-synthesis:none!important;
+ -webkit-text-stroke:0!important;
+ text-shadow:1px 1px 0 #66134b,0 0 5px #e338a566!important;
+}
+.home .hero .topline{gap:clamp(20px,3.8vh,42px)!important}
+.tv.split-view .home .hero .topline{gap:clamp(17px,3vh,32px)!important}
+.home .hero-stack{gap:0!important}
+.home .insertcake{display:none!important}
+.home .message-marquee{position:relative!important}
+.home .message-marquee::before,.home .message-marquee::after{top:calc(50% + 16px)!important}
+.home .message-marquee .caption{margin-bottom:0!important}
+.home .message-marquee .insert,.home .message-marquee .msg{align-self:center!important}
+.home .below-feed-prompt{
+ position:absolute;left:0;right:0;bottom:calc(-1 * clamp(31px,5.3vh,53px));
+ text-align:center;color:#59f4ef;
+ font-family:'Silkscreen',monospace;font-size:clamp(16px,2vw,29px);
+ font-weight:700;letter-spacing:.03em;
+ text-shadow:2px 2px 0 #13505d,0 0 12px #38ffff55;
+ pointer-events:none;
+}
+.tv.split-view .home .below-feed-prompt{font-size:clamp(12px,1.5vw,22px)!important}
+.home.showing-message .below-feed-prompt{display:none!important}
+</style><link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet"></head><body><h1>★ LEVEL 44 UNLOCKED ★</h1><p class="intro">PARTY TV · ORIGINELE ARCADE LOOK · 20 UNIEKE ACHTERGRONDEN · 50 POWER-UPS</p><main class="layout"><section><div class="tv" id="tv"><canvas id="ambient" width="1280" height="720"></canvas><div class="scan"></div><div class="home" id="home"><div class="arcade-corners"><span>★ LEVEL 44 • PARTY ARCADE ★</span><span>● PARTY ONLINE</span></div><div class="hero-stack"><div class="achievement">★ ACHIEVEMENT UNLOCKED ★</div><div class="hero"><div class="topline"><span class="hero-first">LEVEL <span class="age">44</span></span><span class="hero-second">UNLOCKED!</span></div></div><div class="insertcake" id="cakePrompt">INSERT CAKE TO CONTINUE</div></div><div class="message-marquee"><div class="below-feed-prompt" id="belowFeedPrompt">INSERT CAKE TO CONTINUE</div><div class="caption"><div class="ticker-track" aria-label="PARTY MESSAGE FEED"><span class="ticker-copy">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span><span class="ticker-copy" aria-hidden="true">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span></div></div><div class="insert" id="messagePrompt">✦ INSERT MESSAGE ✦</div><div class="msg" id="message"><div class="name-line"><span class="message-symbol" id="symbolBefore" aria-hidden="true">✦</span><div class="who" id="who"></div><span class="message-symbol" id="symbolAfter" aria-hidden="true">✦</span></div><div class="message-line"><div class="words" id="words"></div></div></div></div><div class="scanplay"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUAQAAAABdRz15AAABS0lEQVR4nM2WQW4kQQgEg5HvyQ/6/8/qHyQvyD3U2LK88sHLSOuqUyMRokigqfD1zOMvE/w/W1X1VPX00FXVS54SmvjiAiW7+N6ghIbK0O7SmgcMTQ/uH/l+bzOG0H4FL0YePFET73iVAn18Duje8EiSQCwrSRLveEokITtGZstLFBsb+0S644EJxiGJlrw3COlMirTrJ77fvFfCJnaQYm3jg5SN2qZpLeNDJ4MKQlnmr9JwiwZgUmJVzw/gvqqZG8PgF+jh6DRdZO30ILLlAMRiz0sIKLJIWPMISuzg2CzrjzxDlBNsadtvmgIqM4hObfWV5CCESMIL3qszSxVgPU+T5FkwVrTU9/w/DNOhBHi1v5x573NRWObvAdUAc92tKZb7xrtNui/f+F98P5+zb4ge3QI06/pL5EhRElj2x9F3/AzSoJW+9cv33T+Au/yGE9/wPgAAAABJRU5ErkJggg==" alt="QR-code voor gastbediening"><div><strong>SCAN &amp; PLAY</strong><span>📱 Pak je gsm. Unlock de party!</span></div></div></div><div class="music" id="music">
 <div class="music-bulbs" aria-hidden="true"></div>
 <div class="music-header"><div class="music-kicker">★ LEVEL 44 ★ PLAYER ONE RADIO ★</div><div class="eyebrow">♫ PARTY PLAYLIST ♫</div><div class="music-subtitle">NOW LOADING THE NEXT BANGER...</div></div>
 <div class="nextsong unknown-next"><span class="nextsong-heading">UP NEXT <strong>??? MYSTERY TRACK ???</strong></span><div class="disco-ball" aria-label="Glitterende discobal" role="img"><div class="disco-facets"></div></div><div class="mystery-dancer" aria-label="Dansend pixelmannetje" role="img"><div class="dancer-head"><i></i><i></i></div><div class="dancer-body"></div><div class="dancer-arm left"></div><div class="dancer-arm right"></div><div class="dancer-leg left"></div><div class="dancer-leg right"></div><div class="dancer-floor"></div></div><div class="dancer-stage-line" aria-hidden="true"></div></div>
@@ -1715,6 +1742,15 @@ liveHistoryRender();$('track').textContent='WACHT OP SPOTIFY';$('artist').textCo
 document.querySelector('.pixel-progress span').style.animation='none';
 livePoll();setInterval(livePoll,5000);
 
+/* Mirror rotating cyan subheading below the LED frame, rather than below the hero. */
+(function(){
+ const source=document.getElementById('cakePrompt'),target=document.getElementById('belowFeedPrompt');
+ if(!source||!target)return;
+ const sync=()=>{if(target.textContent!==source.textContent)target.textContent=source.textContent};
+ sync();new MutationObserver(sync).observe(source,{childList:true,characterData:true,subtree:true});
+})();
+
+
 /* Build a seamless ticker wide enough to cover every LED panel size.
    Two identical halves ensure the -50% loop has no visible jump. */
 (function(){
@@ -1728,7 +1764,7 @@ livePoll();setInterval(livePoll,5000);
   track.replaceChildren();
   for(let i=0;i<2;i++){const span=document.createElement('span');span.className='ticker-copy';span.textContent=half;if(i)span.setAttribute('aria-hidden','true');track.appendChild(span)}
   /* Readable constant 40 pixels per second, independent of panel width. */
-  track.style.setProperty('--ticker-duration',Math.max(32,track.scrollWidth/2/60)+'s');
+  track.style.setProperty('--ticker-duration',Math.max(18,track.scrollWidth/2/120)+'s');
  }
  fitTicker();window.addEventListener('resize',fitTicker);
 })();
