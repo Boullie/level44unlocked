@@ -1531,7 +1531,7 @@ body>h1,body>.intro,body>.foot{display:none!important}
 .music .record-rim{border-color:#ffffff!important;box-shadow:0 0 0 2px #ffffff,0 0 16px #a865ff99!important}
 .music .vinyl-svg > circle:first-child{stroke:var(--vinyl-outer)!important}
 .music .vinyl-svg > circle:nth-child(2){stroke:#ffffff!important}
-.music .vinyl-svg .vinyl-spinning > circle:first-child{stroke:var(--vinyl-third)!important}.music .vinyl-svg .vinyl-spinning > circle:nth-child(6){fill:var(--vinyl-center)!important;stroke:#ffe46b!important}
+.music .vinyl-svg .vinyl-spinning > circle:first-child{stroke:var(--vinyl-third)!important}.music .vinyl-svg .vinyl-spinning > circle:nth-child(6){fill:#ffe46b!important;stroke:var(--vinyl-center-border)!important}
 .music .pixel-progress{display:none!important}
 /* Compact jukebox alternates sides with a brief fade at the beginning of each track. */
 .tv.split-view.playlist-left .home{left:40%!important;right:0!important;width:60%!important}
@@ -1581,7 +1581,12 @@ body>h1,body>.intro,body>.foot{display:none!important}
 .music.showcase .nextsong.unknown-next .disco-ball{width:clamp(72px,11.25vh,132px)!important;height:clamp(72px,11.25vh,132px)!important;max-width:90%!important}
 .music.showcase .nextsong.unknown-next .mystery-dancer{width:72px!important;height:112px!important;flex:1 1 auto!important;min-height:112px!important;max-height:100%!important;align-self:center!important;transform-origin:50% 85%;scale:1.35}
 .music.showcase .nextsong.unknown-next{justify-content:space-between!important;gap:8px!important;overflow:hidden!important}
-.music .vinyl-svg .vinyl-spinning > circle:nth-child(6){stroke:#ffe46b!important}
+ .music .vinyl-svg .vinyl-spinning > circle:nth-child(6){fill:#ffe46b!important;stroke:var(--vinyl-center-border)!important}
+
+/* Compact playlist typographic scale follows the UP NEXT card width. */
+.music.compact .music-header{margin-bottom:20px!important}
+.music.compact .music-kicker,.music.compact .eyebrow{white-space:nowrap!important;max-width:100%!important;overflow:visible!important;line-height:1.15!important}
+.music.compact .nextsong-heading{display:block!important;width:100%!important;text-align:center!important}
 </style><link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet"></head><body><h1>★ LEVEL 44 UNLOCKED ★</h1><p class="intro">PARTY TV · ORIGINELE ARCADE LOOK · 20 UNIEKE ACHTERGRONDEN · 50 POWER-UPS</p><main class="layout"><section><div class="tv" id="tv"><canvas id="ambient" width="1280" height="720"></canvas><div class="scan"></div><div class="home" id="home"><div class="arcade-corners"><span>★ LEVEL 44 • PARTY ARCADE ★</span><span>● PARTY ONLINE</span></div><div class="hero-stack"><div class="achievement">★ ACHIEVEMENT UNLOCKED ★</div><div class="hero"><div class="topline"><span class="hero-first">LEVEL <span class="age">44</span></span><span class="hero-second">UNLOCKED!</span></div></div><div class="insertcake" id="cakePrompt">INSERT CAKE TO CONTINUE</div></div><div class="message-marquee"><div class="caption"><div class="ticker-track" aria-label="PARTY MESSAGE FEED"><span class="ticker-copy">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span><span class="ticker-copy" aria-hidden="true">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span></div></div><div class="insert" id="messagePrompt">✦ INSERT MESSAGE ✦</div><div class="msg" id="message"><div class="name-line"><span class="message-symbol" id="symbolBefore" aria-hidden="true">✦</span><div class="who" id="who"></div><span class="message-symbol" id="symbolAfter" aria-hidden="true">✦</span></div><div class="message-line"><div class="words" id="words"></div></div></div></div><div class="below-feed-prompt" id="belowFeedPrompt">INSERT CAKE TO CONTINUE</div><div class="scanplay"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUAQAAAABdRz15AAABS0lEQVR4nM2WQW4kQQgEg5HvyQ/6/8/qHyQvyD3U2LK88sHLSOuqUyMRokigqfD1zOMvE/w/W1X1VPX00FXVS54SmvjiAiW7+N6ghIbK0O7SmgcMTQ/uH/l+bzOG0H4FL0YePFET73iVAn18Duje8EiSQCwrSRLveEokITtGZstLFBsb+0S644EJxiGJlrw3COlMirTrJ77fvFfCJnaQYm3jg5SN2qZpLeNDJ4MKQlnmr9JwiwZgUmJVzw/gvqqZG8PgF+jh6DRdZO30ILLlAMRiz0sIKLJIWPMISuzg2CzrjzxDlBNsadtvmgIqM4hObfWV5CCESMIL3qszSxVgPU+T5FkwVrTU9/w/DNOhBHi1v5x573NRWObvAdUAc92tKZb7xrtNui/f+F98P5+zb4ge3QI06/pL5EhRElj2x9F3/AzSoJW+9cv33T+Au/yGE9/wPgAAAABJRU5ErkJggg==" alt="QR-code voor gastbediening"><div><strong>SCAN &amp; PLAY</strong><span>📱 Pak je gsm. Unlock de party!</span></div></div></div><div class="music" id="music">
 <div class="music-bulbs" aria-hidden="true"></div>
 <div class="music-header"><div class="music-kicker">★ LEVEL 44 ★ PLAYER ONE RADIO ★</div><div class="eyebrow">♫ PARTY PLAYLIST ♫</div><div class="music-subtitle">NOW LOADING THE NEXT BANGER...</div></div>
@@ -1803,7 +1808,33 @@ function powerStageHTML(source){
  #buttons,#scenes,#tag,#caption,#replay,#next,#auto{display:none!important}`;
  return source.replace(/<\/head>/i,'<style>'+css+'</style></head>');
 }
-function powerUp(k,spontaneous=false){if(fullPlaylist)closeFullPlaylist();lastIdlePower=performance.now();if(!spontaneous)lastGuestActivity=performance.now();clearTimeout(messageRotationTimer);if(mode==='message'&&activeMessage){pendingMessages.unshift(activeMessage);activeMessage=null}let idx=nextScene(k);mode='power';powerEnd=performance.now()+7800;messageEnd=0;let number=META[k].start+idx;$('powerlabel').textContent=META[k].label+' · '+number+'/50';$('powerframe').onload=()=>{try{let doc=$('powerframe').contentDocument;let root=doc.getElementById('buttons')||doc.getElementById('scenes');let buttons=root?[...root.querySelectorAll('button')]:[];buttons[idx]?.click()}catch(e){console.error('Power-up scene:',e)}};$('powerframe').srcdoc=powerStageHTML(LABS[k]);updateLayers();document.querySelectorAll('.sidebuttons button').forEach(b=>b.classList.toggle('active',b.dataset.key===k))}
+const level44PowerDurations={confetti:10500,cheer:9500,dance:11500,levelup:9500,heart:11000,boss:12500,fireworks:12000,laser:11500,jackpot:10000,glitch:9000};
+let level44PowerSerial=0;
+function powerUp(k,spontaneous=false){
+ if(!META[k]||!LABS[k])return;
+ if(mode==='power'){level44ActionQueue.push(k);return}
+ if(fullPlaylist)closeFullPlaylist();
+ lastIdlePower=performance.now();if(!spontaneous)lastGuestActivity=performance.now();
+ if(mode==='message'&&activeMessage){
+  clearTimeout(messageRotationTimer);pendingMessages.unshift(activeMessage);activeMessage=null;messageEnd=0;
+ }
+ const idx=nextScene(k),serial=++level44PowerSerial;
+ mode='power';powerEnd=performance.now()+(level44PowerDurations[k]||11000);
+ $('powerlabel').textContent=META[k].label+' · '+(META[k].start+idx)+'/50';
+ const frame=$('powerframe');
+ frame.onload=()=>{
+  if(serial!==level44PowerSerial)return;
+  try{
+   const doc=frame.contentDocument;
+   const root=doc?.getElementById('buttons')||doc?.getElementById('scenes');
+   const buttons=root?[...root.querySelectorAll('button')]:[];
+   if(buttons[idx])buttons[idx].click();
+  }catch(e){console.warn('Power-up scene:',e)}
+ };
+ frame.srcdoc=powerStageHTML(LABS[k]);
+ updateLayers();
+ document.querySelectorAll('.sidebuttons button').forEach(b=>b.classList.toggle('active',b.dataset.key===k));
+}
 function returnToHome(){
  fullPlaylist=false;clearTimeout(messageRotationTimer);
  mode='music';activeMessage=null;powerEnd=0;messageEnd=0;introEnd=0;
@@ -1972,7 +2003,7 @@ function drawAmbient(t,now){
  mainCtx.fillStyle="rgba(5,4,24,0.20)";
  mainCtx.fillRect(0,0,W,H);
 }
-function tick(now){let t=now/1000;let dt=Math.min(.1,(now-lastFrame)/1000||0);lastFrame=now;drawAmbient(t,now);if(mode==='power'&&now>=powerEnd){mode='music';$('powerframe').srcdoc='';document.querySelectorAll('.sidebuttons button').forEach(b=>b.classList.remove('active'));updateLayers();if(level44ActionQueue.length){powerUp(level44ActionQueue.shift(),true)}else if(pendingMessages.length){nextMessageAt=now;playNextMessage()}}if(mode==='message'&&now>=messageEnd)finishMessage();if(mode==='music'&&pendingMessages.length&&now>=nextMessageAt&&!level44ActionQueue.length)playNextMessage();if(introEnd&&now>=introEnd){introEnd=0;updateLayers()}if(now-lastPromptAt>=6500){lastPromptAt=now;rotateMessagePrompt()}if(now-lastCakeAt>=9500){lastCakeAt=now;rotateCakePrompt()}if($('autobg').checked&&now-lastBg>=900000)nextBackground();if($('automsg').checked&&now-lastQueuedDemo>=12000){lastQueuedDemo=now;showMessage()}if(auto&&now>=autoAt){autoAt=now+14000;if(mode==='music'&&!pendingMessages.length)powerUp(Object.keys(META)[Math.floor(Math.random()*10)])}if(level44ActionQueue.length&&mode==='music'){powerUp(level44ActionQueue.shift(),true)}if(now-level44LastGuestMessageAt>=7200000&&now-level44LastJokeAt>=600000&&mode==='music'&&!pendingMessages.length&&!fullPlaylist){level44LastJokeAt=now;const joke=level44Jokes[level44JokeIndex++%level44Jokes.length];enqueueMessage(joke[0],joke[1])}if($('idlepower').checked&&mode==='music'&&!fullPlaylist&&!pendingMessages.length&&!activeMessage&&now-lastIdlePower>=1200000){powerUp(Object.keys(META)[Math.floor(Math.random()*10)],true)}if(fullPlaylist&&now>=fullPlaylistUntil)closeFullPlaylist();if($('autofull').checked&&mode==='music'&&!fullPlaylist&&!pendingMessages.length&&now-lastFullPlaylist>=720000)openFullPlaylist();let fraction=mode==='power'?Math.max(0,(powerEnd-now)/7800):mode==='message'?Math.max(0,(messageEnd-now)/8000):0;$('progress').style.width=(fraction*100)+'%';requestAnimationFrame(tick)}
+function tick(now){let t=now/1000;let dt=Math.min(.1,(now-lastFrame)/1000||0);lastFrame=now;drawAmbient(t,now);if(mode==='power'&&now>=powerEnd){mode='music';level44PowerSerial++;$('powerframe').onload=null;$('powerframe').srcdoc='';document.querySelectorAll('.sidebuttons button').forEach(b=>b.classList.remove('active'));updateLayers();if(level44ActionQueue.length){powerUp(level44ActionQueue.shift(),true)}else if(pendingMessages.length){nextMessageAt=now;playNextMessage()}}if(mode==='message'&&now>=messageEnd)finishMessage();if(mode==='music'&&pendingMessages.length&&now>=nextMessageAt&&!level44ActionQueue.length)playNextMessage();if(introEnd&&now>=introEnd){introEnd=0;updateLayers()}if(now-lastPromptAt>=6500){lastPromptAt=now;rotateMessagePrompt()}if(now-lastCakeAt>=9500){lastCakeAt=now;rotateCakePrompt()}if($('autobg').checked&&now-lastBg>=900000)nextBackground();if($('automsg').checked&&now-lastQueuedDemo>=12000){lastQueuedDemo=now;showMessage()}if(auto&&now>=autoAt){autoAt=now+14000;if(mode==='music'&&!pendingMessages.length)powerUp(Object.keys(META)[Math.floor(Math.random()*10)])}if(level44ActionQueue.length&&mode==='music'){powerUp(level44ActionQueue.shift(),true)}if(now-level44LastGuestMessageAt>=7200000&&now-level44LastJokeAt>=600000&&mode==='music'&&!pendingMessages.length&&!fullPlaylist){level44LastJokeAt=now;const joke=level44Jokes[level44JokeIndex++%level44Jokes.length];enqueueMessage(joke[0],joke[1])}if($('idlepower').checked&&mode==='music'&&!fullPlaylist&&!pendingMessages.length&&!activeMessage&&now-lastIdlePower>=1200000){powerUp(Object.keys(META)[Math.floor(Math.random()*10)],true)}if(fullPlaylist&&now>=fullPlaylistUntil)closeFullPlaylist();if($('autofull').checked&&mode==='music'&&!fullPlaylist&&!pendingMessages.length&&now-lastFullPlaylist>=720000)openFullPlaylist();let fraction=mode==='power'?Math.max(0,(powerEnd-now)/7800):mode==='message'?Math.max(0,(messageEnd-now)/8000):0;$('progress').style.width=(fraction*100)+'%';requestAnimationFrame(tick)}
 nextBackground();updateLayers();requestAnimationFrame(tick);
 
 renderPreviousHits();
@@ -2038,12 +2069,12 @@ function level44NextTrackVisual(){
  level44VisualIndex=(level44VisualIndex+1)%level44Mysteries.length;
  const music=document.getElementById('music');
  const pair=level44VinylPairs[level44VisualIndex%level44VinylPairs.length];
- music.style.setProperty('--vinyl-outer',pair[0],'important');music.style.setProperty('--vinyl-center',pair[2],'important');
- music.style.setProperty('--vinyl-center-border','#ffe46b','important');music.style.setProperty('--vinyl-third',pair[1],'important');
+ music.style.setProperty('--vinyl-outer',pair[0],'important');music.style.setProperty('--vinyl-center','#ffe46b','important');
+ music.style.setProperty('--vinyl-center-border',pair[2],'important');music.style.setProperty('--vinyl-third',pair[1],'important');
  const ring=music.querySelector('.vinyl-svg circle:nth-child(2)');
  if(ring)ring.setAttribute('stroke','#ffffff');
  const center=music.querySelector('.vinyl-svg circle:nth-child(9)');
- if(center)center.setAttribute('stroke','#ffe46b');
+ if(center)center.setAttribute('stroke',pair[2]);
  const next=music.querySelector('.nextsong-heading strong');
  if(next)next.textContent=level44Mysteries[level44VisualIndex];
 }
@@ -2234,5 +2265,23 @@ function level44RefreshSongMarquees(){
  });watcher.observe(words,{childList:true,characterData:true,subtree:true});
  const ro=new ResizeObserver(()=>requestAnimationFrame(layout));ro.observe(home);ro.observe(hero);ro.observe(qr);
  window.addEventListener('resize',layout);setInterval(layout,1300);requestAnimationFrame(layout);
+})();
+
+/* Measure available card width and fit both header lines and UP NEXT dynamically. */
+(function(){
+ const music=document.getElementById('music');if(!music)return;
+ function fit(){
+  if(!music.classList.contains('compact'))return;
+  const card=music.querySelector('.nextsong'),heading=music.querySelector('.eyebrow'),kicker=music.querySelector('.music-kicker'),next=music.querySelector('.nextsong-heading'),strong=next?.querySelector('strong');
+  if(!card||!heading||!kicker||!next)return;
+  const target=Math.max(80,card.clientWidth-16);
+  const measure=(el,size)=>{const probe=document.createElement('span');const st=getComputedStyle(el);probe.style.cssText='position:absolute;visibility:hidden;white-space:nowrap;font-family:'+st.fontFamily+';font-weight:'+st.fontWeight+';letter-spacing:'+st.letterSpacing+';font-size:'+size+'px';probe.textContent=el.textContent;document.body.appendChild(probe);const width=probe.getBoundingClientRect().width;probe.remove();return width};
+  const fitSize=(el,max)=>{let size=max;const width=measure(el,size);if(width>0)size=Math.min(max,Math.max(5,size*target/width));el.style.fontSize=size+'px';return size};
+  const mainSize=fitSize(heading,35);
+  fitSize(kicker,Math.max(8,mainSize*.52));
+  if(strong){const st=getComputedStyle(strong);const desired=Math.max(70,kicker.scrollWidth);const current=measure(strong,18);strong.style.fontSize=Math.max(7,Math.min(24,18*desired/Math.max(1,current)))+'px'}
+ }
+ const observer=new ResizeObserver(()=>requestAnimationFrame(fit));observer.observe(music);
+ window.addEventListener('resize',fit);setInterval(fit,2000);requestAnimationFrame(fit);
 })();
 </script></body></html>
