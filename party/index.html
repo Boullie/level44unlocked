@@ -1160,6 +1160,43 @@ body>h1,body>.intro,body>.foot{display:none!important}
 .home .message-marquee .ticker-copy{display:block!important;flex:0 0 auto!important;padding-right:0!important;white-space:nowrap!important}
 .home .message-marquee::before,.home .message-marquee::after{z-index:10!important;top:57%!important}
 .home .message-marquee .insert,.home .message-marquee .msg{position:relative!important;z-index:4!important}
+
+/* V55 LED readability: chunky arcade typography, reserved ticker row. */
+.home .message-marquee,.tv.split-view .home .message-marquee{
+ display:flex!important;flex-direction:column!important;justify-content:center!important;
+ padding-top:clamp(32px,4.4vh,48px)!important;padding-bottom:12px!important;
+ min-height:clamp(108px,16vh,156px)!important;gap:5px!important;
+}
+.home .message-marquee .caption,.tv.split-view .home .message-marquee .caption{
+ top:5px!important;height:clamp(20px,3.2vh,30px)!important;line-height:clamp(20px,3.2vh,30px)!important;
+}
+.home .message-marquee .ticker-track{animation-duration:var(--ticker-duration,120s)!important}
+.home .message-marquee .ticker-copy{
+ font-family:'Jersey 10','Press Start 2P',monospace!important;
+ font-size:clamp(17px,1.8vw,25px)!important;letter-spacing:1.3px!important;
+ font-weight:400!important;-webkit-text-stroke:.35px currentColor!important;
+ color:#65d9dc!important;text-shadow:1px 1px 0 #155365!important;
+}
+.home .achievement,.home .insertcake,.home .message-marquee .insert,
+.home .message-marquee .msg .who,.home .message-marquee .msg .words,
+.home .message-marquee .msg .name-line{
+ font-family:'Jersey 10','Press Start 2P',monospace!important;
+ font-weight:400!important;font-synthesis:none!important;
+ letter-spacing:.065em!important;-webkit-text-stroke:.65px currentColor!important;
+}
+.home .achievement{font-size:clamp(21px,2.55vw,36px)!important}
+.home .insertcake{font-size:clamp(21px,2.8vw,40px)!important}
+.home .message-marquee .insert{font-size:clamp(27px,3.1vw,47px)!important;line-height:1.1!important}
+.home .message-marquee .msg .who{font-size:clamp(20px,2.3vw,35px)!important;line-height:1.05!important}
+.home .message-marquee .msg .words{font-size:clamp(24px,2.9vw,43px)!important;line-height:1.1!important}
+.tv.split-view .home .achievement{font-size:clamp(17px,1.8vw,28px)!important}
+.tv.split-view .home .insertcake{font-size:clamp(18px,2vw,32px)!important}
+.tv.split-view .home .message-marquee .insert{font-size:clamp(21px,2.25vw,35px)!important}
+.tv.split-view .home .message-marquee .msg .words{font-size:clamp(20px,2.2vw,34px)!important}
+.home .message-marquee .insert,.home .message-marquee .msg{
+ position:relative!important;top:auto!important;margin:0!important;max-width:100%!important;
+}
+.home .message-marquee .insert{text-shadow:2px 2px 0 #a25a19,0 0 12px #ffac42aa!important}
 </style><link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Press+Start+2P&display=swap" rel="stylesheet"></head><body><h1>★ LEVEL 44 UNLOCKED ★</h1><p class="intro">PARTY TV · ORIGINELE ARCADE LOOK · 20 UNIEKE ACHTERGRONDEN · 50 POWER-UPS</p><main class="layout"><section><div class="tv" id="tv"><canvas id="ambient" width="1280" height="720"></canvas><div class="scan"></div><div class="home" id="home"><div class="hero-stack"><div class="hero"><div class="topline">LEVEL <span class="age">44</span> UNLOCKED!</div></div><div class="insertcake" id="cakePrompt">INSERT CAKE TO CONTINUE</div></div><div class="message-marquee"><div class="caption"><div class="ticker-track" aria-label="PARTY MESSAGE FEED"><span class="ticker-copy">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span><span class="ticker-copy" aria-hidden="true">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span></div></div><div class="insert" id="messagePrompt">✦ INSERT MESSAGE ✦</div><div class="msg" id="message"><div class="name-line"><span class="message-symbol" id="symbolBefore" aria-hidden="true">✦</span><div class="who" id="who"></div><span class="message-symbol" id="symbolAfter" aria-hidden="true">✦</span></div><div class="message-line"><div class="words" id="words"></div></div></div></div><div class="scanplay"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUAQAAAABdRz15AAABS0lEQVR4nM2WQW4kQQgEg5HvyQ/6/8/qHyQvyD3U2LK88sHLSOuqUyMRokigqfD1zOMvE/w/W1X1VPX00FXVS54SmvjiAiW7+N6ghIbK0O7SmgcMTQ/uH/l+bzOG0H4FL0YePFET73iVAn18Duje8EiSQCwrSRLveEokITtGZstLFBsb+0S644EJxiGJlrw3COlMirTrJ77fvFfCJnaQYm3jg5SN2qZpLeNDJ4MKQlnmr9JwiwZgUmJVzw/gvqqZG8PgF+jh6DRdZO30ILLlAMRiz0sIKLJIWPMISuzg2CzrjzxDlBNsadtvmgIqM4hObfWV5CCESMIL3qszSxVgPU+T5FkwVrTU9/w/DNOhBHi1v5x573NRWObvAdUAc92tKZb7xrtNui/f+F98P5+zb4ge3QI06/pL5EhRElj2x9F3/AzSoJW+9cv33T+Au/yGE9/wPgAAAABJRU5ErkJggg==" alt="QR-code voor gastbediening"><div><strong>SCAN &amp; PLAY</strong><span>📱 Pak je gsm. Unlock de party!</span></div></div></div><div class="music" id="music">
 <div class="music-bulbs" aria-hidden="true"></div>
 <div class="music-header"><div class="music-kicker">★ LEVEL 44 ★ PLAYER ONE RADIO ★</div><div class="eyebrow">♫ PARTY PLAYLIST ♫</div><div class="music-subtitle">NOW LOADING THE NEXT BANGER...</div></div>
@@ -1578,6 +1615,8 @@ livePoll();setInterval(livePoll,5000);
   const half=sample.repeat(count);
   track.replaceChildren();
   for(let i=0;i<2;i++){const span=document.createElement('span');span.className='ticker-copy';span.textContent=half;if(i)span.setAttribute('aria-hidden','true');track.appendChild(span)}
+  /* Readable constant 40 pixels per second, independent of panel width. */
+  track.style.setProperty('--ticker-duration',Math.max(45,track.scrollWidth/2/40)+'s');
  }
  fitTicker();window.addEventListener('resize',fitTicker);
 })();
