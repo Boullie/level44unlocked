@@ -1531,7 +1531,7 @@ body>h1,body>.intro,body>.foot{display:none!important}
 .music .record-rim{border-color:#ffffff!important;box-shadow:0 0 0 2px #ffffff,0 0 16px #a865ff99!important}
 .music .vinyl-svg > circle:first-child{stroke:var(--vinyl-outer)!important}
 .music .vinyl-svg > circle:nth-child(2){stroke:#ffffff!important}
-.music .vinyl-svg .vinyl-spinning > circle:first-child{stroke:var(--vinyl-third)!important}.music .vinyl-svg .vinyl-spinning > circle:nth-child(6){fill:#55eced!important;stroke:var(--vinyl-center-border)!important}
+.music .vinyl-svg .vinyl-spinning > circle:first-child{stroke:var(--vinyl-third)!important}.music .vinyl-svg .vinyl-spinning > circle:nth-child(6){fill:var(--vinyl-center)!important;stroke:#ffe46b!important}
 .music .pixel-progress{display:none!important}
 /* Compact jukebox alternates sides with a brief fade at the beginning of each track. */
 .tv.split-view.playlist-left .home{left:40%!important;right:0!important;width:60%!important}
@@ -1688,7 +1688,9 @@ function nextSong(){
  level44AlternatePlaylistSide()
  introEnd=0;updateLayers();requestAnimationFrame(fitRecordToSong);
 }
+let level44DeferredSideChange=false;
 function level44AlternatePlaylistSide(){
+ if(mode==='message'){level44DeferredSideChange=!level44DeferredSideChange;return}
  const tv=$('tv');tv.classList.add('side-changing');
  setTimeout(()=>{playlistSide=playlistSide==='right'?'left':'right';updateLayers();setTimeout(()=>tv.classList.remove('side-changing'),120)},260);
 }
@@ -1709,6 +1711,7 @@ function finishMessage(){
  if(mode!=='message')return;
  clearTimeout(messageRotationTimer);
  const completed=activeMessage;activeMessage=null;messageEnd=0;
+ if(level44DeferredSideChange){level44DeferredSideChange=false;playlistSide=playlistSide==='right'?'left':'right'}
  if(completed?.level44Wish){
   completed.level44Remaining--;
   if(completed.level44Remaining>0){
@@ -1741,9 +1744,10 @@ function playNextMessage(continueVisible=false){
  $('symbolBefore').textContent=mark;$('symbolAfter').textContent=mark;
  void el.offsetWidth;
  if(!continueVisible)el.classList.add('led-arriving');
- messageEnd=performance.now()+8000;introEnd=0;lastMsg=performance.now();mode='message';
+ const messageDuration=Math.max(8000,Math.min(30000,5000+String(m[1]||'').length*135));
+ messageEnd=performance.now()+messageDuration;introEnd=0;lastMsg=performance.now();mode='message';
  clearTimeout(messageRotationTimer);
- messageRotationTimer=setTimeout(finishMessage,8000);
+ messageRotationTimer=setTimeout(finishMessage,messageDuration);
  updateLayers();updateQueueStatus();
 }
 function showMessage(){const m=messages[msgIndex++%messages.length];enqueueMessage(m[0],m[1])}
@@ -1953,7 +1957,7 @@ function drawAmbient(t,now){
  mainCtx.fillStyle="rgba(5,4,24,0.20)";
  mainCtx.fillRect(0,0,W,H);
 }
-function tick(now){let t=now/1000;let dt=Math.min(.1,(now-lastFrame)/1000||0);lastFrame=now;drawAmbient(t,now);if(mode==='power'&&now>=powerEnd){mode='music';$('powerframe').srcdoc='';document.querySelectorAll('.sidebuttons button').forEach(b=>b.classList.remove('active'));updateLayers();if(pendingMessages.length){nextMessageAt=now;playNextMessage()}}if(mode==='message'&&now>=messageEnd)finishMessage();if(mode==='music'&&pendingMessages.length&&now>=nextMessageAt)playNextMessage();if(introEnd&&now>=introEnd){introEnd=0;updateLayers()}if(now-lastPromptAt>=6500){lastPromptAt=now;rotateMessagePrompt()}if(now-lastCakeAt>=9500){lastCakeAt=now;rotateCakePrompt()}if($('autobg').checked&&now-lastBg>=900000)nextBackground();if($('automsg').checked&&now-lastQueuedDemo>=12000){lastQueuedDemo=now;showMessage()}if(auto&&now>=autoAt){autoAt=now+14000;if(mode!=='power')powerUp(Object.keys(META)[Math.floor(Math.random()*10)])}if(level44ActionQueue.length&&mode!=='power'){powerUp(level44ActionQueue.shift(),true)}if($('idlepower').checked&&mode==='music'&&!fullPlaylist&&!pendingMessages.length&&!activeMessage&&now-lastIdlePower>=1200000){powerUp(Object.keys(META)[Math.floor(Math.random()*10)],true)}if(fullPlaylist&&now>=fullPlaylistUntil)closeFullPlaylist();if($('autofull').checked&&mode==='music'&&!fullPlaylist&&!pendingMessages.length&&now-lastFullPlaylist>=720000)openFullPlaylist();let fraction=mode==='power'?Math.max(0,(powerEnd-now)/7800):mode==='message'?Math.max(0,(messageEnd-now)/8000):0;$('progress').style.width=(fraction*100)+'%';requestAnimationFrame(tick)}
+function tick(now){let t=now/1000;let dt=Math.min(.1,(now-lastFrame)/1000||0);lastFrame=now;drawAmbient(t,now);if(mode==='power'&&now>=powerEnd){mode='music';$('powerframe').srcdoc='';document.querySelectorAll('.sidebuttons button').forEach(b=>b.classList.remove('active'));updateLayers();if(pendingMessages.length){nextMessageAt=now;playNextMessage()}}if(mode==='message'&&now>=messageEnd)finishMessage();if(mode==='music'&&pendingMessages.length&&now>=nextMessageAt)playNextMessage();if(introEnd&&now>=introEnd){introEnd=0;updateLayers()}if(now-lastPromptAt>=6500){lastPromptAt=now;rotateMessagePrompt()}if(now-lastCakeAt>=9500){lastCakeAt=now;rotateCakePrompt()}if($('autobg').checked&&now-lastBg>=900000)nextBackground();if($('automsg').checked&&now-lastQueuedDemo>=12000){lastQueuedDemo=now;showMessage()}if(auto&&now>=autoAt){autoAt=now+14000;if(mode!=='power')powerUp(Object.keys(META)[Math.floor(Math.random()*10)])}if(level44ActionQueue.length&&mode==='music'){powerUp(level44ActionQueue.shift(),true)}if(now-level44LastGuestMessageAt>=7200000&&now-level44LastJokeAt>=600000&&mode==='music'&&!pendingMessages.length&&!fullPlaylist){level44LastJokeAt=now;const joke=level44Jokes[level44JokeIndex++%level44Jokes.length];enqueueMessage(joke[0],joke[1])}if($('idlepower').checked&&mode==='music'&&!fullPlaylist&&!pendingMessages.length&&!activeMessage&&now-lastIdlePower>=1200000){powerUp(Object.keys(META)[Math.floor(Math.random()*10)],true)}if(fullPlaylist&&now>=fullPlaylistUntil)closeFullPlaylist();if($('autofull').checked&&mode==='music'&&!fullPlaylist&&!pendingMessages.length&&now-lastFullPlaylist>=720000)openFullPlaylist();let fraction=mode==='power'?Math.max(0,(powerEnd-now)/7800):mode==='message'?Math.max(0,(messageEnd-now)/8000):0;$('progress').style.width=(fraction*100)+'%';requestAnimationFrame(tick)}
 nextBackground();updateLayers();requestAnimationFrame(tick);
 
 renderPreviousHits();
@@ -2025,12 +2029,12 @@ function level44NextTrackVisual(){
  level44VisualIndex=(level44VisualIndex+1)%level44Mysteries.length;
  const music=document.getElementById('music');
  const pair=level44VinylPairs[level44VisualIndex%level44VinylPairs.length];
- music.style.setProperty('--vinyl-outer',pair[0],'important');music.style.setProperty('--vinyl-center','#55eced','important');
- music.style.setProperty('--vinyl-center-border',pair[2],'important');music.style.setProperty('--vinyl-third',pair[1],'important');
+ music.style.setProperty('--vinyl-outer',pair[0],'important');music.style.setProperty('--vinyl-center',pair[2],'important');
+ music.style.setProperty('--vinyl-center-border','#ffe46b','important');music.style.setProperty('--vinyl-third',pair[1],'important');
  const ring=music.querySelector('.vinyl-svg circle:nth-child(2)');
  if(ring)ring.setAttribute('stroke','#ffffff');
  const center=music.querySelector('.vinyl-svg circle:nth-child(9)');
- if(center)center.setAttribute('stroke',pair[2]);
+ if(center)center.setAttribute('stroke','#ffe46b');
  const next=music.querySelector('.nextsong-heading strong');
  if(next)next.textContent=level44Mysteries[level44VisualIndex];
 }
@@ -2044,6 +2048,9 @@ function level44NextTrackVisual(){
 const level44OnlineSeen=new Set();
 const level44ActionSeen=new Set();
 const level44ActionQueue=[];
+let level44LastGuestMessageAt=Date.now(),level44LastJokeAt=0;
+const level44Jokes=[['LEVEL 44 BOT','WAAROM KAN EEN COMPUTER NIET DANSEN? HIJ HEEFT TE VEEL BYTES!'],['LEVEL 44 BOT','IK ZOU EEN GRAP OVER SPOTIFY MAKEN, MAAR DIE STAAT NOG IN DE WACHTRIJ.'],['LEVEL 44 BOT','WAT ZEGT EEN DJ TEGEN EEN STOEL? GA MAAR LEKKER ZITTEN, IK DRAAI WEL.'],['LEVEL 44 BOT','LEVEL 44 BEREIKT. HANDLEIDING NOG STEEDS NIET GEVONDEN.'],['LEVEL 44 BOT','WAAROM GING DE DISCOBAL NAAR DE DOKTER? HIJ VOELDE ZICH DRAAIZIEK.']];
+let level44JokeIndex=0;
 async function level44PollOnlineMessages(){
  try{
   const response=await fetch('/.netlify/functions/party',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({op:'feed'}),cache:'no-store'});
@@ -2058,6 +2065,7 @@ async function level44PollOnlineMessages(){
   for(const item of feed.messages||[]){
    if(!item?.id||level44OnlineSeen.has(item.id))continue;
    level44OnlineSeen.add(item.id);
+   level44LastGuestMessageAt=Date.now();
    enqueueMessage(item.name||'Gast',item.value||'');
   }
   if(level44OnlineSeen.size>400)level44OnlineSeen.clear();
