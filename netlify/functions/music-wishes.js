@@ -34,7 +34,9 @@ exports.handler=async event=>{
    const wishes=await s.get('wishes',{type:'json'})||[];
    if(wishes.length>=250&&!wishes.some(w=>w.id===id))return json(409,{error:'Maximum 250 wensen'});
    const old=wishes.find(w=>w.id===id);
-   const next={id,name,title,artist,message,spotifyId,approved:data.approved===true,lastShownAt:old?.spotifyId===spotifyId?old.lastShownAt||0:0};
+   const sourceKey=clean(data.sourceKey,320)||old?.sourceKey||'';
+   if(sourceKey&&wishes.some(w=>w.sourceKey===sourceKey&&w.id!==id))return json(409,{error:'Dit RSVP-verzoek is al overgenomen. Bewerk de bestaande wens.'});
+   const next={id,name,title,artist,message,spotifyId,sourceKey,approved:data.approved===true,lastShownAt:old?.spotifyId===spotifyId?old.lastShownAt||0:0};
    await s.setJSON('wishes',[...wishes.filter(w=>w.id!==id),next]);
    return json(200,{ok:true,id});
   }
