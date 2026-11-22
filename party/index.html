@@ -1354,7 +1354,20 @@ body>h1,body>.intro,body>.foot{display:none!important}
 .tv.split-view .music.compact .jam-join{margin:3px auto;padding:3px;gap:5px}
 .tv.split-view .music.compact .jam-join img{width:clamp(33px,3vw,49px);height:clamp(33px,3vw,49px)}
 .tv.split-view .music.compact .jam-join .jam-label{font-size:clamp(7px,.56vw,10px)}
-</style><link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet"></head><body><h1>★ LEVEL 44 UNLOCKED ★</h1><p class="intro">PARTY TV · ORIGINELE ARCADE LOOK · 20 UNIEKE ACHTERGRONDEN · 50 POWER-UPS</p><main class="layout"><section><div class="tv" id="tv"><canvas id="ambient" width="1280" height="720"></canvas><div class="scan"></div><div class="home" id="home"><div class="arcade-corners"><span>★ LEVEL 44 • PARTY ARCADE ★</span><span>● PARTY ONLINE</span></div><div class="hero-stack"><div class="achievement">★ ACHIEVEMENT UNLOCKED ★</div><div class="hero"><div class="topline"><span class="hero-first">LEVEL <span class="age">44</span></span><span class="hero-second">UNLOCKED!</span></div></div><div class="insertcake" id="cakePrompt">INSERT CAKE TO CONTINUE</div></div><div class="message-marquee"><div class="below-feed-prompt" id="belowFeedPrompt">INSERT CAKE TO CONTINUE</div><div class="caption"><div class="ticker-track" aria-label="PARTY MESSAGE FEED"><span class="ticker-copy">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span><span class="ticker-copy" aria-hidden="true">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span></div></div><div class="insert" id="messagePrompt">✦ INSERT MESSAGE ✦</div><div class="msg" id="message"><div class="name-line"><span class="message-symbol" id="symbolBefore" aria-hidden="true">✦</span><div class="who" id="who"></div><span class="message-symbol" id="symbolAfter" aria-hidden="true">✦</span></div><div class="message-line"><div class="words" id="words"></div></div></div></div><div class="scanplay"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUAQAAAABdRz15AAABS0lEQVR4nM2WQW4kQQgEg5HvyQ/6/8/qHyQvyD3U2LK88sHLSOuqUyMRokigqfD1zOMvE/w/W1X1VPX00FXVS54SmvjiAiW7+N6ghIbK0O7SmgcMTQ/uH/l+bzOG0H4FL0YePFET73iVAn18Duje8EiSQCwrSRLveEokITtGZstLFBsb+0S644EJxiGJlrw3COlMirTrJ77fvFfCJnaQYm3jg5SN2qZpLeNDJ4MKQlnmr9JwiwZgUmJVzw/gvqqZG8PgF+jh6DRdZO30ILLlAMRiz0sIKLJIWPMISuzg2CzrjzxDlBNsadtvmgIqM4hObfWV5CCESMIL3qszSxVgPU+T5FkwVrTU9/w/DNOhBHi1v5x573NRWObvAdUAc92tKZb7xrtNui/f+F98P5+zb4ge3QI06/pL5EhRElj2x9F3/AzSoJW+9cv33T+Au/yGE9/wPgAAAABJRU5ErkJggg==" alt="QR-code voor gastbediening"><div><strong>SCAN &amp; PLAY</strong><span>📱 Pak je gsm. Unlock de party!</span></div></div></div><div class="music" id="music">
+
+/* Rotating cyan status is its own element, centered in the free space between LED and QR. */
+.home>.below-feed-prompt{
+ display:block!important;position:absolute!important;z-index:7!important;
+ left:3%!important;right:3%!important;bottom:auto!important;top:var(--feed-qr-mid,75%)!important;
+ transform:translateY(-50%)!important;margin:0!important;padding:0!important;
+ text-align:center!important;pointer-events:none!important;
+ font-family:'Silkscreen',monospace!important;font-size:clamp(15px,2vw,29px)!important;
+ font-weight:700!important;white-space:nowrap!important;
+ color:#59f4ef!important;text-shadow:2px 2px 0 #13505d,0 0 12px #38ffff55!important;
+}
+.tv.split-view .home>.below-feed-prompt{font-size:clamp(11px,1.45vw,22px)!important}
+.home.showing-message>.below-feed-prompt{display:none!important}
+</style><link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet"></head><body><h1>★ LEVEL 44 UNLOCKED ★</h1><p class="intro">PARTY TV · ORIGINELE ARCADE LOOK · 20 UNIEKE ACHTERGRONDEN · 50 POWER-UPS</p><main class="layout"><section><div class="tv" id="tv"><canvas id="ambient" width="1280" height="720"></canvas><div class="scan"></div><div class="home" id="home"><div class="arcade-corners"><span>★ LEVEL 44 • PARTY ARCADE ★</span><span>● PARTY ONLINE</span></div><div class="hero-stack"><div class="achievement">★ ACHIEVEMENT UNLOCKED ★</div><div class="hero"><div class="topline"><span class="hero-first">LEVEL <span class="age">44</span></span><span class="hero-second">UNLOCKED!</span></div></div><div class="insertcake" id="cakePrompt">INSERT CAKE TO CONTINUE</div></div><div class="message-marquee"><div class="caption"><div class="ticker-track" aria-label="PARTY MESSAGE FEED"><span class="ticker-copy">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span><span class="ticker-copy" aria-hidden="true">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span></div></div><div class="insert" id="messagePrompt">✦ INSERT MESSAGE ✦</div><div class="msg" id="message"><div class="name-line"><span class="message-symbol" id="symbolBefore" aria-hidden="true">✦</span><div class="who" id="who"></div><span class="message-symbol" id="symbolAfter" aria-hidden="true">✦</span></div><div class="message-line"><div class="words" id="words"></div></div></div></div><div class="below-feed-prompt" id="belowFeedPrompt">INSERT CAKE TO CONTINUE</div><div class="scanplay"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUAQAAAABdRz15AAABS0lEQVR4nM2WQW4kQQgEg5HvyQ/6/8/qHyQvyD3U2LK88sHLSOuqUyMRokigqfD1zOMvE/w/W1X1VPX00FXVS54SmvjiAiW7+N6ghIbK0O7SmgcMTQ/uH/l+bzOG0H4FL0YePFET73iVAn18Duje8EiSQCwrSRLveEokITtGZstLFBsb+0S644EJxiGJlrw3COlMirTrJ77fvFfCJnaQYm3jg5SN2qZpLeNDJ4MKQlnmr9JwiwZgUmJVzw/gvqqZG8PgF+jh6DRdZO30ILLlAMRiz0sIKLJIWPMISuzg2CzrjzxDlBNsadtvmgIqM4hObfWV5CCESMIL3qszSxVgPU+T5FkwVrTU9/w/DNOhBHi1v5x573NRWObvAdUAc92tKZb7xrtNui/f+F98P5+zb4ge3QI06/pL5EhRElj2x9F3/AzSoJW+9cv33T+Au/yGE9/wPgAAAABJRU5ErkJggg==" alt="QR-code voor gastbediening"><div><strong>SCAN &amp; PLAY</strong><span>📱 Pak je gsm. Unlock de party!</span></div></div></div><div class="music" id="music">
 <div class="music-bulbs" aria-hidden="true"></div>
 <div class="music-header"><div class="music-kicker">★ LEVEL 44 ★ PLAYER ONE RADIO ★</div><div class="eyebrow">♫ PARTY PLAYLIST ♫</div><div class="music-subtitle">NOW LOADING THE NEXT BANGER...</div></div>
 <div class="nextsong unknown-next"><span class="nextsong-heading">UP NEXT <strong>??? MYSTERY TRACK ???</strong></span><div class="disco-ball" aria-label="Glitterende discobal" role="img"><div class="disco-facets"></div></div><div class="mystery-dancer" aria-label="Dansend pixelmannetje" role="img"><div class="dancer-head"><i></i><i></i></div><div class="dancer-body"></div><div class="dancer-arm left"></div><div class="dancer-arm right"></div><div class="dancer-leg left"></div><div class="dancer-leg right"></div><div class="dancer-floor"></div></div><div class="dancer-stage-line" aria-hidden="true"></div></div>
@@ -1759,6 +1772,23 @@ $('autobg').checked=true;$('automsg').checked=false;$('idlepower').checked=false
 liveHistoryRender();$('track').textContent='WACHT OP SPOTIFY';$('artist').textContent='';
 document.querySelector('.pixel-progress span').style.animation='none';
 livePoll();setInterval(livePoll,5000);
+
+/* Position status at actual midpoint of LED bottom and QR top, across screen sizes. */
+(function(){
+ const home=document.getElementById('home'),label=document.getElementById('belowFeedPrompt');
+ const feed=home&&home.querySelector('.message-marquee'),qr=home&&home.querySelector('.scanplay');
+ if(!home||!label||!feed||!qr)return;
+ function place(){
+  const h=home.getBoundingClientRect(),f=feed.getBoundingClientRect(),q=qr.getBoundingClientRect();
+  if(q.top<=f.bottom+30){label.style.display='none';return}
+  label.style.removeProperty('display');
+  const midpoint=(f.bottom+q.top)/2-h.top;
+  home.style.setProperty('--feed-qr-mid',midpoint+'px');
+ }
+ place();window.addEventListener('resize',place);
+ setInterval(place,1000);
+})();
+
 
 /* Jam is optional. Supply a real Spotify Jam invitation via ?jam=... on TV.
    Do not create or advertise an invented or expired Jam invitation. */
