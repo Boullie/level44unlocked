@@ -1593,6 +1593,31 @@ body>h1,body>.intro,body>.foot{display:none!important}
 .music.showcase .nextsong.unknown-next .disco-ball{width:min(32%,15vh)!important;height:auto!important;aspect-ratio:1!important;flex:0 0 auto!important}
 .music.showcase .nextsong.unknown-next .mystery-dancer{position:absolute!important;top:auto!important;bottom:clamp(13px,2.4vh,27px)!important;left:50%!important;margin:0!important;width:clamp(46px,5vw,105px)!important;height:clamp(75px,12vh,180px)!important;min-height:0!important;max-height:55%!important;flex:none!important;scale:1!important;transform:translateX(-50%)!important;transform-origin:50% 100%!important}
 .music.showcase .nextsong.unknown-next .dancer-stage-line{position:absolute!important;bottom:clamp(10px,2vh,23px)!important;left:50%!important;margin:0!important;width:clamp(52px,6vw,128px)!important;height:clamp(3px,.5vh,7px)!important;transform:translateX(-50%)!important;flex:none!important}
+
+/* V64: proportional pixel dancer anchored to stage floor, no absolute transform conflicts. */
+.music.showcase .nextsong.unknown-next .mystery-dancer{
+ position:absolute!important;top:auto!important;bottom:var(--robot-floor-bottom,20px)!important;
+ left:50%!important;width:60px!important;height:96px!important;min-height:0!important;
+ max-height:none!important;flex:none!important;margin:0!important;
+ scale:none!important;transform:translateX(-50%) scale(var(--robot-scale,1.7))!important;
+ transform-origin:50% 100%!important;
+}
+.music.showcase .nextsong.unknown-next .dancer-stage-line{
+ position:absolute!important;bottom:var(--robot-line-bottom,15px)!important;left:50%!important;
+ width:var(--robot-floor-width,110px)!important;height:var(--robot-floor-height,5px)!important;
+ margin:0!important;transform:translateX(-50%)!important;
+}
+.music .playlist{min-height:0!important}
+.music #playlist{min-height:0!important;overflow:hidden!important;position:relative!important;flex:1 1 auto!important;justify-content:flex-end!important}
+.music .playlist .history-title{flex:0 0 auto!important;position:relative!important;z-index:2!important}
+.music #playlist>.history-entry{flex:0 0 auto!important;min-height:0!important;transition:transform .42s ease,opacity .42s ease!important;will-change:transform,opacity}
+.music #playlist>.history-entry.history-new{animation:historySlideIn .42s ease both!important}
+.music #playlist>.history-entry.history-old{animation:historySlideOut .35s ease both!important}
+@keyframes historySlideIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes historySlideOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-22px)}}
+.music.showcase .playlist{justify-content:flex-start!important;overflow:hidden!important}
+.music.showcase #playlist{gap:clamp(4px,.6vh,9px)!important}
+.music.compact #playlist{gap:clamp(2px,.3vh,5px)!important}
 </style><link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet"></head><body><h1>★ LEVEL 44 UNLOCKED ★</h1><p class="intro">PARTY TV · ORIGINELE ARCADE LOOK · 20 UNIEKE ACHTERGRONDEN · 50 POWER-UPS</p><main class="layout"><section><div class="tv" id="tv"><canvas id="ambient" width="1280" height="720"></canvas><div class="scan"></div><div class="home" id="home"><div class="arcade-corners"><span>★ LEVEL 44 • PARTY ARCADE ★</span><span>● PARTY ONLINE</span></div><div class="hero-stack"><div class="achievement">★ ACHIEVEMENT UNLOCKED ★</div><div class="hero"><div class="topline"><span class="hero-first">LEVEL <span class="age">44</span></span><span class="hero-second">UNLOCKED!</span></div></div><div class="insertcake" id="cakePrompt">INSERT CAKE TO CONTINUE</div></div><div class="message-marquee"><div class="caption"><div class="ticker-track" aria-label="PARTY MESSAGE FEED"><span class="ticker-copy">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span><span class="ticker-copy" aria-hidden="true">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span></div></div><div class="insert" id="messagePrompt">✦ INSERT MESSAGE ✦</div><div class="msg" id="message"><div class="name-line"><span class="message-symbol" id="symbolBefore" aria-hidden="true">✦</span><div class="who" id="who"></div><span class="message-symbol" id="symbolAfter" aria-hidden="true">✦</span></div><div class="message-line"><div class="words" id="words"></div></div></div></div><div class="below-feed-prompt" id="belowFeedPrompt">INSERT CAKE TO CONTINUE</div><div class="scanplay"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUAQAAAABdRz15AAABS0lEQVR4nM2WQW4kQQgEg5HvyQ/6/8/qHyQvyD3U2LK88sHLSOuqUyMRokigqfD1zOMvE/w/W1X1VPX00FXVS54SmvjiAiW7+N6ghIbK0O7SmgcMTQ/uH/l+bzOG0H4FL0YePFET73iVAn18Duje8EiSQCwrSRLveEokITtGZstLFBsb+0S644EJxiGJlrw3COlMirTrJ77fvFfCJnaQYm3jg5SN2qZpLeNDJ4MKQlnmr9JwiwZgUmJVzw/gvqqZG8PgF+jh6DRdZO30ILLlAMRiz0sIKLJIWPMISuzg2CzrjzxDlBNsadtvmgIqM4hObfWV5CCESMIL3qszSxVgPU+T5FkwVrTU9/w/DNOhBHi1v5x573NRWObvAdUAc92tKZb7xrtNui/f+F98P5+zb4ge3QI06/pL5EhRElj2x9F3/AzSoJW+9cv33T+Au/yGE9/wPgAAAABJRU5ErkJggg==" alt="QR-code voor gastbediening"><div><strong>SCAN &amp; PLAY</strong><span>📱 Pak je gsm. Unlock de party!</span></div></div></div><div class="music" id="music">
 <div class="music-bulbs" aria-hidden="true"></div>
 <div class="music-header"><div class="music-kicker">★ LEVEL 44 ★ PLAYER ONE RADIO ★</div><div class="eyebrow">♫ PARTY PLAYLIST ♫</div><div class="music-subtitle">NOW LOADING THE NEXT BANGER...</div></div>
@@ -2032,10 +2057,43 @@ renderPreviousHits();
 /* Live Spotify, track history and approved wish messages. */
 let liveTrackId='',livePlayKey='',liveHistory=[],liveWishKeys=new Set(),liveLastResponse=0;
 try{liveHistory=JSON.parse(sessionStorage.getItem('level44-tv-history')||'[]')}catch(e){}
-function liveHistoryRender(){
- const el=$('playlist');if(!el)return;
- el.innerHTML=liveHistory.length?liveHistory.slice(0,3).map((x,i)=>'<div class="history-entry"><span class="history-number">'+String(i+1).padStart(2,'0')+'. </span><div class="history-meta"><span class="history-song">'+escapeHtml(x.title)+'</span><span class="history-artist">'+escapeHtml(x.artist)+'</span></div></div>').join(''):'<div class="history-entry">NOG GEEN VORIGE NUMMERS</div>';
+let level44HistoryAnimationTimer=0;
+function level44HistoryCapacity(){
+ const list=$('playlist'),panel=list?.closest('.playlist');if(!list||!panel)return 3;
+ const height=list.getBoundingClientRect().height;
+ const sample=list.querySelector('.history-entry');
+ const row=sample?sample.getBoundingClientRect().height:38;
+ const gap=parseFloat(getComputedStyle(list).rowGap)||5;
+ return Math.max(1,Math.min(30,Math.floor((height+gap)/Math.max(20,row+gap))));
 }
+function liveHistoryRender(animate=false){
+ const list=$('playlist');if(!list)return;
+ const cap=level44HistoryCapacity();
+ const records=liveHistory.slice(0,cap).reverse();
+ const markup=records.length?records.map((x,i)=>'<div class="history-entry" data-history-key="'+escapeHtml(x.key||x.title+'|'+x.artist)+'"><span class="history-number">'+String(records.length-i).padStart(2,'0')+'. </span><div class="history-meta"><span class="history-song">'+escapeHtml(x.title)+'</span><span class="history-artist">'+escapeHtml(x.artist)+'</span></div></div>').join(''):'<div class="history-entry">NOG GEEN VORIGE NUMMERS</div>';
+ clearTimeout(level44HistoryAnimationTimer);
+ if(!animate||!list.children.length){list.innerHTML=markup;return}
+ const old=[...list.children],oldRects=new Map(old.map(el=>[el.dataset.historyKey,el.getBoundingClientRect()]));
+ const oldKeys=new Set(old.map(el=>el.dataset.historyKey));
+ list.innerHTML=markup;
+ const nodes=[...list.children];
+ for(const node of nodes){
+  const previous=oldRects.get(node.dataset.historyKey);
+  if(previous){
+   const delta=previous.top-node.getBoundingClientRect().top;
+   node.style.transition='none';node.style.transform='translateY('+delta+'px)';
+   requestAnimationFrame(()=>requestAnimationFrame(()=>{node.style.transition='transform .42s ease,opacity .42s ease';node.style.transform='translateY(0)'}));
+  }else if(!oldKeys.has(node.dataset.historyKey))node.classList.add('history-new');
+ }
+ const removed=old.find(el=>el.dataset.historyKey&&!nodes.some(n=>n.dataset.historyKey===el.dataset.historyKey));
+ if(removed){
+  const ghost=removed.cloneNode(true),r=oldRects.get(removed.dataset.historyKey),listRect=list.getBoundingClientRect();
+  ghost.style.cssText='position:absolute;left:0;top:'+(r.top-listRect.top)+'px;width:100%;pointer-events:none;z-index:1';
+  ghost.classList.add('history-old');list.appendChild(ghost);
+  level44HistoryAnimationTimer=setTimeout(()=>ghost.remove(),450);
+ }
+}
+window.addEventListener('resize',()=>{if(liveHistory.length)liveHistoryRender(false)});
 function liveCancelInterruptedWishes(){
  // Track transitions never cancel a displayed wish or its five-show cycle.
  // Each completed showing decrements level44Remaining; acknowledge only after five.
@@ -2048,11 +2106,11 @@ function liveUpdateTrack(d){
  if(livePlayKey&&playKey!==livePlayKey)liveCancelInterruptedWishes();
  livePlayKey=playKey;
  if(id!==liveTrackId){
-  if(liveTrackId&&window.level44LastTrack){liveHistory.unshift(window.level44LastTrack);liveHistory=liveHistory.slice(0,3);try{sessionStorage.setItem('level44-tv-history',JSON.stringify(liveHistory))}catch(e){}}
+  if(liveTrackId&&window.level44LastTrack){liveHistory.unshift({...window.level44LastTrack,key:liveTrackId+'|'+Date.now()});liveHistory=liveHistory.slice(0,40);try{sessionStorage.setItem('level44-tv-history',JSON.stringify(liveHistory))}catch(e){}}
   if(liveTrackId)level44AlternatePlaylistSide();
   liveTrackId=id;level44NextTrackVisual();window.level44LastTrack={title:d.title||'',artist:d.artist||''};
   $('track').textContent=d.title||'ONBEKEND NUMMER';$('artist').textContent=d.artist||'';
-  liveHistoryRender();if(mode!=='message')requestAnimationFrame(fitRecordToSong);
+  liveHistoryRender(true);if(mode!=='message')requestAnimationFrame(fitRecordToSong);
  }
  // Playback progress bar is intentionally hidden in every player layout.
  if(d.wish&&d.kind==='track'){
@@ -2327,5 +2385,25 @@ function level44RefreshSongMarquees(){
  }
  const observer=new ResizeObserver(()=>requestAnimationFrame(fit));observer.observe(music);
  window.addEventListener('resize',fit);setInterval(fit,2000);requestAnimationFrame(fit);
+})();
+
+/* Keep the robot's feet on the stage line at every TV resolution. */
+(function(){
+ const music=document.getElementById('music');if(!music)return;
+ function fitRobot(){
+  if(!music.classList.contains('showcase'))return;
+  const stage=music.querySelector('.nextsong.unknown-next');if(!stage)return;
+  const h=stage.clientHeight,w=stage.clientWidth;
+  const scale=Math.max(.7,Math.min(3.2,Math.min(w*.34/60,h*.52/96)));
+  const lineBottom=Math.max(9,Math.round(h*.035));
+  music.style.setProperty('--robot-scale',String(scale));
+  music.style.setProperty('--robot-line-bottom',lineBottom+'px');
+  music.style.setProperty('--robot-floor-bottom',(lineBottom+Math.max(3,h*.006))+'px');
+  music.style.setProperty('--robot-floor-width',Math.round(60*scale*1.12)+'px');
+  music.style.setProperty('--robot-floor-height',Math.max(3,Math.round(h*.008))+'px');
+ }
+ const obs=new ResizeObserver(()=>requestAnimationFrame(fitRobot));
+ obs.observe(music);window.addEventListener('resize',fitRobot);
+ setInterval(fitRobot,2000);requestAnimationFrame(fitRobot);
 })();
 </script></body></html>
