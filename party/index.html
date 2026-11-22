@@ -1473,6 +1473,13 @@ body>h1,body>.intro,body>.foot{display:none!important}
 .music .music-meter.level44-ambient-meter{position:absolute!important;z-index:0!important;pointer-events:none!important;left:2%!important;right:2%!important;bottom:0!important;top:auto!important;width:96%!important;max-width:none!important;height:clamp(45px,11vh,100px)!important;min-height:0!important;opacity:.2!important;display:flex!important;align-items:flex-end!important;gap:2px!important;overflow:hidden!important}
 .music .music-meter.level44-ambient-meter i{flex:1 1 0!important;min-width:1px!important;width:auto!important}
 .music .playlist,.music .music-main,.music .music-footer,.music .jam-join{position:relative;z-index:1}
+
+/* Keep exactly equal free space above and below the visible vinyl. */
+.music.compact .music-main{display:flex!important;flex-direction:column!important;justify-content:flex-start!important;align-items:stretch!important;gap:0!important;overflow:hidden!important}
+.music.compact .record-deck{flex:1 1 0!important;min-height:0!important;height:auto!important;max-height:none!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;margin:0!important;overflow:hidden!important}
+.music.compact .record-rim{flex:0 0 auto!important;width:var(--compact-record-size,90px)!important;height:var(--compact-record-size,90px)!important;max-width:100%!important;max-height:100%!important}
+.music.compact .song-info{flex:0 0 auto!important;min-height:0!important;position:relative!important;z-index:1!important}
+.music.compact .music-meter.level44-ambient-meter{position:absolute!important;left:2%!important;right:2%!important;bottom:0!important;width:96%!important;opacity:.2!important;z-index:0!important;pointer-events:none!important}
 </style><link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet"></head><body><h1>★ LEVEL 44 UNLOCKED ★</h1><p class="intro">PARTY TV · ORIGINELE ARCADE LOOK · 20 UNIEKE ACHTERGRONDEN · 50 POWER-UPS</p><main class="layout"><section><div class="tv" id="tv"><canvas id="ambient" width="1280" height="720"></canvas><div class="scan"></div><div class="home" id="home"><div class="arcade-corners"><span>★ LEVEL 44 • PARTY ARCADE ★</span><span>● PARTY ONLINE</span></div><div class="hero-stack"><div class="achievement">★ ACHIEVEMENT UNLOCKED ★</div><div class="hero"><div class="topline"><span class="hero-first">LEVEL <span class="age">44</span></span><span class="hero-second">UNLOCKED!</span></div></div><div class="insertcake" id="cakePrompt">INSERT CAKE TO CONTINUE</div></div><div class="message-marquee"><div class="caption"><div class="ticker-track" aria-label="PARTY MESSAGE FEED"><span class="ticker-copy">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span><span class="ticker-copy" aria-hidden="true">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span></div></div><div class="insert" id="messagePrompt">✦ INSERT MESSAGE ✦</div><div class="msg" id="message"><div class="name-line"><span class="message-symbol" id="symbolBefore" aria-hidden="true">✦</span><div class="who" id="who"></div><span class="message-symbol" id="symbolAfter" aria-hidden="true">✦</span></div><div class="message-line"><div class="words" id="words"></div></div></div></div><div class="below-feed-prompt" id="belowFeedPrompt">INSERT CAKE TO CONTINUE</div><div class="scanplay"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUAQAAAABdRz15AAABS0lEQVR4nM2WQW4kQQgEg5HvyQ/6/8/qHyQvyD3U2LK88sHLSOuqUyMRokigqfD1zOMvE/w/W1X1VPX00FXVS54SmvjiAiW7+N6ghIbK0O7SmgcMTQ/uH/l+bzOG0H4FL0YePFET73iVAn18Duje8EiSQCwrSRLveEokITtGZstLFBsb+0S644EJxiGJlrw3COlMirTrJ77fvFfCJnaQYm3jg5SN2qZpLeNDJ4MKQlnmr9JwiwZgUmJVzw/gvqqZG8PgF+jh6DRdZO30ILLlAMRiz0sIKLJIWPMISuzg2CzrjzxDlBNsadtvmgIqM4hObfWV5CCESMIL3qszSxVgPU+T5FkwVrTU9/w/DNOhBHi1v5x573NRWObvAdUAc92tKZb7xrtNui/f+F98P5+zb4ge3QI06/pL5EhRElj2x9F3/AzSoJW+9cv33T+Au/yGE9/wPgAAAABJRU5ErkJggg==" alt="QR-code voor gastbediening"><div><strong>SCAN &amp; PLAY</strong><span>📱 Pak je gsm. Unlock de party!</span></div></div></div><div class="music" id="music">
 <div class="music-bulbs" aria-hidden="true"></div>
 <div class="music-header"><div class="music-kicker">★ LEVEL 44 ★ PLAYER ONE RADIO ★</div><div class="eyebrow">♫ PARTY PLAYLIST ♫</div><div class="music-subtitle">NOW LOADING THE NEXT BANGER...</div></div>
@@ -1917,11 +1924,11 @@ function level44RefreshSongMarquees(){
  const music=document.getElementById('music');if(!music||!music.classList.contains('compact'))return;
  for(const id of ['track','artist']){
   const el=document.getElementById(id);if(!el)continue;
-  const raw=el.dataset.marqueeText||el.textContent;
+  const raw=el.querySelector('.scroll-inner')?.textContent||el.textContent;
   el.classList.remove('is-scrolling');el.textContent=raw;
   const style=getComputedStyle(el),lh=parseFloat(style.lineHeight)||parseFloat(style.fontSize)*1.22;
   if(el.scrollHeight<=lh*2+3)continue;
-  el.dataset.marqueeText=raw;el.classList.add('is-scrolling');
+  el.classList.add('is-scrolling');
   const span=document.createElement('span');span.className='scroll-inner';span.textContent=raw;el.replaceChildren(span);
   const overflow=Math.max(0,span.scrollWidth-el.clientWidth+12);
   el.style.setProperty('--scroll-distance',(-overflow)+'px');
