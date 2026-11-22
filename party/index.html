@@ -1480,6 +1480,16 @@ body>h1,body>.intro,body>.foot{display:none!important}
 .music.compact .record-rim{flex:0 0 auto!important;width:var(--compact-record-size,90px)!important;height:var(--compact-record-size,90px)!important;max-width:100%!important;max-height:100%!important}
 .music.compact .song-info{flex:0 0 auto!important;min-height:0!important;position:relative!important;z-index:1!important}
 .music.compact .music-meter.level44-ambient-meter{position:absolute!important;left:2%!important;right:2%!important;bottom:0!important;width:96%!important;opacity:.2!important;z-index:0!important;pointer-events:none!important}
+
+/* Absolute gap-based positioning prevents the vinyl touching UP NEXT or NOW PLAYING. */
+.music.compact .record-deck{position:absolute!important;z-index:3!important;display:flex!important;align-items:center!important;justify-content:center!important;flex:none!important;min-height:0!important;max-height:none!important;height:var(--vinyl-zone-height,90px)!important;width:100%!important;left:0!important;top:var(--vinyl-zone-top,100px)!important;overflow:hidden!important;padding:0!important;margin:0!important;pointer-events:none!important}
+.music.compact .record-rim{width:var(--compact-record-size,80px)!important;height:var(--compact-record-size,80px)!important;max-width:100%!important;max-height:100%!important;flex:0 0 auto!important}
+.music.compact .music-main{position:relative!important;display:flex!important;flex-direction:column!important;justify-content:flex-end!important;overflow:visible!important;min-height:0!important}
+.music.compact .song-info{flex:0 0 auto!important;width:100%!important;position:relative!important;z-index:3!important}
+.music.compact .music-meter.level44-ambient-meter{position:absolute!important;bottom:12px!important;left:4%!important;right:4%!important;width:92%!important;height:clamp(24px,5vh,52px)!important;opacity:.2!important;z-index:0!important;pointer-events:none!important}
+.music.compact .song-title-pair .track,.music.compact .song-title-pair .artist{max-height:2.6em!important;overflow:hidden!important}
+.music.compact .song-title-pair .is-scrolling{display:block!important;white-space:nowrap!important;max-height:1.35em!important;text-align:left!important;overflow:hidden!important}
+.music.compact .song-title-pair .scroll-inner{display:inline-block!important;white-space:nowrap!important;animation:level44SongMarquee var(--scroll-duration,12s) linear infinite alternate!important}
 </style><link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet"></head><body><h1>★ LEVEL 44 UNLOCKED ★</h1><p class="intro">PARTY TV · ORIGINELE ARCADE LOOK · 20 UNIEKE ACHTERGRONDEN · 50 POWER-UPS</p><main class="layout"><section><div class="tv" id="tv"><canvas id="ambient" width="1280" height="720"></canvas><div class="scan"></div><div class="home" id="home"><div class="arcade-corners"><span>★ LEVEL 44 • PARTY ARCADE ★</span><span>● PARTY ONLINE</span></div><div class="hero-stack"><div class="achievement">★ ACHIEVEMENT UNLOCKED ★</div><div class="hero"><div class="topline"><span class="hero-first">LEVEL <span class="age">44</span></span><span class="hero-second">UNLOCKED!</span></div></div><div class="insertcake" id="cakePrompt">INSERT CAKE TO CONTINUE</div></div><div class="message-marquee"><div class="caption"><div class="ticker-track" aria-label="PARTY MESSAGE FEED"><span class="ticker-copy">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span><span class="ticker-copy" aria-hidden="true">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span></div></div><div class="insert" id="messagePrompt">✦ INSERT MESSAGE ✦</div><div class="msg" id="message"><div class="name-line"><span class="message-symbol" id="symbolBefore" aria-hidden="true">✦</span><div class="who" id="who"></div><span class="message-symbol" id="symbolAfter" aria-hidden="true">✦</span></div><div class="message-line"><div class="words" id="words"></div></div></div></div><div class="below-feed-prompt" id="belowFeedPrompt">INSERT CAKE TO CONTINUE</div><div class="scanplay"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUAQAAAABdRz15AAABS0lEQVR4nM2WQW4kQQgEg5HvyQ/6/8/qHyQvyD3U2LK88sHLSOuqUyMRokigqfD1zOMvE/w/W1X1VPX00FXVS54SmvjiAiW7+N6ghIbK0O7SmgcMTQ/uH/l+bzOG0H4FL0YePFET73iVAn18Duje8EiSQCwrSRLveEokITtGZstLFBsb+0S644EJxiGJlrw3COlMirTrJ77fvFfCJnaQYm3jg5SN2qZpLeNDJ4MKQlnmr9JwiwZgUmJVzw/gvqqZG8PgF+jh6DRdZO30ILLlAMRiz0sIKLJIWPMISuzg2CzrjzxDlBNsadtvmgIqM4hObfWV5CCESMIL3qszSxVgPU+T5FkwVrTU9/w/DNOhBHi1v5x573NRWObvAdUAc92tKZb7xrtNui/f+F98P5+zb4ge3QI06/pL5EhRElj2x9F3/AzSoJW+9cv33T+Au/yGE9/wPgAAAABJRU5ErkJggg==" alt="QR-code voor gastbediening"><div><strong>SCAN &amp; PLAY</strong><span>📱 Pak je gsm. Unlock de party!</span></div></div></div><div class="music" id="music">
 <div class="music-bulbs" aria-hidden="true"></div>
 <div class="music-header"><div class="music-kicker">★ LEVEL 44 ★ PLAYER ONE RADIO ★</div><div class="eyebrow">♫ PARTY PLAYLIST ♫</div><div class="music-subtitle">NOW LOADING THE NEXT BANGER...</div></div>
@@ -1907,7 +1917,11 @@ function level44NextTrackVisual(){
  const music=document.getElementById('music');
  const pair=level44VinylPairs[level44VisualIndex%level44VinylPairs.length];
  music.style.setProperty('--vinyl-outer',pair[0]);music.style.setProperty('--vinyl-center',pair[1]);
- music.style.setProperty('--vinyl-center-border',pair[0]);
+ music.style.setProperty('--vinyl-center-border','#aa82ff');
+ const ring=music.querySelector('.vinyl-svg circle:nth-child(2)');
+ if(ring)ring.setAttribute('stroke',pair[0]=== '#ffe36b'?'#51eaf3':'#ffe36b');
+ const center=music.querySelector('.vinyl-svg circle:nth-child(9)');
+ if(center)center.setAttribute('stroke',pair[0]);
  const next=music.querySelector('.nextsong-heading strong');
  if(next)next.textContent=level44Mysteries[level44VisualIndex];
 }
@@ -1925,16 +1939,23 @@ function level44RefreshSongMarquees(){
  for(const id of ['track','artist']){
   const el=document.getElementById(id);if(!el)continue;
   const raw=el.querySelector('.scroll-inner')?.textContent||el.textContent;
+  if(el.dataset.lastMeasured===raw&&el.dataset.lastWidth===String(el.clientWidth))continue;
+  el.dataset.lastMeasured=raw;el.dataset.lastWidth=String(el.clientWidth);
   el.classList.remove('is-scrolling');el.textContent=raw;
-  const style=getComputedStyle(el),lh=parseFloat(style.lineHeight)||parseFloat(style.fontSize)*1.22;
-  if(el.scrollHeight<=lh*2+3)continue;
+  const cs=getComputedStyle(el),line=parseFloat(cs.lineHeight)||parseFloat(cs.fontSize)*1.2;
+  const probe=document.createElement('div');
+  probe.style.cssText='position:absolute;visibility:hidden;pointer-events:none;box-sizing:border-box;white-space:normal;overflow-wrap:anywhere;width:'+el.clientWidth+'px;font-family:'+cs.fontFamily+';font-size:'+cs.fontSize+';font-weight:'+cs.fontWeight+';line-height:'+line+'px;letter-spacing:'+cs.letterSpacing;
+  probe.textContent=raw;document.body.appendChild(probe);
+  const long=probe.getBoundingClientRect().height>2*line+2;probe.remove();
+  if(!long)continue;
   el.classList.add('is-scrolling');
   const span=document.createElement('span');span.className='scroll-inner';span.textContent=raw;el.replaceChildren(span);
-  const overflow=Math.max(0,span.scrollWidth-el.clientWidth+12);
+  const overflow=Math.max(0,span.scrollWidth-el.clientWidth+8);
   el.style.setProperty('--scroll-distance',(-overflow)+'px');
-  el.style.setProperty('--scroll-duration',Math.max(9,overflow/24+4)+'s');
+  el.style.setProperty('--scroll-duration',Math.max(9,overflow/22+4)+'s');
  }
 }
+
 (function(){
  const meter=document.querySelector('#music .music-meter'),player=document.getElementById('music');
  if(meter&&player){meter.classList.add('level44-ambient-meter');player.appendChild(meter)}
@@ -2013,4 +2034,23 @@ function level44RefreshSongMarquees(){
  fitTicker();window.addEventListener('resize',fitTicker);
 })();
 
+
+/* Measure real panel positions, not guessed flex heights. */
+(function(){
+ const music=document.getElementById('music'),deck=music?.querySelector('.record-deck'),next=music?.querySelector('.nextsong'),badge=music?.querySelector('.playing-badge');
+ if(!music||!deck||!next||!badge)return;
+ function place(){
+  if(!music.classList.contains('compact'))return;
+  const m=music.getBoundingClientRect(),n=next.getBoundingClientRect(),p=badge.getBoundingClientRect();
+  const upper=n.bottom+Math.max(6,m.height*.012),lower=p.top-Math.max(6,m.height*.012);
+  const zone=Math.max(0,lower-upper);
+  const diameter=Math.max(0,Math.floor(Math.min(zone-8,m.width*.83,245)));
+  music.style.setProperty('--vinyl-zone-top',(upper-m.top)+'px');
+  music.style.setProperty('--vinyl-zone-height',zone+'px');
+  music.style.setProperty('--compact-record-size',diameter+'px');
+ }
+ const obs=new ResizeObserver(()=>requestAnimationFrame(place));
+ obs.observe(music);obs.observe(next);obs.observe(badge);
+ window.addEventListener('resize',place);setInterval(place,1200);requestAnimationFrame(place);
+})();
 </script></body></html>
