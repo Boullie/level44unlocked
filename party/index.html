@@ -1705,7 +1705,7 @@ function nextSong(){
 }
 let level44DeferredSideChange=false;
 function level44AlternatePlaylistSide(){
- if(mode==='message'||activeMessage||pendingMessages.length){level44DeferredSideChange=true;return}
+ if(mode==='message'||activeMessage){level44DeferredSideChange=true;return}
  const tv=$('tv');tv.classList.add('side-changing');
  setTimeout(()=>{playlistSide=playlistSide==='right'?'left':'right';updateLayers();setTimeout(()=>tv.classList.remove('side-changing'),120)},260);
 }
@@ -1726,7 +1726,7 @@ function finishMessage(){
  if(mode!=='message')return;
  clearTimeout(messageRotationTimer);
  const completed=activeMessage;activeMessage=null;messageEnd=0;
- if(level44DeferredSideChange&&!pendingMessages.length){level44DeferredSideChange=false;playlistSide=playlistSide==='right'?'left':'right'}
+ if(level44DeferredSideChange){level44DeferredSideChange=false;playlistSide=playlistSide==='right'?'left':'right'}
  if(completed?.level44Wish){
   completed.level44Remaining--;
   if(completed.level44Remaining>0){
@@ -1972,7 +1972,7 @@ function drawAmbient(t,now){
  mainCtx.fillStyle="rgba(5,4,24,0.20)";
  mainCtx.fillRect(0,0,W,H);
 }
-function tick(now){let t=now/1000;let dt=Math.min(.1,(now-lastFrame)/1000||0);lastFrame=now;drawAmbient(t,now);if(mode==='power'&&now>=powerEnd){mode='music';$('powerframe').srcdoc='';document.querySelectorAll('.sidebuttons button').forEach(b=>b.classList.remove('active'));updateLayers();if(level44ActionQueue.length){powerUp(level44ActionQueue.shift(),true)}else if(pendingMessages.length){nextMessageAt=now;playNextMessage()}}if(mode==='message'&&now>=messageEnd)finishMessage();if(mode==='music'&&pendingMessages.length&&now>=nextMessageAt)playNextMessage();if(introEnd&&now>=introEnd){introEnd=0;updateLayers()}if(now-lastPromptAt>=6500){lastPromptAt=now;rotateMessagePrompt()}if(now-lastCakeAt>=9500){lastCakeAt=now;rotateCakePrompt()}if($('autobg').checked&&now-lastBg>=900000)nextBackground();if($('automsg').checked&&now-lastQueuedDemo>=12000){lastQueuedDemo=now;showMessage()}if(auto&&now>=autoAt){autoAt=now+14000;if(mode==='music'&&!pendingMessages.length)powerUp(Object.keys(META)[Math.floor(Math.random()*10)])}if(level44ActionQueue.length&&mode==='music'&&!activeMessage&&!pendingMessages.length){powerUp(level44ActionQueue.shift(),true)}if(now-level44LastGuestMessageAt>=7200000&&now-level44LastJokeAt>=600000&&mode==='music'&&!pendingMessages.length&&!fullPlaylist){level44LastJokeAt=now;const joke=level44Jokes[level44JokeIndex++%level44Jokes.length];enqueueMessage(joke[0],joke[1])}if($('idlepower').checked&&mode==='music'&&!fullPlaylist&&!pendingMessages.length&&!activeMessage&&now-lastIdlePower>=1200000){powerUp(Object.keys(META)[Math.floor(Math.random()*10)],true)}if(fullPlaylist&&now>=fullPlaylistUntil)closeFullPlaylist();if($('autofull').checked&&mode==='music'&&!fullPlaylist&&!pendingMessages.length&&now-lastFullPlaylist>=720000)openFullPlaylist();let fraction=mode==='power'?Math.max(0,(powerEnd-now)/7800):mode==='message'?Math.max(0,(messageEnd-now)/8000):0;$('progress').style.width=(fraction*100)+'%';requestAnimationFrame(tick)}
+function tick(now){let t=now/1000;let dt=Math.min(.1,(now-lastFrame)/1000||0);lastFrame=now;drawAmbient(t,now);if(mode==='power'&&now>=powerEnd){mode='music';$('powerframe').srcdoc='';document.querySelectorAll('.sidebuttons button').forEach(b=>b.classList.remove('active'));updateLayers();if(level44ActionQueue.length){powerUp(level44ActionQueue.shift(),true)}else if(pendingMessages.length){nextMessageAt=now;playNextMessage()}}if(mode==='message'&&now>=messageEnd)finishMessage();if(mode==='music'&&pendingMessages.length&&now>=nextMessageAt&&!level44ActionQueue.length)playNextMessage();if(introEnd&&now>=introEnd){introEnd=0;updateLayers()}if(now-lastPromptAt>=6500){lastPromptAt=now;rotateMessagePrompt()}if(now-lastCakeAt>=9500){lastCakeAt=now;rotateCakePrompt()}if($('autobg').checked&&now-lastBg>=900000)nextBackground();if($('automsg').checked&&now-lastQueuedDemo>=12000){lastQueuedDemo=now;showMessage()}if(auto&&now>=autoAt){autoAt=now+14000;if(mode==='music'&&!pendingMessages.length)powerUp(Object.keys(META)[Math.floor(Math.random()*10)])}if(level44ActionQueue.length&&mode==='music'){powerUp(level44ActionQueue.shift(),true)}if(now-level44LastGuestMessageAt>=7200000&&now-level44LastJokeAt>=600000&&mode==='music'&&!pendingMessages.length&&!fullPlaylist){level44LastJokeAt=now;const joke=level44Jokes[level44JokeIndex++%level44Jokes.length];enqueueMessage(joke[0],joke[1])}if($('idlepower').checked&&mode==='music'&&!fullPlaylist&&!pendingMessages.length&&!activeMessage&&now-lastIdlePower>=1200000){powerUp(Object.keys(META)[Math.floor(Math.random()*10)],true)}if(fullPlaylist&&now>=fullPlaylistUntil)closeFullPlaylist();if($('autofull').checked&&mode==='music'&&!fullPlaylist&&!pendingMessages.length&&now-lastFullPlaylist>=720000)openFullPlaylist();let fraction=mode==='power'?Math.max(0,(powerEnd-now)/7800):mode==='message'?Math.max(0,(messageEnd-now)/8000):0;$('progress').style.width=(fraction*100)+'%';requestAnimationFrame(tick)}
 nextBackground();updateLayers();requestAnimationFrame(tick);
 
 renderPreviousHits();
@@ -2063,7 +2063,7 @@ let level44JokeIndex=0;
 async function level44PollOnlineMessages(){
  try{
   const response=await fetch('/.netlify/functions/party',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({op:'feed'}),cache:'no-store'});
-  if(!response.ok)return;
+  if(!response.ok){console.warn('Party feed HTTP',response.status);return}
   const feed=await response.json();
   for(const item of feed.events||[]){
    if(!item?.id||level44ActionSeen.has(item.id))continue;
