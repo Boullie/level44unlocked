@@ -1509,13 +1509,401 @@ body>h1,body>.intro,body>.foot{display:none!important}
 .home .scanplay,.home.showing-message .scanplay,.tv.split-view .home .scanplay,.tv.split-view .home.showing-message .scanplay{display:flex!important;visibility:visible!important;opacity:1!important;z-index:12!important;bottom:2%!important}
 .home .below-feed-prompt,.home.showing-message .below-feed-prompt,.tv.split-view .home .below-feed-prompt{display:block!important;visibility:visible!important;top:var(--level44-prompt-top,76%)!important;bottom:auto!important;transform:translateY(-50%)!important}
 .music.compact .playlist{z-index:2!important;background:#0c071b!important}
+
+/* LEVEL 44 — white vinyl accents only; preserve motion and layout. */
+.music,.music[data-record-color="1"],.music[data-record-color="2"],.music[data-record-color="3"],.music[data-record-color="4"]{
+  --vinyl-outer:#FFFFFF!important;
+  --vinyl-center:#FFFFFF!important;
+  --vinyl-center-border:#FFFFFF!important;
+}
+.music .vinyl-svg > circle:nth-child(2){stroke:#FFFFFF!important}
+
+/* V56: hide compact playback progress strip peeking above Previous Hits. */
+.music.compact .song-info .pixel-progress{display:none!important}
+
+/* V57: remove the yellow/pink playback progress bar in ALL Party TV player layouts. */
+.music .pixel-progress,.music.compact .pixel-progress,.music.showcase .pixel-progress{display:none!important;visibility:hidden!important}
+
+/* V58: reference vinyl — one purple outer accent, white inner ring, dark grooves, cyan label. */
+.music,.music[data-record-color="1"],.music[data-record-color="2"],.music[data-record-color="3"],.music[data-record-color="4"]{
+ --vinyl-outer:#b56bff!important;--vinyl-center:#55eced!important;--vinyl-center-border:#ffffff!important;
+}
+.music .record-rim{border-color:#ffffff!important;box-shadow:0 0 0 2px #ffffff,0 0 16px #a865ff99!important}
+.music .vinyl-svg > circle:first-child{stroke:var(--vinyl-outer)!important}
+.music .vinyl-svg > circle:nth-child(2){stroke:#ffffff!important}
+.music .vinyl-svg .vinyl-spinning > circle:first-child{stroke:var(--vinyl-third)!important}.music .vinyl-svg .vinyl-spinning > circle:nth-child(6){fill:#ffe46b!important;stroke:var(--vinyl-center-border)!important}
+.music .pixel-progress{display:none!important}
+/* Compact jukebox alternates sides with a brief fade at the beginning of each track. */
+.tv.split-view.playlist-left .home{left:40%!important;right:0!important;width:60%!important}
+.tv.split-view.playlist-left .music.compact{left:0!important;right:60%!important;width:39.5%!important}
+.tv.split-view .home,.tv.split-view .music.compact{transition:left .65s ease,right .65s ease,opacity .3s ease!important}
+.tv.split-view.side-changing .music.compact{opacity:0!important}
+@media(prefers-reduced-motion:reduce){.tv.split-view .home,.tv.split-view .music.compact{transition:none!important}}
+
+/* V12.8: mirrored split layout, identical proportions and spacing on both sides. */
+.tv.split-view.playlist-left .home{left:28%!important;right:auto!important;width:70.5%!important;max-width:70.5%!important}
+.tv.split-view.playlist-left .music.compact,.tv.split-view.playlist-left .music.compact.left-side{
+ left:1.5%!important;right:auto!important;top:4%!important;bottom:4%!important;width:24%!important;max-width:24%!important;height:92%!important
+}
+.tv.split-view.playlist-left .home .hero-stack,.tv.split-view.playlist-left .home .message-marquee{max-width:100%!important}
+.music.compact .song-info{margin-bottom:clamp(8px,1.8vh,20px)!important}
+.music.compact .playlist{margin-top:clamp(6px,1.2vh,14px)!important}
+/* Larger readable metadata on wide TVs, preserving room for long titles. */
+@media(min-width:1200px) and (min-height:650px){
+ .music.compact .track{font-size:clamp(16px,1.6vw,29px)!important;line-height:1.2!important}
+ .music.compact .artist{font-size:clamp(12px,1.1vw,19px)!important;line-height:1.25!important}
+ .music.compact .playing-light{font-size:clamp(8px,.75vw,12px)!important}
+}
+
+/* V12.8: never split individual words in song titles, artists or previous hits. */
+.music .track,.music .artist,.music .song-title-pair .track,.music .song-title-pair .artist,
+.music .history-song,.music .history-artist,.music #playlist .history-entry,
+.music .nextsong-heading{
+ word-break:normal!important;overflow-wrap:normal!important;hyphens:none!important;
+}
+.music .track,.music .artist,.music .history-song,.music .history-artist{white-space:normal}
+/* Guest names: 150% of the message text, in both normal and music-wish messages. */
+.home .message-marquee .msg .who,#who,#who.level44-wish-name{
+ font-size:1.5em!important;line-height:1.15!important;letter-spacing:.035em!important;
+ overflow-wrap:normal!important;word-break:normal!important;hyphens:none!important;
+}
+
+/* Showcase: 1.5x disco ball, larger dancer filling the space beneath. */
+.music.showcase .nextsong.unknown-next .disco-ball{width:clamp(65px,9.75vh,105px)!important;height:clamp(65px,9.75vh,105px)!important}
+.music.showcase .nextsong.unknown-next .mystery-dancer{width:72px!important;height:112px!important;flex:0 0 112px!important;transform:scale(clamp(1.15,1.9vh,1.7))!important;transform-origin:top center!important;margin-top:clamp(15px,3vh,30px)!important}
+@media(max-height:650px){.music.showcase .nextsong.unknown-next .mystery-dancer{transform:scale(1.1)!important;margin-top:6px!important}}
+/* Distinct adjacent vinyl accents: outer, third, center and yellow center outline. */
+.music .vinyl-svg > circle:first-child{stroke:var(--vinyl-outer)!important}
+.music .vinyl-svg .vinyl-spinning > circle:first-child{stroke:var(--vinyl-third)!important}
+.music .vinyl-svg .vinyl-spinning > circle:nth-child(6){fill:var(--vinyl-center)!important;stroke:#ffe46b!important}
+
+/* Showcase: taller pixel dancer, disco ball 1.5x, while keeping the stage within its card. */
+.music.showcase .nextsong.unknown-next .disco-ball{width:clamp(72px,11.25vh,132px)!important;height:clamp(72px,11.25vh,132px)!important;max-width:90%!important}
+.music.showcase .nextsong.unknown-next .mystery-dancer{width:72px!important;height:112px!important;flex:1 1 auto!important;min-height:112px!important;max-height:100%!important;align-self:center!important;transform-origin:50% 85%;scale:1.35}
+.music.showcase .nextsong.unknown-next{justify-content:space-between!important;gap:8px!important;overflow:hidden!important}
+ .music .vinyl-svg .vinyl-spinning > circle:nth-child(6){fill:#ffe46b!important;stroke:var(--vinyl-center-border)!important}
+
+/* Compact playlist typographic scale follows the UP NEXT card width. */
+.music.compact .music-header{margin-bottom:20px!important}
+.music.compact .music-kicker,.music.compact .eyebrow{white-space:nowrap!important;max-width:100%!important;overflow:visible!important;line-height:1.15!important}
+.music.compact .nextsong-heading{display:block!important;width:100%!important;text-align:center!important}
+
+/* Responsive showcase geometry: dancer's feet align with its floor, stage fills available height. */
+.music.showcase .nextsong.unknown-next{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:flex-start!important;gap:0!important;position:relative!important}
+.music.showcase .nextsong.unknown-next .disco-ball{width:min(32%,15vh)!important;height:auto!important;aspect-ratio:1!important;flex:0 0 auto!important}
+.music.showcase .nextsong.unknown-next .mystery-dancer{position:absolute!important;top:auto!important;bottom:clamp(13px,2.4vh,27px)!important;left:50%!important;margin:0!important;width:clamp(46px,5vw,105px)!important;height:clamp(75px,12vh,180px)!important;min-height:0!important;max-height:55%!important;flex:none!important;scale:1!important;transform:translateX(-50%)!important;transform-origin:50% 100%!important}
+.music.showcase .nextsong.unknown-next .dancer-stage-line{position:absolute!important;bottom:clamp(10px,2vh,23px)!important;left:50%!important;margin:0!important;width:clamp(52px,6vw,128px)!important;height:clamp(3px,.5vh,7px)!important;transform:translateX(-50%)!important;flex:none!important}
+
+/* V64: proportional pixel dancer anchored to stage floor, no absolute transform conflicts. */
+.music.showcase .nextsong.unknown-next .mystery-dancer{
+ position:absolute!important;top:auto!important;bottom:var(--robot-floor-bottom,20px)!important;
+ left:50%!important;width:60px!important;height:96px!important;min-height:0!important;
+ max-height:none!important;flex:none!important;margin:0!important;
+ scale:none!important;transform:translateX(-50%) scale(var(--robot-scale,1.7))!important;
+ transform-origin:50% 100%!important;
+}
+.music.showcase .nextsong.unknown-next .dancer-stage-line{
+ position:absolute!important;bottom:var(--robot-line-bottom,15px)!important;left:50%!important;
+ width:var(--robot-floor-width,110px)!important;height:var(--robot-floor-height,5px)!important;
+ margin:0!important;transform:translateX(-50%)!important;
+}
+.music .playlist{min-height:0!important}
+.music #playlist{min-height:0!important;overflow:hidden!important;position:relative!important;flex:1 1 auto!important;justify-content:flex-end!important}
+.music .playlist .history-title{flex:0 0 auto!important;position:relative!important;z-index:2!important}
+.music #playlist>.history-entry{flex:0 0 auto!important;min-height:0!important;transition:transform .42s ease,opacity .42s ease!important;will-change:transform,opacity}
+.music #playlist>.history-entry.history-new{animation:historySlideIn .42s ease both!important}
+.music #playlist>.history-entry.history-old{animation:historySlideOut .35s ease both!important}
+@keyframes historySlideIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes historySlideOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-22px)}}
+.music.showcase .playlist{justify-content:flex-start!important;overflow:hidden!important}
+.music.showcase #playlist{gap:clamp(4px,.6vh,9px)!important}
+.music.compact #playlist{gap:clamp(2px,.3vh,5px)!important}
+
+/* V65: energetic stationary dance, feet always above the glowing floor. */
+@keyframes level44-dance-body{0%,100%{transform:translateY(0) rotate(-8deg)}20%{transform:translateY(-12px) rotate(12deg)}45%{transform:translateY(-5px) rotate(-12deg)}70%{transform:translateY(-15px) rotate(10deg)}}
+@keyframes level44-dance-left-arm{0%,100%{transform:rotate(-65deg)}50%{transform:rotate(70deg)}}
+@keyframes level44-dance-right-arm{0%,100%{transform:rotate(70deg)}50%{transform:rotate(-65deg)}}
+@keyframes level44-dance-left-leg{0%,100%{transform:rotate(-18deg)}50%{transform:rotate(38deg)}}
+@keyframes level44-dance-right-leg{0%,100%{transform:rotate(38deg)}50%{transform:rotate(-18deg)}}
+.music.showcase .mystery-dancer{animation:level44-dance-body .8s ease-in-out infinite!important}
+.music.showcase .mystery-dancer .dancer-arm.left{animation:level44-dance-left-arm .55s ease-in-out infinite!important}
+.music.showcase .mystery-dancer .dancer-arm.right{animation:level44-dance-right-arm .55s ease-in-out infinite!important}
+.music.showcase .mystery-dancer .dancer-leg.left{animation:level44-dance-left-leg .6s ease-in-out infinite!important}
+.music.showcase .mystery-dancer .dancer-leg.right{animation:level44-dance-right-leg .6s ease-in-out infinite!important}
+
+/* Full-width QR invitation strip, independent of the vinyl column. */
+.music.showcase .jam-join.is-active{position:absolute!important;left:0!important;right:0!important;bottom:clamp(32px,6vh,74px)!important;width:100%!important;max-width:none!important;box-sizing:border-box!important;display:flex!important;justify-content:center!important;gap:clamp(12px,2vw,32px)!important;padding:8px 3%!important;background:linear-gradient(90deg,#0a0924e8,#252044ef,#0a0924e8)!important;border-top:1px solid #57e8ef80!important;border-bottom:1px solid #57e8ef80!important}
+.music.showcase #playlist>.history-entry.level44-reveal{animation:level44PreviousReveal .5s both!important;animation-delay:var(--reveal-delay,0ms)!important}
+@keyframes level44PreviousReveal{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+/* Hiphop-inspired popping, locking, arm waves and torso grooves, retaining the pixel robot. */
+@keyframes level44-hiphop-body{0%,100%{transform:translateY(0) rotate(-7deg) skewX(0)}12%{transform:translateY(-9px) rotate(8deg) skewX(-5deg)}26%{transform:translateY(-2px) rotate(0) skewX(7deg)}38%{transform:translateY(-15px) rotate(-11deg)}52%{transform:translateY(-4px) rotate(9deg) skewX(-8deg)}66%{transform:translateY(-12px) rotate(-5deg)}82%{transform:translateY(-3px) rotate(12deg) skewX(5deg)}}
+@keyframes level44-hiphop-arm-l{0%,100%{transform:rotate(-85deg)}20%{transform:rotate(50deg)}35%{transform:rotate(-20deg)}55%{transform:rotate(105deg)}75%{transform:rotate(-60deg)}}
+@keyframes level44-hiphop-arm-r{0%,100%{transform:rotate(65deg)}20%{transform:rotate(-105deg)}40%{transform:rotate(25deg)}60%{transform:rotate(-75deg)}80%{transform:rotate(90deg)}}
+@keyframes level44-hiphop-leg-l{0%,100%{transform:rotate(-22deg)}25%{transform:rotate(38deg)}50%{transform:rotate(-45deg)}75%{transform:rotate(18deg)}}
+@keyframes level44-hiphop-leg-r{0%,100%{transform:rotate(32deg)}25%{transform:rotate(-30deg)}50%{transform:rotate(42deg)}75%{transform:rotate(-18deg)}}
+.music.showcase .mystery-dancer{animation:level44-hiphop-body 1.75s cubic-bezier(.35,0,.2,1) infinite!important}
+.music.showcase .mystery-dancer .dancer-arm.left{animation:level44-hiphop-arm-l 1.75s steps(3,end) infinite!important}
+.music.showcase .mystery-dancer .dancer-arm.right{animation:level44-hiphop-arm-r 1.75s steps(3,end) infinite!important}
+.music.showcase .mystery-dancer .dancer-leg.left{animation:level44-hiphop-leg-l 1.75s steps(3,end) infinite!important}
+.music.showcase .mystery-dancer .dancer-leg.right{animation:level44-hiphop-leg-r 1.75s steps(3,end) infinite!important}
+
+/* Showcase covers its own QR invitation entirely. */
+.music.showcase .jam-join,.music.showcase .jam-join.is-active{display:none!important}
+@keyframes level44-eighties-body{0%,100%{transform:translateX(0) rotate(-5deg)}25%{transform:translateX(-5px) rotate(5deg)}50%{transform:translateX(0) rotate(-3deg)}75%{transform:translateX(5px) rotate(6deg)}}
+@keyframes level44-eighties-arm-left{0%,100%{transform:rotate(-38deg)}25%{transform:rotate(28deg)}50%{transform:rotate(-62deg)}75%{transform:rotate(15deg)}}
+@keyframes level44-eighties-arm-right{0%,100%{transform:rotate(38deg)}25%{transform:rotate(-28deg)}50%{transform:rotate(62deg)}75%{transform:rotate(-15deg)}}
+@keyframes level44-eighties-leg-left{0%,100%{transform:rotate(-8deg)}25%{transform:rotate(18deg)}50%{transform:rotate(-12deg)}75%{transform:rotate(10deg)}}
+@keyframes level44-eighties-leg-right{0%,100%{transform:rotate(8deg)}25%{transform:rotate(-18deg)}50%{transform:rotate(12deg)}75%{transform:rotate(-10deg)}}
+.music.showcase .mystery-dancer{animation:level44-eighties-body 3.2s ease-in-out infinite!important}
+.music.showcase .mystery-dancer .dancer-arm.left{animation:level44-eighties-arm-left 3.2s ease-in-out infinite!important}
+.music.showcase .mystery-dancer .dancer-arm.right{animation:level44-eighties-arm-right 3.2s ease-in-out infinite!important}
+.music.showcase .mystery-dancer .dancer-leg.left{animation:level44-eighties-leg-left 3.2s ease-in-out infinite!important}
+.music.showcase .mystery-dancer .dancer-leg.right{animation:level44-eighties-leg-right 3.2s ease-in-out infinite!important}
+
+/* Compact previous hits: reserve enough vertical space for multiple rows. */
+.music.compact .playlist{min-height:clamp(118px,19vh,245px)!important;display:flex!important;flex-direction:column!important;overflow:hidden!important}
+.music.compact #playlist{flex:1 1 auto!important;min-height:0!important;overflow:hidden!important;justify-content:flex-end!important}
+.music.compact #playlist>.history-entry{font-size:clamp(9px,.8vw,13px)!important;line-height:1.15!important;padding-block:3px!important}
+/* Robot remains geometrically centered, with visibly separated legs. */
+.music.showcase .nextsong.unknown-next .mystery-dancer{left:50%!important;right:auto!important;transform:translateX(-50%) scale(var(--robot-scale,1.7))!important}
+.music.showcase .mystery-dancer .dancer-leg.left{left:13px!important;right:auto!important}
+.music.showcase .mystery-dancer .dancer-leg.right{left:auto!important;right:13px!important}
+@keyframes level44-eighties-groove{0%,100%{transform:translateY(0) rotate(-4deg)}20%{transform:translateY(-4px) rotate(5deg)}40%{transform:translateY(-1px) rotate(0deg)}60%{transform:translateY(-6px) rotate(-5deg)}80%{transform:translateY(-2px) rotate(4deg)}}
+@keyframes level44-eighties-robot{0%,100%{transform:translateY(0) rotate(-5deg)}25%{transform:translateY(-3px) rotate(7deg)}50%{transform:translateY(-1px) rotate(-7deg)}75%{transform:translateY(-5px) rotate(5deg)}}
+@keyframes level44-eighties-wave{0%,100%{transform:rotate(-25deg)}20%{transform:rotate(70deg)}45%{transform:rotate(-65deg)}70%{transform:rotate(35deg)}}
+@keyframes level44-eighties-disco{0%,100%{transform:rotate(5deg)}30%{transform:rotate(-80deg)}60%{transform:rotate(35deg)}85%{transform:rotate(-45deg)}}
+.music.showcase .mystery-dancer{animation:level44-eighties-groove 3.4s ease-in-out infinite!important}
+.music.showcase .mystery-dancer .dancer-arm.left{animation:level44-eighties-wave 3.4s ease-in-out infinite!important}
+.music.showcase .mystery-dancer .dancer-arm.right{animation:level44-eighties-disco 3.4s ease-in-out infinite!important}
+.music.showcase .mystery-dancer.dance-variant-1{animation-name:level44-eighties-robot!important}
+.music.showcase .mystery-dancer.dance-variant-1 .dancer-arm.left{animation-name:level44-eighties-disco!important}
+.music.showcase .mystery-dancer.dance-variant-1 .dancer-arm.right{animation-name:level44-eighties-wave!important}
+
+/* Robot stays fully inside its stage even during arm swings. */
+.music.showcase .nextsong.unknown-next{overflow:hidden!important;contain:paint!important}
+.music.showcase .nextsong.unknown-next .mystery-dancer{left:50%!important;right:auto!important;transform:translateX(-50%) scale(var(--robot-scale,1.7))!important}
+.music.showcase .mystery-dancer .dancer-leg.left{left:22px!important;right:auto!important;transform-origin:50% 0!important}
+.music.showcase .mystery-dancer .dancer-leg.right{left:38px!important;right:auto!important;transform-origin:50% 0!important}
+@keyframes level44-routine-2{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-3px) rotate(-5deg)}50%{transform:translateY(-1px) rotate(4deg)}75%{transform:translateY(-4px) rotate(0)}}
+@keyframes level44-routine-3{0%,100%{transform:translateY(0) rotate(3deg)}30%{transform:translateY(-5px) rotate(-3deg)}65%{transform:translateY(-2px) rotate(6deg)}}
+@keyframes level44-routine-4{0%,100%{transform:translateY(0) rotate(-3deg)}20%{transform:translateY(-4px) rotate(5deg)}40%{transform:translateY(0) rotate(-5deg)}60%{transform:translateY(-3px) rotate(4deg)}80%{transform:translateY(0) rotate(0)}}
+.music.showcase .mystery-dancer.dance-variant-2{animation:level44-routine-2 4s ease-in-out infinite!important}
+.music.showcase .mystery-dancer.dance-variant-3{animation:level44-routine-3 3.6s ease-in-out infinite!important}
+.music.showcase .mystery-dancer.dance-variant-4{animation:level44-routine-4 4.2s ease-in-out infinite!important}
+.music.showcase .mystery-dancer.dance-variant-2 .dancer-arm.left,.music.showcase .mystery-dancer.dance-variant-4 .dancer-arm.right{animation-name:level44-eighties-disco!important}
+.music.showcase .mystery-dancer.dance-variant-3 .dancer-arm.left,.music.showcase .mystery-dancer.dance-variant-4 .dancer-arm.left{animation-name:level44-eighties-wave!important}
+.music.compact .playlist{height:auto!important;min-height:0!important;max-height:min(35vh,280px)!important;flex:0 0 auto!important;overflow:hidden!important}
+.music.compact #playlist{flex:0 0 auto!important;height:auto!important;max-height:calc(5 * 39px + 24px)!important;overflow:hidden!important}
+.music.compact #playlist>.history-entry{min-height:0!important;max-height:39px!important;overflow:hidden!important}
+
+/* Center the robot's actual 60px body in the stage, independent of its dance. */
+.music.showcase .nextsong.unknown-next .mystery-dancer{left:50%!important;right:auto!important;width:60px!important;margin:0!important;transform:translateX(-50%) scale(var(--robot-scale,1.7))!important;transform-origin:50% 100%!important}
+.music.showcase .nextsong.unknown-next .dancer-stage-line{left:50%!important;transform:translateX(-50%)!important}
+
+/* LEVEL44 ten recognizable 80s dance routines; body animation does not disturb outer centering. */
+.music.showcase .nextsong.unknown-next{overflow:hidden!important}
+.music.showcase .mystery-dancer{animation:none!important;translate:0 0!important;rotate:0deg!important}
+.music.showcase .mystery-dancer .dancer-body,.music.showcase .mystery-dancer .dancer-head{animation:none!important}
+.music.showcase .mystery-dancer .dancer-arm,.music.showcase .mystery-dancer .dancer-leg{animation-duration:var(--level44-dance-duration,3.6s)!important;animation-timing-function:ease-in-out!important;animation-iteration-count:infinite!important;animation-direction:normal!important}
+.music.showcase .mystery-dancer .dancer-leg.left{left:22px!important;right:auto!important}
+.music.showcase .mystery-dancer .dancer-leg.right{left:38px!important;right:auto!important}
+.music.showcase .level44-dance-label{position:absolute;z-index:8;left:50%;top:26%;transform:translateX(-50%);width:90%;text-align:center;font:700 clamp(9px,1vw,16px) 'Silkscreen',monospace;color:#ffe46b;text-shadow:0 0 7px #e02a8c;pointer-events:none;opacity:0;transition:opacity .4s}
+.music.showcase .level44-dance-label.visible{opacity:1}
+.music.showcase .mystery-dancer.level44-routine-0 .dancer-arm.left{animation-name:l44-armL-0!important}.music.showcase .mystery-dancer.level44-routine-0 .dancer-arm.right{animation-name:l44-armR-0!important}.music.showcase .mystery-dancer.level44-routine-0 .dancer-leg.left{animation-name:l44-legL-0!important}.music.showcase .mystery-dancer.level44-routine-0 .dancer-leg.right{animation-name:l44-legR-0!important}.music.showcase .mystery-dancer.level44-routine-0{--level44-dance-duration:4.2s;animation:l44-groove-0 4.2s ease-in-out infinite!important}
+@keyframes l44-groove-0{0%{transform:translateY(0px) rotate(-8deg)}25%{transform:translateY(-3px) rotate(10deg)}50%{transform:translateY(0px) rotate(-5deg)}75%{transform:translateY(3px) rotate(8deg)}100%{transform:translateY(0px) rotate(-8deg)}}
+@keyframes l44-armL-0{0%{transform:rotate(15deg)}25%{transform:rotate(-35deg)}50%{transform:rotate(45deg)}75%{transform:rotate(-25deg)}100%{transform:rotate(15deg)}}
+@keyframes l44-armR-0{0%{transform:rotate(-12deg)}25%{transform:rotate(10deg)}50%{transform:rotate(-20deg)}75%{transform:rotate(20deg)}100%{transform:rotate(-12deg)}}
+@keyframes l44-legL-0{0%{transform:rotate(-20deg)}25%{transform:rotate(25deg)}50%{transform:rotate(-10deg)}75%{transform:rotate(20deg)}100%{transform:rotate(-20deg)}}
+@keyframes l44-legR-0{0%{transform:rotate(20deg)}25%{transform:rotate(-25deg)}50%{transform:rotate(10deg)}75%{transform:rotate(-20deg)}100%{transform:rotate(20deg)}}
+.music.showcase .mystery-dancer.level44-routine-1 .dancer-arm.left{animation-name:l44-armL-1!important}.music.showcase .mystery-dancer.level44-routine-1 .dancer-arm.right{animation-name:l44-armR-1!important}.music.showcase .mystery-dancer.level44-routine-1 .dancer-leg.left{animation-name:l44-legL-1!important}.music.showcase .mystery-dancer.level44-routine-1 .dancer-leg.right{animation-name:l44-legR-1!important}.music.showcase .mystery-dancer.level44-routine-1{--level44-dance-duration:2.8s;animation:l44-groove-1 2.8s ease-in-out infinite!important}
+@keyframes l44-groove-1{0%{transform:translateY(0px) rotate(0deg)}25%{transform:translateY(-6px) rotate(5deg)}50%{transform:translateY(0px) rotate(0deg)}75%{transform:translateY(-6px) rotate(-5deg)}100%{transform:translateY(0px) rotate(0deg)}}
+@keyframes l44-armL-1{0%{transform:rotate(-45deg)}25%{transform:rotate(45deg)}50%{transform:rotate(-45deg)}75%{transform:rotate(45deg)}100%{transform:rotate(-45deg)}}
+@keyframes l44-armR-1{0%{transform:rotate(40deg)}25%{transform:rotate(-35deg)}50%{transform:rotate(40deg)}75%{transform:rotate(-35deg)}100%{transform:rotate(40deg)}}
+@keyframes l44-legL-1{0%{transform:rotate(35deg)}25%{transform:rotate(-30deg)}50%{transform:rotate(35deg)}75%{transform:rotate(-30deg)}100%{transform:rotate(35deg)}}
+@keyframes l44-legR-1{0%{transform:rotate(-35deg)}25%{transform:rotate(30deg)}50%{transform:rotate(-35deg)}75%{transform:rotate(30deg)}100%{transform:rotate(-35deg)}}
+.music.showcase .mystery-dancer.level44-routine-2 .dancer-arm.left{animation-name:l44-armL-2!important}.music.showcase .mystery-dancer.level44-routine-2 .dancer-arm.right{animation-name:l44-armR-2!important}.music.showcase .mystery-dancer.level44-routine-2 .dancer-leg.left{animation-name:l44-legL-2!important}.music.showcase .mystery-dancer.level44-routine-2 .dancer-leg.right{animation-name:l44-legR-2!important}.music.showcase .mystery-dancer.level44-routine-2{--level44-dance-duration:3.8s;animation:l44-groove-2 3.8s ease-in-out infinite!important}
+@keyframes l44-groove-2{0%{transform:translateY(0px) rotate(-8deg)}25%{transform:translateY(-3px) rotate(6deg)}50%{transform:translateY(0px) rotate(-6deg)}75%{transform:translateY(-3px) rotate(6deg)}100%{transform:translateY(0px) rotate(-8deg)}}
+@keyframes l44-armL-2{0%{transform:rotate(-60deg)}25%{transform:rotate(15deg)}50%{transform:rotate(70deg)}75%{transform:rotate(-10deg)}100%{transform:rotate(-60deg)}}
+@keyframes l44-armR-2{0%{transform:rotate(60deg)}25%{transform:rotate(-10deg)}50%{transform:rotate(-70deg)}75%{transform:rotate(20deg)}100%{transform:rotate(60deg)}}
+@keyframes l44-legL-2{0%{transform:rotate(-10deg)}25%{transform:rotate(10deg)}50%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}100%{transform:rotate(-10deg)}}
+@keyframes l44-legR-2{0%{transform:rotate(10deg)}25%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}75%{transform:rotate(-10deg)}100%{transform:rotate(10deg)}}
+.music.showcase .mystery-dancer.level44-routine-3 .dancer-arm.left{animation-name:l44-armL-3!important}.music.showcase .mystery-dancer.level44-routine-3 .dancer-arm.right{animation-name:l44-armR-3!important}.music.showcase .mystery-dancer.level44-routine-3 .dancer-leg.left{animation-name:l44-legL-3!important}.music.showcase .mystery-dancer.level44-routine-3 .dancer-leg.right{animation-name:l44-legR-3!important}.music.showcase .mystery-dancer.level44-routine-3{--level44-dance-duration:3.7s;animation:l44-groove-3 3.7s ease-in-out infinite!important}
+@keyframes l44-groove-3{0%{transform:translateY(0px) rotate(-5deg)}25%{transform:translateY(0px) rotate(5deg)}50%{transform:translateY(-3px) rotate(-5deg)}75%{transform:translateY(0px) rotate(5deg)}100%{transform:translateY(0px) rotate(-5deg)}}
+@keyframes l44-armL-3{0%{transform:rotate(-120deg)}25%{transform:rotate(-120deg)}50%{transform:rotate(-120deg)}75%{transform:rotate(-120deg)}100%{transform:rotate(-120deg)}}
+@keyframes l44-armR-3{0%{transform:rotate(70deg)}25%{transform:rotate(5deg)}50%{transform:rotate(-65deg)}75%{transform:rotate(5deg)}100%{transform:rotate(70deg)}}
+@keyframes l44-legL-3{0%{transform:rotate(-8deg)}25%{transform:rotate(8deg)}50%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}100%{transform:rotate(-8deg)}}
+@keyframes l44-legR-3{0%{transform:rotate(8deg)}25%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}75%{transform:rotate(-8deg)}100%{transform:rotate(8deg)}}
+.music.showcase .mystery-dancer.level44-routine-4 .dancer-arm.left{animation-name:l44-armL-4!important}.music.showcase .mystery-dancer.level44-routine-4 .dancer-arm.right{animation-name:l44-armR-4!important}.music.showcase .mystery-dancer.level44-routine-4 .dancer-leg.left{animation-name:l44-legL-4!important}.music.showcase .mystery-dancer.level44-routine-4 .dancer-leg.right{animation-name:l44-legR-4!important}.music.showcase .mystery-dancer.level44-routine-4{--level44-dance-duration:4.2s;animation:l44-groove-4 4.2s ease-in-out infinite!important}
+@keyframes l44-groove-4{0%{transform:translateY(0px) rotate(-8deg)}25%{transform:translateY(-2px) rotate(8deg)}50%{transform:translateY(0px) rotate(-8deg)}75%{transform:translateY(-2px) rotate(8deg)}100%{transform:translateY(0px) rotate(-8deg)}}
+@keyframes l44-armL-4{0%{transform:rotate(-90deg)}25%{transform:rotate(-10deg)}50%{transform:rotate(-90deg)}75%{transform:rotate(-10deg)}100%{transform:rotate(-90deg)}}
+@keyframes l44-armR-4{0%{transform:rotate(0deg)}25%{transform:rotate(90deg)}50%{transform:rotate(0deg)}75%{transform:rotate(90deg)}100%{transform:rotate(0deg)}}
+@keyframes l44-legL-4{0%{transform:rotate(-8deg)}25%{transform:rotate(8deg)}50%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}100%{transform:rotate(-8deg)}}
+@keyframes l44-legR-4{0%{transform:rotate(8deg)}25%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}75%{transform:rotate(-8deg)}100%{transform:rotate(8deg)}}
+.music.showcase .mystery-dancer.level44-routine-5 .dancer-arm.left{animation-name:l44-armL-5!important}.music.showcase .mystery-dancer.level44-routine-5 .dancer-arm.right{animation-name:l44-armR-5!important}.music.showcase .mystery-dancer.level44-routine-5 .dancer-leg.left{animation-name:l44-legL-5!important}.music.showcase .mystery-dancer.level44-routine-5 .dancer-leg.right{animation-name:l44-legR-5!important}.music.showcase .mystery-dancer.level44-routine-5{--level44-dance-duration:3.6s;animation:l44-groove-5 3.6s ease-in-out infinite!important}
+@keyframes l44-groove-5{0%{transform:translateY(0px) rotate(0deg)}25%{transform:translateY(-2px) rotate(5deg)}50%{transform:translateY(0px) rotate(0deg)}75%{transform:translateY(-2px) rotate(-5deg)}100%{transform:translateY(0px) rotate(0deg)}}
+@keyframes l44-armL-5{0%{transform:rotate(-20deg)}25%{transform:rotate(15deg)}50%{transform:rotate(-20deg)}75%{transform:rotate(15deg)}100%{transform:rotate(-20deg)}}
+@keyframes l44-armR-5{0%{transform:rotate(20deg)}25%{transform:rotate(-15deg)}50%{transform:rotate(20deg)}75%{transform:rotate(-15deg)}100%{transform:rotate(20deg)}}
+@keyframes l44-legL-5{0%{transform:rotate(-12deg)}25%{transform:rotate(18deg)}50%{transform:rotate(12deg)}75%{transform:rotate(-18deg)}100%{transform:rotate(-12deg)}}
+@keyframes l44-legR-5{0%{transform:rotate(12deg)}25%{transform:rotate(-18deg)}50%{transform:rotate(-12deg)}75%{transform:rotate(18deg)}100%{transform:rotate(12deg)}}
+.music.showcase .mystery-dancer.level44-routine-6 .dancer-arm.left{animation-name:l44-armL-6!important}.music.showcase .mystery-dancer.level44-routine-6 .dancer-arm.right{animation-name:l44-armR-6!important}.music.showcase .mystery-dancer.level44-routine-6 .dancer-leg.left{animation-name:l44-legL-6!important}.music.showcase .mystery-dancer.level44-routine-6 .dancer-leg.right{animation-name:l44-legR-6!important}.music.showcase .mystery-dancer.level44-routine-6{--level44-dance-duration:4s;animation:l44-groove-6 4s ease-in-out infinite!important}
+@keyframes l44-groove-6{0%{transform:translateY(0px) rotate(-12deg)}25%{transform:translateY(-5px) rotate(12deg)}45%{transform:translateY(-2px) rotate(-10deg)}55%{transform:translateY(-2px) rotate(-10deg)}75%{transform:translateY(-6px) rotate(8deg)}100%{transform:translateY(0px) rotate(-12deg)}}
+@keyframes l44-armL-6{0%{transform:rotate(-70deg)}25%{transform:rotate(65deg)}45%{transform:rotate(90deg)}55%{transform:rotate(90deg)}75%{transform:rotate(-45deg)}100%{transform:rotate(-70deg)}}
+@keyframes l44-armR-6{0%{transform:rotate(65deg)}25%{transform:rotate(-80deg)}45%{transform:rotate(-90deg)}55%{transform:rotate(-90deg)}75%{transform:rotate(70deg)}100%{transform:rotate(65deg)}}
+@keyframes l44-legL-6{0%{transform:rotate(-25deg)}25%{transform:rotate(30deg)}45%{transform:rotate(-20deg)}55%{transform:rotate(-20deg)}75%{transform:rotate(25deg)}100%{transform:rotate(-25deg)}}
+@keyframes l44-legR-6{0%{transform:rotate(25deg)}25%{transform:rotate(-30deg)}45%{transform:rotate(20deg)}55%{transform:rotate(20deg)}75%{transform:rotate(-25deg)}100%{transform:rotate(25deg)}}
+.music.showcase .mystery-dancer.level44-routine-7 .dancer-arm.left{animation-name:l44-armL-7!important}.music.showcase .mystery-dancer.level44-routine-7 .dancer-arm.right{animation-name:l44-armR-7!important}.music.showcase .mystery-dancer.level44-routine-7 .dancer-leg.left{animation-name:l44-legL-7!important}.music.showcase .mystery-dancer.level44-routine-7 .dancer-leg.right{animation-name:l44-legR-7!important}.music.showcase .mystery-dancer.level44-routine-7{--level44-dance-duration:3s;animation:l44-groove-7 3s ease-in-out infinite!important}
+@keyframes l44-groove-7{0%{transform:translateY(0px) rotate(-5deg)}25%{transform:translateY(-5px) rotate(8deg)}50%{transform:translateY(0px) rotate(-5deg)}75%{transform:translateY(-5px) rotate(8deg)}100%{transform:translateY(0px) rotate(-5deg)}}
+@keyframes l44-armL-7{0%{transform:rotate(-35deg)}25%{transform:rotate(45deg)}50%{transform:rotate(-35deg)}75%{transform:rotate(45deg)}100%{transform:rotate(-35deg)}}
+@keyframes l44-armR-7{0%{transform:rotate(30deg)}25%{transform:rotate(-40deg)}50%{transform:rotate(30deg)}75%{transform:rotate(-40deg)}100%{transform:rotate(30deg)}}
+@keyframes l44-legL-7{0%{transform:rotate(-25deg)}25%{transform:rotate(35deg)}50%{transform:rotate(-25deg)}75%{transform:rotate(35deg)}100%{transform:rotate(-25deg)}}
+@keyframes l44-legR-7{0%{transform:rotate(25deg)}25%{transform:rotate(-35deg)}50%{transform:rotate(25deg)}75%{transform:rotate(-35deg)}100%{transform:rotate(25deg)}}
+.music.showcase .mystery-dancer.level44-routine-8 .dancer-arm.left{animation-name:l44-armL-8!important}.music.showcase .mystery-dancer.level44-routine-8 .dancer-arm.right{animation-name:l44-armR-8!important}.music.showcase .mystery-dancer.level44-routine-8 .dancer-leg.left{animation-name:l44-legL-8!important}.music.showcase .mystery-dancer.level44-routine-8 .dancer-leg.right{animation-name:l44-legR-8!important}.music.showcase .mystery-dancer.level44-routine-8{--level44-dance-duration:3.1s;animation:l44-groove-8 3.1s ease-in-out infinite!important}
+@keyframes l44-groove-8{0%{transform:translateY(0px) rotate(-12deg)}20%{transform:translateY(-6px) rotate(12deg)}40%{transform:translateY(-2px) rotate(-8deg)}60%{transform:translateY(-7px) rotate(15deg)}80%{transform:translateY(-3px) rotate(-12deg)}100%{transform:translateY(0px) rotate(-12deg)}}
+@keyframes l44-armL-8{0%{transform:rotate(-90deg)}20%{transform:rotate(65deg)}40%{transform:rotate(-35deg)}60%{transform:rotate(100deg)}80%{transform:rotate(-70deg)}100%{transform:rotate(-90deg)}}
+@keyframes l44-armR-8{0%{transform:rotate(35deg)}20%{transform:rotate(-90deg)}40%{transform:rotate(85deg)}60%{transform:rotate(-60deg)}80%{transform:rotate(45deg)}100%{transform:rotate(35deg)}}
+@keyframes l44-legL-8{0%{transform:rotate(-15deg)}20%{transform:rotate(20deg)}40%{transform:rotate(-20deg)}60%{transform:rotate(25deg)}80%{transform:rotate(-15deg)}100%{transform:rotate(-15deg)}}
+@keyframes l44-legR-8{0%{transform:rotate(15deg)}20%{transform:rotate(-20deg)}40%{transform:rotate(20deg)}60%{transform:rotate(-25deg)}80%{transform:rotate(15deg)}100%{transform:rotate(15deg)}}
+.music.showcase .mystery-dancer.level44-routine-9 .dancer-arm.left{animation-name:l44-armL-9!important}.music.showcase .mystery-dancer.level44-routine-9 .dancer-arm.right{animation-name:l44-armR-9!important}.music.showcase .mystery-dancer.level44-routine-9 .dancer-leg.left{animation-name:l44-legL-9!important}.music.showcase .mystery-dancer.level44-routine-9 .dancer-leg.right{animation-name:l44-legR-9!important}.music.showcase .mystery-dancer.level44-routine-9{--level44-dance-duration:4s;animation:l44-groove-9 4s ease-in-out infinite!important}
+@keyframes l44-groove-9{0%{transform:translateY(0px) rotate(-6deg)}25%{transform:translateY(-2px) rotate(5deg)}50%{transform:translateY(0px) rotate(-6deg)}75%{transform:translateY(-2px) rotate(5deg)}100%{transform:translateY(0px) rotate(-6deg)}}
+@keyframes l44-armL-9{0%{transform:rotate(-35deg)}25%{transform:rotate(65deg)}50%{transform:rotate(-35deg)}75%{transform:rotate(65deg)}100%{transform:rotate(-35deg)}}
+@keyframes l44-armR-9{0%{transform:rotate(35deg)}25%{transform:rotate(-65deg)}50%{transform:rotate(35deg)}75%{transform:rotate(-65deg)}100%{transform:rotate(35deg)}}
+@keyframes l44-legL-9{0%{transform:rotate(-15deg)}25%{transform:rotate(15deg)}50%{transform:rotate(-15deg)}75%{transform:rotate(15deg)}100%{transform:rotate(-15deg)}}
+@keyframes l44-legR-9{0%{transform:rotate(15deg)}25%{transform:rotate(-15deg)}50%{transform:rotate(15deg)}75%{transform:rotate(-15deg)}100%{transform:rotate(15deg)}}
+
+/* Newest played track always first in both layouts. */
+.music #playlist{display:flex!important;flex-direction:column!important;justify-content:flex-start!important}
+.music.compact #playlist{justify-content:flex-start!important}
+/* Keep the outer robot as a fixed, centered coordinate system. Animate torso/head independently. */
+.music.showcase .mystery-dancer[class*="level44-routine-"]{animation:none!important}
+.music.showcase .mystery-dancer[class*="level44-routine-"] .dancer-body{transform-origin:50% 15%!important}
+.music.showcase .mystery-dancer[class*="level44-routine-"] .dancer-head{transform-origin:50% 85%!important}
+.music.showcase .mystery-dancer.level44-routine-0 .dancer-body{animation:l44-torso-0 4.2s ease-in-out infinite!important}.music.showcase .mystery-dancer.level44-routine-0 .dancer-head{animation:l44-head-0 4.2s ease-in-out infinite!important}
+@keyframes l44-torso-0{0%,100%{transform:rotate(-8deg)}25%{transform:rotate(8deg)}50%{transform:rotate(-5deg)}75%{transform:rotate(5deg)}}
+@keyframes l44-head-0{0%,100%{transform:rotate(4deg)}25%{transform:rotate(-4deg)}50%{transform:rotate(3deg)}75%{transform:rotate(-2deg)}}
+.music.showcase .mystery-dancer.level44-routine-1 .dancer-body{animation:l44-torso-1 2.8s ease-in-out infinite!important}.music.showcase .mystery-dancer.level44-routine-1 .dancer-head{animation:l44-head-1 2.8s ease-in-out infinite!important}
+@keyframes l44-torso-1{0%,100%{transform:rotate(-4deg)}25%{transform:rotate(5deg)}50%{transform:rotate(-4deg)}75%{transform:rotate(5deg)}}
+@keyframes l44-head-1{0%,100%{transform:rotate(2deg)}25%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}75%{transform:rotate(-2deg)}}
+.music.showcase .mystery-dancer.level44-routine-2 .dancer-body{animation:l44-torso-2 3.8s ease-in-out infinite!important}.music.showcase .mystery-dancer.level44-routine-2 .dancer-head{animation:l44-head-2 3.8s ease-in-out infinite!important}
+@keyframes l44-torso-2{0%,100%{transform:rotate(-12deg)}25%{transform:rotate(12deg)}50%{transform:rotate(-12deg)}75%{transform:rotate(12deg)}}
+@keyframes l44-head-2{0%,100%{transform:rotate(6deg)}25%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}75%{transform:rotate(-6deg)}}
+.music.showcase .mystery-dancer.level44-routine-3 .dancer-body{animation:l44-torso-3 3.7s ease-in-out infinite!important}.music.showcase .mystery-dancer.level44-routine-3 .dancer-head{animation:l44-head-3 3.7s ease-in-out infinite!important}
+@keyframes l44-torso-3{0%,100%{transform:rotate(0deg)}25%{transform:rotate(7deg)}50%{transform:rotate(0deg)}75%{transform:rotate(-7deg)}}
+@keyframes l44-head-3{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-3deg)}50%{transform:rotate(0deg)}75%{transform:rotate(4deg)}}
+.music.showcase .mystery-dancer.level44-routine-4 .dancer-body{animation:l44-torso-4 4.2s ease-in-out infinite!important}.music.showcase .mystery-dancer.level44-routine-4 .dancer-head{animation:l44-head-4 4.2s ease-in-out infinite!important}
+@keyframes l44-torso-4{0%,100%{transform:rotate(-15deg)}25%{transform:rotate(15deg)}50%{transform:rotate(-15deg)}75%{transform:rotate(15deg)}}
+@keyframes l44-head-4{0%,100%{transform:rotate(8deg)}25%{transform:rotate(-7deg)}50%{transform:rotate(8deg)}75%{transform:rotate(-7deg)}}
+.music.showcase .mystery-dancer.level44-routine-5 .dancer-body{animation:l44-torso-5 3.6s ease-in-out infinite!important}.music.showcase .mystery-dancer.level44-routine-5 .dancer-head{animation:l44-head-5 3.6s ease-in-out infinite!important}
+@keyframes l44-torso-5{0%,100%{transform:rotate(-6deg)}25%{transform:rotate(6deg)}50%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}}
+@keyframes l44-head-5{0%,100%{transform:rotate(3deg)}25%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}75%{transform:rotate(-3deg)}}
+.music.showcase .mystery-dancer.level44-routine-6 .dancer-body{animation:l44-torso-6 4s ease-in-out infinite!important}.music.showcase .mystery-dancer.level44-routine-6 .dancer-head{animation:l44-head-6 4s ease-in-out infinite!important}
+@keyframes l44-torso-6{0%,100%{transform:rotate(-18deg)}25%{transform:rotate(15deg)}50%{transform:rotate(0deg)}75%{transform:rotate(-12deg)}}
+@keyframes l44-head-6{0%,100%{transform:rotate(9deg)}25%{transform:rotate(-7deg)}50%{transform:rotate(0deg)}75%{transform:rotate(6deg)}}
+.music.showcase .mystery-dancer.level44-routine-7 .dancer-body{animation:l44-torso-7 3s ease-in-out infinite!important}.music.showcase .mystery-dancer.level44-routine-7 .dancer-head{animation:l44-head-7 3s ease-in-out infinite!important}
+@keyframes l44-torso-7{0%,100%{transform:rotate(-8deg)}25%{transform:rotate(8deg)}50%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+@keyframes l44-head-7{0%,100%{transform:rotate(4deg)}25%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}75%{transform:rotate(-4deg)}}
+.music.showcase .mystery-dancer.level44-routine-8 .dancer-body{animation:l44-torso-8 3.1s ease-in-out infinite!important}.music.showcase .mystery-dancer.level44-routine-8 .dancer-head{animation:l44-head-8 3.1s ease-in-out infinite!important}
+@keyframes l44-torso-8{0%,100%{transform:rotate(-18deg)}25%{transform:rotate(18deg)}50%{transform:rotate(-12deg)}75%{transform:rotate(12deg)}}
+@keyframes l44-head-8{0%,100%{transform:rotate(9deg)}25%{transform:rotate(-9deg)}50%{transform:rotate(6deg)}75%{transform:rotate(-6deg)}}
+.music.showcase .mystery-dancer.level44-routine-9 .dancer-body{animation:l44-torso-9 4s ease-in-out infinite!important}.music.showcase .mystery-dancer.level44-routine-9 .dancer-head{animation:l44-head-9 4s ease-in-out infinite!important}
+@keyframes l44-torso-9{0%,100%{transform:rotate(-10deg)}25%{transform:rotate(10deg)}50%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}}
+@keyframes l44-head-9{0%,100%{transform:rotate(5deg)}25%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}75%{transform:rotate(-5deg)}}
+
+
+/* Straight pixel limbs again: no elbows or knees. Vogue features sharp angular poses. */
+.music.showcase .mystery-dancer .dancer-arm{height:36px!important;overflow:visible!important}
+.music.showcase .mystery-dancer .dancer-leg{height:31px!important;overflow:visible!important}
+.music.showcase .mystery-dancer.level44-routine-10{--level44-dance-duration:4.8s;animation:none!important}
+.music.showcase .mystery-dancer.level44-routine-10 .dancer-arm.left{animation:l44-vogue-left 4.8s steps(1,end) infinite!important}
+.music.showcase .mystery-dancer.level44-routine-10 .dancer-arm.right{animation:l44-vogue-right 4.8s steps(1,end) infinite!important}
+.music.showcase .mystery-dancer.level44-routine-10 .dancer-leg.left{animation:l44-vogue-leg-left 4.8s steps(1,end) infinite!important}
+.music.showcase .mystery-dancer.level44-routine-10 .dancer-leg.right{animation:l44-vogue-leg-right 4.8s steps(1,end) infinite!important}
+.music.showcase .mystery-dancer.level44-routine-10 .dancer-body{animation:l44-vogue-body 4.8s steps(1,end) infinite!important}
+.music.showcase .mystery-dancer.level44-routine-10 .dancer-head{animation:l44-vogue-head 4.8s steps(1,end) infinite!important}
+@keyframes l44-vogue-left{0%,100%{transform:rotate(-145deg)}20%{transform:rotate(-70deg)}40%{transform:rotate(-170deg)}60%{transform:rotate(-100deg)}80%{transform:rotate(25deg)}}
+@keyframes l44-vogue-right{0%,100%{transform:rotate(145deg)}20%{transform:rotate(10deg)}40%{transform:rotate(75deg)}60%{transform:rotate(160deg)}80%{transform:rotate(-25deg)}}
+@keyframes l44-vogue-leg-left{0%,100%{transform:rotate(-12deg)}20%{transform:rotate(18deg)}40%{transform:rotate(-22deg)}60%{transform:rotate(12deg)}80%{transform:rotate(-8deg)}}
+@keyframes l44-vogue-leg-right{0%,100%{transform:rotate(12deg)}20%{transform:rotate(-18deg)}40%{transform:rotate(22deg)}60%{transform:rotate(-12deg)}80%{transform:rotate(8deg)}}
+@keyframes l44-vogue-body{0%,100%{transform:rotate(-8deg)}20%{transform:rotate(8deg)}40%{transform:rotate(-12deg)}60%{transform:rotate(12deg)}80%{transform:rotate(0deg)}}
+@keyframes l44-vogue-head{0%,100%{transform:rotate(10deg)}20%{transform:rotate(-10deg)}40%{transform:rotate(15deg)}60%{transform:rotate(-15deg)}80%{transform:rotate(0deg)}}
+
+/* Bass-like concentric vinyl ripples; clipped inside the deck in both playlist sizes. */
+.music .record-deck{position:relative!important;overflow:hidden!important;isolation:isolate}
+.music .record-rim{position:relative!important;isolation:isolate;flex-shrink:0;z-index:1}
+.music .record-rim::before,.music .record-rim::after{content:"";position:absolute;inset:-1px;border:3px solid #65e7f1;border-radius:50%;pointer-events:none;z-index:-1;opacity:0;animation:l44-vinyl-ripple 2.4s ease-out infinite}
+.music .record-rim::after{border-color:#ffdc67;animation-delay:1.2s}
+@keyframes l44-vinyl-ripple{0%{transform:scale(.97);opacity:0;box-shadow:0 0 0 0 #ff55ad55}18%{opacity:.8}100%{transform:scale(1.7);opacity:0;box-shadow:0 0 0 9px #ff55ad00}}
+/* Confetti is confined to the robot's stage and never covers other TV content. */
+.music.showcase .nextsong.unknown-next .l44-confetti-layer{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:7;contain:paint}
+.l44-confetti-piece{position:absolute;top:-12px;width:7px;height:12px;background:var(--confetti-color,#ffe06d);left:var(--confetti-left,50%);opacity:0;animation:l44-confetti-fall var(--confetti-time,2.7s) linear var(--confetti-delay,0s) 1 both}
+@keyframes l44-confetti-fall{0%{transform:translate3d(0,-8px,0) rotate(0deg);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translate3d(var(--confetti-drift,18px),240px,0) rotate(540deg);opacity:0}}
+@media(prefers-reduced-motion:reduce){.music .record-rim::before,.music .record-rim::after,.l44-confetti-piece{animation:none!important;display:none!important}}
+
+/* Ripples use a separate sibling layer: the vinyl rim's own stacking context previously hid them. */
+.music .record-deck{position:relative!important;overflow:hidden!important;isolation:isolate}
+.music .record-rim::before,.music .record-rim::after{display:none!important}
+.music .record-deck .l44-vinyl-ripples{position:absolute!important;left:var(--l44-ripple-x,50%)!important;top:var(--l44-ripple-y,50%)!important;width:var(--l44-ripple-size,120px)!important;height:var(--l44-ripple-size,120px)!important;transform:translate(-50%,-50%);pointer-events:none;z-index:0!important;overflow:visible!important;opacity:.72}
+.music .record-deck .l44-vinyl-ripples i{position:absolute;inset:0;border:2px solid #65e7f1;border-radius:50%;opacity:0;animation:l44-ripple-layer 3s ease-out infinite}
+.music .record-deck .l44-vinyl-ripples i:nth-child(2){border-color:#ffe06d;animation-delay:1s}
+.music .record-deck .l44-vinyl-ripples i:nth-child(3){border-color:#ff55ad;animation-delay:2s}
+@keyframes l44-ripple-layer{0%{transform:scale(.92);opacity:0}18%{opacity:.42}100%{transform:scale(2.4);opacity:0}}
+.music .record-deck .record-rim{z-index:2!important}
+.music.compact .record-deck .l44-vinyl-ripples{opacity:.78!important}
+.music.showcase .record-deck .l44-vinyl-ripples{opacity:.65!important}
+/* The label sits below the floor line, not over the dancer. */
+.music.showcase .nextsong.unknown-next .level44-dance-label{top:auto!important;bottom:10px!important;left:50%!important;width:95%!important;transform:translateX(-50%)!important;font-size:clamp(8px,.85vw,13px)!important;line-height:1.1!important;z-index:9!important}
+.music.showcase .nextsong.unknown-next .dancer-stage-line{bottom:var(--robot-line-bottom,12px)!important}
+@media(prefers-reduced-motion:reduce){.music .record-deck .l44-vinyl-ripples i{animation:none!important}}
+
+/* Guest identity is the headline; ticker stays distinctly cyan. */
+.home .message-marquee .msg .who,
+.home .message-marquee #who,
+.message #who.level44-wish-name,
+.message .level44-wish-name{
+ font-size:clamp(28px,4.6vw,60px)!important;
+ line-height:1.08!important;
+ font-weight:900!important;
+ max-width:100%!important;
+ text-align:center!important;
+ overflow-wrap:anywhere!important;
+}
+.home .message-marquee .ticker-copy,
+.home .message-marquee .ticker-track .ticker-copy{
+ color:#65e7f1!important;
+ text-shadow:1px 1px 0 #154d5c,0 0 6px #65e7f155!important;
+}
+
+/* Previous Hits readability: stronger contrast, generous inset and clear row separation. */
+.music .playlist #playlist>.history-entry{
+ color:#f9f8ff!important;
+ font-weight:700!important;
+ line-height:1.32!important;
+ letter-spacing:.015em!important;
+ padding:5px 9px!important;
+ border-left:3px solid #65e7f1!important;
+ border-bottom:1px solid #a9a0d044!important;
+ text-shadow:0 1px 2px #090617!important;
+ overflow-wrap:break-word!important;
+}
+.music .playlist #playlist>.history-entry:nth-child(odd){background:#2b1642!important}
+.music .playlist #playlist>.history-entry:nth-child(even){background:#172643!important}
+.music .playlist #playlist>.history-entry:first-child{border-left-color:#ffe06d!important;background:#3a1c4d!important}
+.music.showcase .playlist #playlist>.history-entry{font-size:clamp(12px,1.15vw,18px)!important;min-height:34px!important}
+.music.compact .playlist #playlist>.history-entry{font-size:clamp(9px,.9vw,13px)!important;padding:3px 6px!important;line-height:1.22!important}
+
+/* Avoid repeating the guest's name when the message already mentions it. */
+.home .message-marquee .msg.l44-name-in-message .name-line{display:none!important}
+.home .message-marquee .msg.l44-name-in-message .message-line{margin-top:0!important}
+
+/* Dance label belongs to the robot stage only, never the compact UP NEXT panel. */
+.music.compact .level44-dance-label,.music:not(.showcase) .level44-dance-label{display:none!important}
+.music.showcase .nextsong.unknown-next .level44-dance-label{display:block!important;bottom:10px!important}
 </style><link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet"></head><body><h1>★ LEVEL 44 UNLOCKED ★</h1><p class="intro">PARTY TV · ORIGINELE ARCADE LOOK · 20 UNIEKE ACHTERGRONDEN · 50 POWER-UPS</p><main class="layout"><section><div class="tv" id="tv"><canvas id="ambient" width="1280" height="720"></canvas><div class="scan"></div><div class="home" id="home"><div class="arcade-corners"><span>★ LEVEL 44 • PARTY ARCADE ★</span><span>● PARTY ONLINE</span></div><div class="hero-stack"><div class="achievement">★ ACHIEVEMENT UNLOCKED ★</div><div class="hero"><div class="topline"><span class="hero-first">LEVEL <span class="age">44</span></span><span class="hero-second">UNLOCKED!</span></div></div><div class="insertcake" id="cakePrompt">INSERT CAKE TO CONTINUE</div></div><div class="message-marquee"><div class="caption"><div class="ticker-track" aria-label="PARTY MESSAGE FEED"><span class="ticker-copy">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span><span class="ticker-copy" aria-hidden="true">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span></div></div><div class="insert" id="messagePrompt">✦ INSERT MESSAGE ✦</div><div class="msg" id="message"><div class="name-line"><span class="message-symbol" id="symbolBefore" aria-hidden="true">✦</span><div class="who" id="who"></div><span class="message-symbol" id="symbolAfter" aria-hidden="true">✦</span></div><div class="message-line"><div class="words" id="words"></div></div></div></div><div class="below-feed-prompt" id="belowFeedPrompt">INSERT CAKE TO CONTINUE</div><div class="scanplay"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUAQAAAABdRz15AAABS0lEQVR4nM2WQW4kQQgEg5HvyQ/6/8/qHyQvyD3U2LK88sHLSOuqUyMRokigqfD1zOMvE/w/W1X1VPX00FXVS54SmvjiAiW7+N6ghIbK0O7SmgcMTQ/uH/l+bzOG0H4FL0YePFET73iVAn18Duje8EiSQCwrSRLveEokITtGZstLFBsb+0S644EJxiGJlrw3COlMirTrJ77fvFfCJnaQYm3jg5SN2qZpLeNDJ4MKQlnmr9JwiwZgUmJVzw/gvqqZG8PgF+jh6DRdZO30ILLlAMRiz0sIKLJIWPMISuzg2CzrjzxDlBNsadtvmgIqM4hObfWV5CCESMIL3qszSxVgPU+T5FkwVrTU9/w/DNOhBHi1v5x573NRWObvAdUAc92tKZb7xrtNui/f+F98P5+zb4ge3QI06/pL5EhRElj2x9F3/AzSoJW+9cv33T+Au/yGE9/wPgAAAABJRU5ErkJggg==" alt="QR-code voor gastbediening"><div><strong>SCAN &amp; PLAY</strong><span>📱 Pak je gsm. Unlock de party!</span></div></div></div><div class="music" id="music">
 <div class="music-bulbs" aria-hidden="true"></div>
 <div class="music-header"><div class="music-kicker">★ LEVEL 44 ★ PLAYER ONE RADIO ★</div><div class="eyebrow">♫ PARTY PLAYLIST ♫</div><div class="music-subtitle">NOW LOADING THE NEXT BANGER...</div></div>
 <div class="nextsong unknown-next"><span class="nextsong-heading">UP NEXT <strong>??? MYSTERY TRACK ???</strong></span><div class="disco-ball" aria-label="Glitterende discobal" role="img"><div class="disco-facets"></div></div><div class="mystery-dancer" aria-label="Dansend pixelmannetje" role="img"><div class="dancer-head"><i></i><i></i></div><div class="dancer-body"></div><div class="dancer-arm left"></div><div class="dancer-arm right"></div><div class="dancer-leg left"></div><div class="dancer-leg right"></div><div class="dancer-floor"></div></div><div class="dancer-stage-line" aria-hidden="true"></div></div>
-<div class="music-main"><div class="record-deck"><div class="record-rim" aria-label="Draaiende vinylplaat"><svg class="vinyl-svg" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<div class="music-main"><div class="record-deck"><div class="l44-vinyl-ripples" aria-hidden="true"><i></i><i></i><i></i></div><div class="record-rim" aria-label="Draaiende vinylplaat"><svg class="vinyl-svg" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 <circle cx="100" cy="100" r="94" fill="#21102f" stroke="var(--vinyl-outer,#ff5cb2)" stroke-width="7"/>
-<circle cx="100" cy="100" r="85" fill="#090911" stroke="#ffdd65" stroke-width="3"/>
+<circle cx="100" cy="100" r="85" fill="#090911" stroke="#ffffff" stroke-width="3"/>
 <g class="vinyl-spinning"><circle cx="100" cy="100" r="77" fill="#0b0a14" stroke="#393047" stroke-width="2"/>
 <circle cx="100" cy="100" r="68" fill="none" stroke="#29243b" stroke-width="2"/><circle cx="100" cy="100" r="58" fill="none" stroke="#29243b" stroke-width="2"/><circle cx="100" cy="100" r="48" fill="none" stroke="#29243b" stroke-width="2"/><circle cx="100" cy="100" r="38" fill="none" stroke="#29243b" stroke-width="2"/>
 <circle cx="100" cy="100" r="24" fill="var(--vinyl-center,#ff55ad)" stroke="var(--vinyl-center-border,#ffdd65)" stroke-width="3"/><circle cx="100" cy="100" r="8" fill="#f9e5ec"/><circle cx="100" cy="100" r="2.5" fill="#bd358a"/><circle cx="108" cy="91" r="3" fill="#fff5d9" opacity=".85"/>
@@ -1587,7 +1975,7 @@ function fitRecordToSong(){
    let fs=20,as=13;
    // Measure the *actual content* rather than the flex item's stretched box.
    const infoContent=()=>[...info.children].reduce((sum,el)=>sum+el.getBoundingClientRect().height,0)+28;
-   let size=Math.min(135,main.clientWidth*.50,limit-infoContent()-tagH-38);
+   let size=Math.min(main.clientWidth*.72,Math.max(45,main.clientHeight*.62),limit-infoContent()-tagH-24);
    while(size<76&&fs>11){
      fs--;as=Math.max(9,Math.round(fs*.65));
      title.style.fontSize=fs+'px';artist.style.fontSize=as+'px';
@@ -1627,10 +2015,16 @@ function nextSong(){
  historyList.classList.remove('history-refresh');
  void historyList.offsetWidth;
  historyList.classList.add('history-refresh');
- if(songIndex%2===0){playlistSide=playlistSide==='right'?'left':'right'}
+ level44AlternatePlaylistSide()
  introEnd=0;updateLayers();requestAnimationFrame(fitRecordToSong);
 }
-function switchPlaylistSide(){playlistSide=playlistSide==='right'?'left':'right';updateLayers()}
+let level44DeferredSideChange=false;
+function level44AlternatePlaylistSide(){
+ if(mode==='message'||activeMessage){level44DeferredSideChange=true;return}
+ const tv=$('tv');tv.classList.add('side-changing');
+ setTimeout(()=>{playlistSide=playlistSide==='right'?'left':'right';updateLayers();setTimeout(()=>tv.classList.remove('side-changing'),120)},260);
+}
+function switchPlaylistSide(){level44AlternatePlaylistSide()}
 
 function enqueueMessage(sender,body){
  if(fullPlaylist)closeFullPlaylist();
@@ -1647,6 +2041,7 @@ function finishMessage(){
  if(mode!=='message')return;
  clearTimeout(messageRotationTimer);
  const completed=activeMessage;activeMessage=null;messageEnd=0;
+ if(level44DeferredSideChange){level44DeferredSideChange=false;playlistSide=playlistSide==='right'?'left':'right'}
  if(completed?.level44Wish){
   completed.level44Remaining--;
   if(completed.level44Remaining>0){
@@ -1672,22 +2067,29 @@ function playNextMessage(continueVisible=false){
  const el=$('message');
  el.classList.remove('led-arriving','queue-switch');
  if(continueVisible){el.classList.add('queue-switch')}
- $('who').textContent=m[0].toUpperCase().replace(/:+\s*$/,'');
+ const guestName=String(m[0]||'').replace(/:+\s*$/,'').trim();
+ const messageText=String(m[1]||'');
+ const normalizedName=guestName.toLocaleLowerCase('nl-BE').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+ const normalizedText=messageText.toLocaleLowerCase('nl-BE').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+ const nameInMessage=normalizedName.length>1&&normalizedText.includes(normalizedName);
+ $('who').textContent=guestName.toLocaleUpperCase('nl-BE');
  $('who').classList.remove('level44-wish-name');
- $('words').textContent=m[1];
+ el.classList.toggle('l44-name-in-message',nameInMessage);
+ $('words').textContent=messageText.toLocaleUpperCase('nl-BE');
  const mark=['✦','★','♥','◆','♫','✧','⚡','✳'][Math.floor(Math.random()*8)];
  $('symbolBefore').textContent=mark;$('symbolAfter').textContent=mark;
  void el.offsetWidth;
  if(!continueVisible)el.classList.add('led-arriving');
- messageEnd=performance.now()+8000;introEnd=0;lastMsg=performance.now();mode='message';
+ const messageDuration=Math.max(8000,Math.min(30000,5000+String(m[1]||'').length*135));
+ messageEnd=performance.now()+messageDuration;introEnd=0;lastMsg=performance.now();mode='message';
  clearTimeout(messageRotationTimer);
- messageRotationTimer=setTimeout(finishMessage,8000);
+ messageRotationTimer=setTimeout(finishMessage,messageDuration);
  updateLayers();updateQueueStatus();
 }
 function showMessage(){const m=messages[msgIndex++%messages.length];enqueueMessage(m[0],m[1])}
 function openFullPlaylist(){
  if(mode!=='music'||pendingMessages.length||!showHitParade)return;
- fullPlaylist=true;fullPlaylistUntil=performance.now()+25000;lastFullPlaylist=performance.now();updateLayers();
+ fullPlaylist=true;fullPlaylistUntil=performance.now()+25000;lastFullPlaylist=performance.now();updateLayers();level44NextDanceRoutine();level44RevealPreviousHits();
 }
 function closeFullPlaylist(){fullPlaylist=false;fullPlaylistUntil=0;updateLayers()}
 function updateLayers(){
@@ -1720,9 +2122,52 @@ function powerStageHTML(source){
  .stage:after,.stage:before{display:none!important}
  canvas{display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:contain!important;border:0!important;margin:0!important}
  #buttons,#scenes,#tag,#caption,#replay,#next,#auto{display:none!important}`;
- return source.replace(/<\/head>/i,'<style>'+css+'</style></head>');
+ const completion='<script>window.__level44SceneSerial=null;window.__level44SceneDone=false;window.__level44SceneFinish=function(){if(window.__level44SceneSerial!==null&&!window.__level44SceneDone){window.__level44SceneDone=true;parent.postMessage({type:"level44-scene-finished",serial:window.__level44SceneSerial},"*")}};window.addEventListener("message",function(e){if(e.data&&e.data.type==="level44-start-scene"){window.__level44SceneSerial=e.data.serial;window.__level44SceneDone=false}});<\/script>';
+ let instrumented=source.replace(/if\(t>7(?:\.1|\.2|\.5)?\)\{start=now;/g,m=>m.replace('start=now;','window.__level44SceneFinish?.();start=now;'));
+ instrumented=instrumented.replace('let t=((now-start)/1000)%8;','let t=((now-start)/1000)%8;if((now-start)/1000>=8)window.__level44SceneFinish?.();');
+ return instrumented.replace(/<\/head>/i,'<style>'+css+'</style></head>').replace(/<\/body>/i,completion+'</body>');
 }
-function powerUp(k,spontaneous=false){if(fullPlaylist)closeFullPlaylist();lastIdlePower=performance.now();if(!spontaneous)lastGuestActivity=performance.now();clearTimeout(messageRotationTimer);if(mode==='message'&&activeMessage){pendingMessages.unshift(activeMessage);activeMessage=null}let idx=nextScene(k);mode='power';powerEnd=performance.now()+7800;messageEnd=0;let number=META[k].start+idx;$('powerlabel').textContent=META[k].label+' · '+number+'/50';$('powerframe').onload=()=>{try{let doc=$('powerframe').contentDocument;let root=doc.getElementById('buttons')||doc.getElementById('scenes');let buttons=root?[...root.querySelectorAll('button')]:[];buttons[idx]?.click()}catch(e){console.error('Power-up scene:',e)}};$('powerframe').srcdoc=powerStageHTML(LABS[k]);updateLayers();document.querySelectorAll('.sidebuttons button').forEach(b=>b.classList.toggle('active',b.dataset.key===k))}
+const level44PowerDurations={confetti:10500,cheer:9500,dance:11500,levelup:9500,heart:11000,boss:12500,fireworks:12000,laser:11500,jackpot:10000,glitch:9000};
+let level44PowerSerial=0;
+function powerUp(k,spontaneous=false){
+ if(!META[k]||!LABS[k])return;
+ if(mode==='power'){level44ActionQueue.push(k);return}
+ if(fullPlaylist)closeFullPlaylist();
+ lastIdlePower=performance.now();if(!spontaneous)lastGuestActivity=performance.now();
+ if(mode==='message'&&activeMessage){
+  clearTimeout(messageRotationTimer);pendingMessages.unshift(activeMessage);activeMessage=null;messageEnd=0;
+ }
+ const idx=nextScene(k),serial=++level44PowerSerial;
+ mode='power';powerEnd=0;
+ $('powerlabel').textContent=META[k].label+' · '+(META[k].start+idx)+'/50';
+ const frame=$('powerframe');
+ frame.onload=()=>{
+  if(serial!==level44PowerSerial)return;
+  try{
+   const doc=frame.contentDocument;
+   const root=doc?.getElementById('buttons')||doc?.getElementById('scenes');
+   const buttons=root?[...root.querySelectorAll('button')]:[];
+   if(buttons[idx]){buttons[idx].click();frame.contentWindow.postMessage({type:'level44-start-scene',serial},'*')}else{console.warn('Power-up scene button missing',k,idx);finishPowerUp()};
+  }catch(e){console.warn('Power-up scene:',e)}
+ };
+ frame.srcdoc=powerStageHTML(LABS[k]);
+ updateLayers();
+ document.querySelectorAll('.sidebuttons button').forEach(b=>b.classList.toggle('active',b.dataset.key===k));
+}
+function finishPowerUp(){
+ if(mode!=='power')return;
+ mode='music';level44PowerSerial++;
+ const frame=$('powerframe');frame.onload=null;frame.srcdoc='';
+ document.querySelectorAll('.sidebuttons button').forEach(b=>b.classList.remove('active'));
+ updateLayers();
+ if(level44ActionQueue.length)powerUp(level44ActionQueue.shift(),true);
+ else if(pendingMessages.length){nextMessageAt=performance.now();playNextMessage()}
+}
+window.addEventListener('message',e=>{
+ if(e.source!==$('powerframe').contentWindow||e.data?.type!=='level44-scene-finished')return;
+ if(e.data.serial!==level44PowerSerial)return;
+ finishPowerUp();
+});
 function returnToHome(){
  fullPlaylist=false;clearTimeout(messageRotationTimer);
  mode='music';activeMessage=null;powerEnd=0;messageEnd=0;introEnd=0;
@@ -1891,34 +2336,128 @@ function drawAmbient(t,now){
  mainCtx.fillStyle="rgba(5,4,24,0.20)";
  mainCtx.fillRect(0,0,W,H);
 }
-function tick(now){let t=now/1000;let dt=Math.min(.1,(now-lastFrame)/1000||0);lastFrame=now;drawAmbient(t,now);if(mode==='power'&&now>=powerEnd){mode='music';$('powerframe').srcdoc='';document.querySelectorAll('.sidebuttons button').forEach(b=>b.classList.remove('active'));updateLayers();if(pendingMessages.length){nextMessageAt=now;playNextMessage()}}if(mode==='message'&&now>=messageEnd)finishMessage();if(mode==='music'&&pendingMessages.length&&now>=nextMessageAt)playNextMessage();if(introEnd&&now>=introEnd){introEnd=0;updateLayers()}if(now-lastPromptAt>=6500){lastPromptAt=now;rotateMessagePrompt()}if(now-lastCakeAt>=9500){lastCakeAt=now;rotateCakePrompt()}if($('autobg').checked&&now-lastBg>=900000)nextBackground();if($('automsg').checked&&now-lastQueuedDemo>=12000){lastQueuedDemo=now;showMessage()}if(auto&&now>=autoAt){autoAt=now+14000;if(mode!=='power')powerUp(Object.keys(META)[Math.floor(Math.random()*10)])}if($('idlepower').checked&&mode==='music'&&!fullPlaylist&&!pendingMessages.length&&now-lastGuestActivity>=60000&&now-lastIdlePower>=60000){powerUp(Object.keys(META)[Math.floor(Math.random()*10)],true)}if(fullPlaylist&&now>=fullPlaylistUntil)closeFullPlaylist();if($('autofull').checked&&mode==='music'&&!fullPlaylist&&!pendingMessages.length&&now-lastGuestActivity>=720000&&now-lastFullPlaylist>=720000&&now-lastIdlePower<60000)openFullPlaylist();let fraction=mode==='power'?Math.max(0,(powerEnd-now)/7800):mode==='message'?Math.max(0,(messageEnd-now)/8000):0;$('progress').style.width=(fraction*100)+'%';requestAnimationFrame(tick)}
+function tick(now){let t=now/1000;let dt=Math.min(.1,(now-lastFrame)/1000||0);lastFrame=now;drawAmbient(t,now);if(mode==='message'&&now>=messageEnd)finishMessage();if(mode==='music'&&pendingMessages.length&&now>=nextMessageAt&&!level44ActionQueue.length)playNextMessage();if(introEnd&&now>=introEnd){introEnd=0;updateLayers()}if(now-lastPromptAt>=6500){lastPromptAt=now;rotateMessagePrompt()}if(now-lastCakeAt>=9500){lastCakeAt=now;rotateCakePrompt()}if($('autobg').checked&&now-lastBg>=900000)nextBackground();if($('automsg').checked&&now-lastQueuedDemo>=12000){lastQueuedDemo=now;showMessage()}if(auto&&now>=autoAt){autoAt=now+14000;if(mode==='music'&&!pendingMessages.length)powerUp(Object.keys(META)[Math.floor(Math.random()*10)])}if(level44ActionQueue.length&&mode==='music'){powerUp(level44ActionQueue.shift(),true)}if(now-level44LastGuestMessageAt>=7200000&&now-level44LastJokeAt>=600000&&mode==='music'&&!pendingMessages.length&&!fullPlaylist){level44LastJokeAt=now;const joke=level44Jokes[level44JokeIndex++%level44Jokes.length];enqueueMessage(joke[0],joke[1])}if($('idlepower').checked&&mode==='music'&&!fullPlaylist&&!pendingMessages.length&&!activeMessage&&now-lastIdlePower>=1200000){powerUp(Object.keys(META)[Math.floor(Math.random()*10)],true)}if(fullPlaylist&&fullPlaylistUntil>0&&now>=fullPlaylistUntil)closeFullPlaylist();if($('autofull').checked&&mode==='music'&&!fullPlaylist&&!pendingMessages.length&&now-lastFullPlaylist>=720000)openFullPlaylist();let fraction=mode==='power'?1:mode==='message'?Math.max(0,(messageEnd-now)/8000):0;$('progress').style.width=(fraction*100)+'%';requestAnimationFrame(tick)}
 nextBackground();updateLayers();requestAnimationFrame(tick);
 
 renderPreviousHits();
 
 /* Live Spotify, track history and approved wish messages. */
-let liveTrackId='',liveHistory=[],liveWishKeys=new Set(),liveLastResponse=0;
+let liveTrackId='',livePlayKey='',liveHistory=[],liveWishKeys=new Set(),liveLastResponse=0;
 try{liveHistory=JSON.parse(sessionStorage.getItem('level44-tv-history')||'[]')}catch(e){}
-function liveHistoryRender(){
- const el=$('playlist');if(!el)return;
- el.innerHTML=liveHistory.length?liveHistory.slice(0,3).map((x,i)=>'<div class="history-entry"><span class="history-number">'+String(i+1).padStart(2,'0')+'. </span><div class="history-meta"><span class="history-song">'+escapeHtml(x.title)+'</span><span class="history-artist">'+escapeHtml(x.artist)+'</span></div></div>').join(''):'<div class="history-entry">NOG GEEN VORIGE NUMMERS</div>';
+let level44HistoryAnimationTimer=0;
+function level44HistoryCapacity(){
+ const list=$('playlist'),panel=list?.closest('.playlist');if(!list||!panel)return 3;
+ const height=Math.max(list.getBoundingClientRect().height,panel.getBoundingClientRect().height-(panel.querySelector('.history-title')?.getBoundingClientRect().height||25)-20);
+ const sample=list.querySelector('.history-entry');
+ const row=sample?sample.getBoundingClientRect().height:38;
+ const gap=parseFloat(getComputedStyle(list).rowGap)||5;
+ return Math.max(1,Math.min(list.closest('.music')?.classList.contains('compact')?5:30,Math.floor((height+gap)/Math.max(20,row+gap))));
+}
+
+let level44RevealTimer=null;
+function level44RevealPreviousHits(){
+ clearTimeout(level44RevealTimer);
+ requestAnimationFrame(()=>{
+  if(!fullPlaylist)return;
+  liveHistoryRender(false);
+  const entries=[...document.querySelectorAll('#playlist>.history-entry')];
+  if(!entries.length)return;
+  const interval=Math.min(420,4400/entries.length);
+  entries.forEach((el,index)=>{
+   el.classList.remove('level44-reveal');
+   el.style.setProperty('--reveal-delay',Math.round(index*interval)+'ms');
+   void el.offsetWidth;
+   el.classList.add('level44-reveal');
+  });
+  level44RevealTimer=setTimeout(()=>entries.forEach(el=>{el.classList.remove('level44-reveal');el.style.removeProperty('--reveal-delay')}),4900);
+ });
+}
+function liveHistoryRender(animate=false){
+ const list=$('playlist');if(!list)return;
+ const cap=level44HistoryCapacity();
+ const records=liveHistory.slice(0,cap);if(list.closest('.music')?.classList.contains('compact'))list.closest('.playlist')?.style.setProperty('--compact-history-count',String(Math.max(1,records.length)));
+ const markup=records.length?records.map((x,i)=>'<div class="history-entry" data-history-key="'+escapeHtml(x.key||x.title+'|'+x.artist)+'"><span class="history-number">'+String(i+1).padStart(2,'0')+'. </span><div class="history-meta"><span class="history-song">'+escapeHtml(x.title)+'</span><span class="history-artist">'+escapeHtml(x.artist)+'</span></div></div>').join(''):'<div class="history-entry">NOG GEEN VORIGE NUMMERS</div>';
+ clearTimeout(level44HistoryAnimationTimer);
+ if(!animate||!list.children.length){list.innerHTML=markup;return}
+ const old=[...list.children],oldRects=new Map(old.map(el=>[el.dataset.historyKey,el.getBoundingClientRect()]));
+ const oldKeys=new Set(old.map(el=>el.dataset.historyKey));
+ list.innerHTML=markup;
+ const nodes=[...list.children];
+ for(const node of nodes){
+  const previous=oldRects.get(node.dataset.historyKey);
+  if(previous){
+   const delta=previous.top-node.getBoundingClientRect().top;
+   node.style.transition='none';node.style.transform='translateY('+delta+'px)';
+   requestAnimationFrame(()=>requestAnimationFrame(()=>{node.style.transition='transform .42s ease,opacity .42s ease';node.style.transform='translateY(0)'}));
+  }else if(!oldKeys.has(node.dataset.historyKey))node.classList.add('history-new');
+ }
+ const removed=old.find(el=>el.dataset.historyKey&&!nodes.some(n=>n.dataset.historyKey===el.dataset.historyKey));
+ if(removed){
+  const ghost=removed.cloneNode(true),r=oldRects.get(removed.dataset.historyKey),listRect=list.getBoundingClientRect();
+  ghost.style.cssText='position:absolute;left:0;top:'+(r.top-listRect.top)+'px;width:100%;pointer-events:none;z-index:1';
+  ghost.classList.add('history-old');list.appendChild(ghost);
+  level44HistoryAnimationTimer=setTimeout(()=>ghost.remove(),450);
+ }
+}
+window.addEventListener('resize',()=>{if(liveHistory.length)liveHistoryRender(false)});
+function liveCancelInterruptedWishes(){
+ // Track transitions never cancel a displayed wish or its five-show cycle.
+ // Each completed showing decrements level44Remaining; acknowledge only after five.
+ updateQueueStatus();
 }
 function liveUpdateTrack(d){
  if(!d||!d.playing){$('track').textContent='WACHT OP SPOTIFY';$('artist').textContent='';return}
  const id=String(d.trackId||d.uri||d.title+'|'+d.artist);
+ const playKey=d.kind==='track'?id+':'+String(d.startedAt||''):id;
+ if(livePlayKey&&playKey!==livePlayKey)liveCancelInterruptedWishes();
+ livePlayKey=playKey;
  if(id!==liveTrackId){
-  if(liveTrackId&&window.level44LastTrack){liveHistory.unshift(window.level44LastTrack);liveHistory=liveHistory.slice(0,3);try{sessionStorage.setItem('level44-tv-history',JSON.stringify(liveHistory))}catch(e){}}
+  if(liveTrackId&&window.level44LastTrack){liveHistory.unshift({...window.level44LastTrack,key:liveTrackId+'|'+Date.now()});liveHistory=liveHistory.slice(0,40);try{sessionStorage.setItem('level44-tv-history',JSON.stringify(liveHistory))}catch(e){}}
+  if(liveTrackId)level44AlternatePlaylistSide();
   liveTrackId=id;level44NextTrackVisual();window.level44LastTrack={title:d.title||'',artist:d.artist||''};
   $('track').textContent=d.title||'ONBEKEND NUMMER';$('artist').textContent=d.artist||'';
-  liveHistoryRender();requestAnimationFrame(fitRecordToSong);
+  liveHistoryRender(true);if(mode!=='message')requestAnimationFrame(fitRecordToSong);
  }
- if(d.durationMs>0&&Number.isFinite(d.progressMs)){const bar=document.querySelector('.pixel-progress span');bar.style.animation='none';bar.style.width=Math.min(100,Math.max(0,d.progressMs/d.durationMs*100))+'%'}
+ // Playback progress bar is intentionally hidden in every player layout.
  if(d.wish&&d.kind==='track'){
-  const key=id+':'+String(d.startedAt||'')+':'+String(d.wish.name||'');
+  const key=String(d.wish.ack||playKey+':'+String(d.wish.name||''));
   if(!liveWishKeys.has(key)){
    liveWishKeys.add(key);if(liveWishKeys.size>200)liveWishKeys=new Set([key]);
-   const fallback=['HEEFT DIT NUMMER AANGEVRAAGD!','KOOS DEZE TRACK SPECIAAL VOOR VANAVOND!','ZORGT VOOR DE VOLGENDE PORTIE GOOD VIBES!','HEEFT DEZE HIT OP DE PLAYLIST GEZET!','GEEFT HET FEEST EEN MUZIKALE BOOST!'];
-   const text=String(d.wish.message||'').trim().slice(0,280)||fallback[Math.floor(Math.random()*fallback.length)];
+   const fallback=[
+    '{naam} heeft deze plaat uitgekozen!',
+    'Deze knaller komt van {naam}!',
+    '{naam} zorgt voor de soundtrack!',
+    'Een muzikale bijdrage van {naam}!',
+    '{naam} gooit er nog een plaatje tegenaan!',
+    'Op speciaal verzoek van {naam}!',
+    '{naam} heeft duidelijk goesting in muziek!',
+    '{naam} heeft smaak. Dat horen we!',
+    'Amai, schoon gekozen, {naam}!',
+    '{naam} weet wat goeie muziek is!',
+    'Muzikale klasse, met dank aan {naam}!',
+    '{naam} heeft precies een goeie platenkast!',
+    'Kijk eens aan, {naam}! Schoon nummer!',
+    '{naam} verdient een applausje voor deze keuze!',
+    'Merci voor de muzikale bijdrage, {naam}!',
+    'Dikke merci voor deze plaat, {naam}!',
+    'Bedankt om de sfeer erin te brengen, {naam}!',
+    'Merci, {naam}! Goeie keuze!',
+    '{naam}, bedankt voor de muzikale inspiratie!',
+    'Een welgemeende merci aan {naam}!',
+    'Dankzij {naam} klinkt het feestje weer wat beter!',
+    'De DJ krijgt hulp van {naam}!',
+    '{naam} heeft de jukebox gehackt!',
+    '{naam} neemt even de muzikale macht over!',
+    'De platencommissie dankt {naam}!'
+   ];
+   const guest=String(d.wish.name||'GAST').trim().slice(0,80);
+   let text=String(d.wish.message||'').trim().slice(0,280);
+   if(!text){
+    let choice=Math.floor(Math.random()*fallback.length);
+    if(choice===window.level44LastFallbackIndex)choice=(choice+1)%fallback.length;
+    window.level44LastFallbackIndex=choice;
+    text=fallback[choice].replaceAll('{naam}',guest);
+   }
    const item=[String(d.wish.name||'GAST').trim().slice(0,80),text];
    item.level44Wish=true;item.level44Remaining=5;item.level44Ack=d.wish.ack||'';
    if(fullPlaylist)closeFullPlaylist();pendingMessages.push(item);lastGuestActivity=performance.now();updateQueueStatus();
@@ -1930,12 +2469,12 @@ async function livePoll(){
  try{const r=await fetch('/.netlify/functions/spotify-now-playing',{cache:'no-store'});if(!r.ok)throw Error('Spotify '+r.status);liveUpdateTrack(await r.json());liveLastResponse=Date.now()}
  catch(e){if(Date.now()-liveLastResponse>30000){$('track').textContent='SPOTIFY NIET BEREIKBAAR';$('artist').textContent='VERBIND SPOTIFY IN MISSION CONTROL'}}
 }
-$('autobg').checked=true;$('automsg').checked=false;$('idlepower').checked=false;$('autofull').checked=true;
+$('autobg').checked=true;$('automsg').checked=false;$('idlepower').checked=true;$('autofull').checked=true;
 liveHistoryRender();requestAnimationFrame(fitRecordToSong);$('track').textContent='WACHT OP SPOTIFY';$('artist').textContent='';
 document.querySelector('.pixel-progress span').style.animation='none';
 
 /* Jukebox variation is tied to the actual track change, not polling frequency. */
-const level44VinylPairs=[['#00ffff','#ff00aa'],['#ff00aa','#ffff00'],['#ffff00','#00ff00'],['#00ff00','#ff5500'],['#ff5500','#00ffff'],['#00ffff','#ffff00'],['#ff00aa','#00ff00'],['#ffff00','#ff5500'],['#00ff00','#00ffff'],['#ff5500','#ff00aa']];
+const level44VinylPairs=[['#b56bff','#ff72cb','#6de8ff'],['#ff68cc','#7c8dff','#ffe17b'],['#8c7cff','#ffb36a','#7be3b2'],['#77c8ff','#b56bff','#ff8c99'],['#ee83ff','#67d7ff','#ffdc74']];
 const level44Mysteries=[
  '??? MYSTERY TRACK ???','NEXT LEVEL INCOMING','SECRET BANGER LOADING',
  'WHO DROPPED THIS BEAT?','BONUS TRACK UNLOCKED','THE NEXT BIG THING',
@@ -1948,12 +2487,12 @@ function level44NextTrackVisual(){
  level44VisualIndex=(level44VisualIndex+1)%level44Mysteries.length;
  const music=document.getElementById('music');
  const pair=level44VinylPairs[level44VisualIndex%level44VinylPairs.length];
- music.style.setProperty('--vinyl-outer',pair[0]);music.style.setProperty('--vinyl-center',pair[1]);
- music.style.setProperty('--vinyl-center-border',pair[0]);
+ music.style.setProperty('--vinyl-outer',pair[0],'important');music.style.setProperty('--vinyl-center','#ffe46b','important');
+ music.style.setProperty('--vinyl-center-border',pair[2],'important');music.style.setProperty('--vinyl-third',pair[1],'important');
  const ring=music.querySelector('.vinyl-svg circle:nth-child(2)');
- if(ring)ring.setAttribute('stroke',pair[0]==='#ffff00'?'#00ffff':'#ffff00');
+ if(ring)ring.setAttribute('stroke','#ffffff');
  const center=music.querySelector('.vinyl-svg circle:nth-child(9)');
- if(center)center.setAttribute('stroke',pair[0]);
+ if(center)center.setAttribute('stroke',pair[2]);
  const next=music.querySelector('.nextsong-heading strong');
  if(next)next.textContent=level44Mysteries[level44VisualIndex];
 }
@@ -1963,6 +2502,57 @@ function level44NextTrackVisual(){
  level44NextTrackVisual();
 })();
 
+/* Online guest messages: automatic, deduplicated, no approval step. */
+const level44OnlineSeen=new Set();
+const level44ActionSeen=new Set();
+const level44ActionQueue=[];
+let level44LastGuestMessageAt=Date.now(),level44LastJokeAt=0;
+const level44Jokes=[['LEVEL 44 BOT','WAAROM KAN EEN COMPUTER NIET DANSEN? HIJ HEEFT TE VEEL BYTES!'],['LEVEL 44 BOT','IK ZOU EEN GRAP OVER SPOTIFY MAKEN, MAAR DIE STAAT NOG IN DE WACHTRIJ.'],['LEVEL 44 BOT','WAT ZEGT EEN DJ TEGEN EEN STOEL? GA MAAR LEKKER ZITTEN, IK DRAAI WEL.'],['LEVEL 44 BOT','LEVEL 44 BEREIKT. HANDLEIDING NOG STEEDS NIET GEVONDEN.'],['LEVEL 44 BOT','WAAROM GING DE DISCOBAL NAAR DE DOKTER? HIJ VOELDE ZICH DRAAIZIEK.']];
+let level44JokeIndex=0;
+async function level44PollOnlineMessages(){
+ try{
+  const response=await fetch('/.netlify/functions/party',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({op:'feed'}),cache:'no-store'});
+  if(!response.ok){console.warn('Party feed HTTP',response.status);return}
+  const feed=await response.json();
+  for(const item of feed.events||[]){
+   if(!item?.id||level44ActionSeen.has(item.id))continue;
+   level44ActionSeen.add(item.id);
+   if(META[item.value])level44ActionQueue.push(item.value);
+  }
+  if(level44ActionSeen.size>400){const recent=[...level44ActionSeen].slice(-200);level44ActionSeen.clear();recent.forEach(id=>level44ActionSeen.add(id))}
+  for(const item of feed.messages||[]){
+   if(!item?.id||level44OnlineSeen.has(item.id))continue;
+   level44OnlineSeen.add(item.id);
+   level44LastGuestMessageAt=Date.now();
+   enqueueMessage(item.name||'Gast',item.value||'');
+  }
+  if(level44OnlineSeen.size>400)level44OnlineSeen.clear();
+ }catch(e){console.warn('Online berichten tijdelijk niet beschikbaar',e)}
+}
+let level44LastAdminCommandId=null;
+async function level44PollAdminControl(){
+ try{
+  const r=await fetch('/.netlify/functions/party',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({op:'tv-control-poll'}),cache:'no-store'});
+  if(!r.ok)return;
+  const command=(await r.json()).command;
+  if(!command?.id)return;
+  if(level44LastAdminCommandId===null){level44LastAdminCommandId=command.id;return}
+  if(command.id===level44LastAdminCommandId)return;
+  level44LastAdminCommandId=command.id;
+  switch(command.action){
+   case 'playlist-large':mode='music';activeMessage=null;clearTimeout(messageRotationTimer);pendingMessages.length=0;showHitParade=true;fullPlaylist=true;fullPlaylistUntil=performance.now()+25000;updateLayers();level44NextDanceRoutine();level44RevealPreviousHits();break;
+   case 'playlist-small':fullPlaylist=false;showHitParade=true;mode='music';updateLayers();break;
+   case 'playlist-switch':playlistSide=playlistSide==='right'?'left':'right';updateLayers();break;
+   case 'queue-clear':pendingMessages.length=0;activeMessage=null;clearTimeout(messageRotationTimer);mode='music';messageEnd=0;nextMessageAt=performance.now()+1000;updateLayers();break;
+   case 'power-clear':level44ActionQueue.length=0;break;
+   case 'power-stop':level44ActionQueue.length=0;finishPowerUp();break;
+   case 'message-demo':enqueueMessage('LEVEL 44 TEST','DIT IS EEN TESTBERICHT VANUIT MISSION CONTROL.');break;
+   default:if(command.action.startsWith('power-'))level44ActionQueue.push(command.action.slice(6));
+  }
+ }catch(e){console.warn('TV testbediening:',e)}
+}
+level44PollOnlineMessages();setInterval(level44PollOnlineMessages,1000);
+level44PollAdminControl();setInterval(level44PollAdminControl,1000);
 livePoll();setInterval(livePoll,5000);
 
 
@@ -2117,4 +2707,92 @@ function level44RefreshSongMarquees(){
  const ro=new ResizeObserver(()=>requestAnimationFrame(layout));ro.observe(home);ro.observe(hero);ro.observe(qr);
  window.addEventListener('resize',layout);setInterval(layout,1300);requestAnimationFrame(layout);
 })();
+
+/* Measure available card width and fit both header lines and UP NEXT dynamically. */
+(function(){
+ const music=document.getElementById('music');if(!music)return;
+ function fit(){
+  if(!music.classList.contains('compact'))return;
+  const card=music.querySelector('.nextsong'),heading=music.querySelector('.eyebrow'),kicker=music.querySelector('.music-kicker'),next=music.querySelector('.nextsong-heading'),strong=next?.querySelector('strong');
+  if(!card||!heading||!kicker||!next)return;
+  const target=Math.max(80,card.clientWidth-16);
+  const measure=(el,size)=>{const probe=document.createElement('span');const st=getComputedStyle(el);probe.style.cssText='position:absolute;visibility:hidden;white-space:nowrap;font-family:'+st.fontFamily+';font-weight:'+st.fontWeight+';letter-spacing:'+st.letterSpacing+';font-size:'+size+'px';probe.textContent=el.textContent;document.body.appendChild(probe);const width=probe.getBoundingClientRect().width;probe.remove();return width};
+  const fitSize=(el,max)=>{let size=max;const width=measure(el,size);if(width>0)size=Math.min(max,Math.max(5,size*target/width));el.style.fontSize=size+'px';return size};
+  const mainSize=fitSize(heading,35);
+  fitSize(kicker,Math.max(8,mainSize*.52));
+  if(strong){const st=getComputedStyle(strong);const desired=Math.max(70,kicker.scrollWidth);const current=measure(strong,18);strong.style.fontSize=Math.max(7,Math.min(24,18*desired/Math.max(1,current)))+'px'}
+ }
+ const observer=new ResizeObserver(()=>requestAnimationFrame(fit));observer.observe(music);
+ window.addEventListener('resize',fit);setInterval(fit,2000);requestAnimationFrame(fit);
+})();
+
+/* Keep the robot's feet on the stage line at every TV resolution. */
+(function(){
+ const music=document.getElementById('music');if(!music)return;
+ function fitRobot(){
+  if(!music.classList.contains('showcase'))return;
+  const stage=music.querySelector('.nextsong.unknown-next');if(!stage)return;
+  const h=stage.clientHeight,w=stage.clientWidth;
+  const ball=stage.querySelector('.disco-ball');const ballBottom=ball?ball.getBoundingClientRect().bottom-stage.getBoundingClientRect().top:Math.round(h*.25);const lineBottomTarget=Math.max(32,Math.round(h*.09));const headHeight=28;const baseScale=Math.max(.7,Math.min(4,Math.min(w*.38/60,Math.max(75,h-ballBottom-lineBottomTarget)/110)));const maxScale=Math.max(.5,(h-ballBottom-lineBottomTarget-12)/Math.max(1,96-headHeight));const scale=Math.max(.5,Math.min(baseScale*1.5,maxScale,Math.max(.6,(w-30)/110),5));
+  const lineBottom=Math.max(32,Math.round(h*.09));
+  music.style.setProperty('--robot-scale',String(scale));
+  music.style.setProperty('--robot-line-bottom',lineBottom+'px');
+  music.style.setProperty('--robot-floor-bottom',(lineBottom+Math.max(6,scale*10))+'px');
+  music.style.setProperty('--robot-floor-width',Math.round(60*scale*1.12)+'px');
+  music.style.setProperty('--robot-floor-height',Math.max(3,Math.round(h*.008))+'px');
+ }
+ const obs=new ResizeObserver(()=>requestAnimationFrame(fitRobot));
+ obs.observe(music);window.addEventListener('resize',fitRobot);
+ setInterval(fitRobot,2000);requestAnimationFrame(fitRobot);
+})();
+
+/* Align ripple source with the vinyl in both compact and showcase layouts. */
+(function(){
+ const music=document.getElementById('music');if(!music)return;
+ const deck=music.querySelector('.record-deck'),rim=deck?.querySelector('.record-rim');if(!deck||!rim)return;
+ function align(){
+  const d=deck.getBoundingClientRect(),r=rim.getBoundingClientRect();
+  if(!d.width||!r.width)return;
+  deck.style.setProperty('--l44-ripple-x',(r.left-d.left+r.width/2)+'px');
+  deck.style.setProperty('--l44-ripple-y',(r.top-d.top+r.height/2)+'px');
+  deck.style.setProperty('--l44-ripple-size',Math.min(r.width,r.height)+'px');
+ }
+ new ResizeObserver(()=>requestAnimationFrame(align)).observe(deck);
+ new ResizeObserver(()=>requestAnimationFrame(align)).observe(rim);
+ window.addEventListener('resize',align);requestAnimationFrame(align);
+})();
+/* Advance exactly once per showcase opening, never on a timer. */
+const level44DanceNames=["MOONWALK / THRILLER","RUNNING MAN","CABBAGE PATCH","THE SPRINKLER","WALK LIKE AN EGYPTIAN","ELECTRIC SLIDE","BREAKDANCE / FREEZE","ROGER RABBIT","BREAKFAST CLUB","RISKY BUSINESS SLIDE","VOGUE"];
+let level44DanceIndex=-1,level44DanceLabelTimer=0;
+function level44RobotConfetti(stage){
+ if(!stage||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ stage.querySelector('.l44-confetti-layer')?.remove();
+ const layer=document.createElement('div');layer.className='l44-confetti-layer';layer.setAttribute('aria-hidden','true');
+ const colors=['#ffe06d','#65e7f1','#ff55ad','#ffffff','#b98aff'];
+ for(let n=0;n<28;n++){
+  const p=document.createElement('i');p.className='l44-confetti-piece';
+  p.style.setProperty('--confetti-color',colors[n%colors.length]);
+  p.style.setProperty('--confetti-left',(5+(n*37)%90)+'%');
+  p.style.setProperty('--confetti-delay',(n%8*.11)+'s');
+  p.style.setProperty('--confetti-time',(2.1+(n%5)*.24)+'s');
+  p.style.setProperty('--confetti-drift',(((n*19)%61)-30)+'px');
+  layer.appendChild(p);
+ }
+ stage.appendChild(layer);setTimeout(()=>layer.remove(),4800);
+}
+function level44NextDanceRoutine(){
+ const dancer=document.querySelector('#music .mystery-dancer');
+ if(!dancer)return;
+ level44DanceIndex=(level44DanceIndex+1)%level44DanceNames.length;
+ for(let n=1;n<=4;n++)dancer.classList.remove('dance-variant-'+n);
+ for(let n=0;n<level44DanceNames.length;n++)dancer.classList.toggle('level44-routine-'+n,level44DanceIndex===n);
+ let label=document.getElementById('level44DanceLabel');
+ if(!label){label=document.createElement('div');label.id='level44DanceLabel';label.className='level44-dance-label';dancer.closest('.nextsong')?.appendChild(label)}
+ label.textContent='NOW DANCING: '+level44DanceNames[level44DanceIndex];
+ /* Celebrate roughly one in four playlist openings, without covering the vinyl. */
+ if(level44DanceIndex%4===2)level44RobotConfetti(dancer.closest('.nextsong'));
+
+ label.classList.add('visible');clearTimeout(level44DanceLabelTimer);
+ /* Keep the current routine name visible until the next playlist opening. */
+}
 </script></body></html>
