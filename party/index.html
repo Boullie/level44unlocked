@@ -2345,13 +2345,21 @@ renderPreviousHits();
 let liveTrackId='',livePlayKey='',liveHistory=[],liveWishKeys=new Set(),liveLastResponse=0;
 try{liveHistory=JSON.parse(sessionStorage.getItem('level44-tv-history')||'[]')}catch(e){}
 let level44HistoryAnimationTimer=0;
+let level44LastLargeHistoryCapacity=10;
 function level44HistoryCapacity(){
  const list=$('playlist'),panel=list?.closest('.playlist');if(!list||!panel)return 3;
+ // Preserve the last reliable capacity while the playlist is moving or hidden.
+ // Measuring a transitioning panel can briefly return zero and erase the history.
+ const compact=!!list.closest('.music')?.classList.contains('compact');
  const height=Math.max(list.getBoundingClientRect().height,panel.getBoundingClientRect().height-(panel.querySelector('.history-title')?.getBoundingClientRect().height||25)-20);
  const sample=list.querySelector('.history-entry');
  const row=sample?sample.getBoundingClientRect().height:38;
  const gap=parseFloat(getComputedStyle(list).rowGap)||5;
- return Math.max(1,Math.min(list.closest('.music')?.classList.contains('compact')?5:30,Math.floor((height+gap)/Math.max(20,row+gap))));
+ const measured=Math.floor((height+gap)/Math.max(20,row+gap));
+ if(height<40||!Number.isFinite(measured)||measured<1)return compact?5:(level44LastLargeHistoryCapacity||10);
+ const capacity=Math.max(1,Math.min(compact?5:30,measured));
+ if(!compact)level44LastLargeHistoryCapacity=capacity;
+ return compact?Math.max(Math.min(5,liveHistory.length),capacity):capacity;
 }
 
 let level44RevealTimer=null;
