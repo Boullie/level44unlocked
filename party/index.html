@@ -2419,8 +2419,41 @@ function liveUpdateTrack(d){
   const key=String(d.wish.ack||playKey+':'+String(d.wish.name||''));
   if(!liveWishKeys.has(key)){
    liveWishKeys.add(key);if(liveWishKeys.size>200)liveWishKeys=new Set([key]);
-   const fallback=['HEEFT DIT NUMMER AANGEVRAAGD!','KOOS DEZE TRACK SPECIAAL VOOR VANAVOND!','ZORGT VOOR DE VOLGENDE PORTIE GOOD VIBES!','HEEFT DEZE HIT OP DE PLAYLIST GEZET!','GEEFT HET FEEST EEN MUZIKALE BOOST!'];
-   const text=String(d.wish.message||'').trim().slice(0,280)||fallback[Math.floor(Math.random()*fallback.length)];
+   const fallback=[
+    '{naam} heeft deze plaat uitgekozen!',
+    'Deze knaller komt van {naam}!',
+    '{naam} zorgt voor de soundtrack!',
+    'Een muzikale bijdrage van {naam}!',
+    '{naam} gooit er nog een plaatje tegenaan!',
+    'Op speciaal verzoek van {naam}!',
+    '{naam} heeft duidelijk goesting in muziek!',
+    '{naam} heeft smaak. Dat horen we!',
+    'Amai, schoon gekozen, {naam}!',
+    '{naam} weet wat goeie muziek is!',
+    'Muzikale klasse, met dank aan {naam}!',
+    '{naam} heeft precies een goeie platenkast!',
+    'Kijk eens aan, {naam}! Schoon nummer!',
+    '{naam} verdient een applausje voor deze keuze!',
+    'Merci voor de muzikale bijdrage, {naam}!',
+    'Dikke merci voor deze plaat, {naam}!',
+    'Bedankt om de sfeer erin te brengen, {naam}!',
+    'Merci, {naam}! Goeie keuze!',
+    '{naam}, bedankt voor de muzikale inspiratie!',
+    'Een welgemeende merci aan {naam}!',
+    'Dankzij {naam} klinkt het feestje weer wat beter!',
+    'De DJ krijgt hulp van {naam}!',
+    '{naam} heeft de jukebox gehackt!',
+    '{naam} neemt even de muzikale macht over!',
+    'De platencommissie dankt {naam}!'
+   ];
+   const guest=String(d.wish.name||'GAST').trim().slice(0,80);
+   let text=String(d.wish.message||'').trim().slice(0,280);
+   if(!text){
+    let choice=Math.floor(Math.random()*fallback.length);
+    if(choice===window.level44LastFallbackIndex)choice=(choice+1)%fallback.length;
+    window.level44LastFallbackIndex=choice;
+    text=fallback[choice].replaceAll('{naam}',guest);
+   }
    const item=[String(d.wish.name||'GAST').trim().slice(0,80),text];
    item.level44Wish=true;item.level44Remaining=5;item.level44Ack=d.wish.ack||'';
    if(fullPlaylist)closeFullPlaylist();pendingMessages.push(item);lastGuestActivity=performance.now();updateQueueStatus();
