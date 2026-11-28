@@ -1890,6 +1890,12 @@ body>h1,body>.intro,body>.foot{display:none!important}
 .music.showcase .playlist #playlist>.history-entry{font-size:clamp(12px,1.15vw,18px)!important;min-height:34px!important}
 .music.compact .playlist #playlist>.history-entry{font-size:clamp(9px,.9vw,13px)!important;padding:3px 6px!important;line-height:1.22!important}
 
+/* Experimental airport-style split-flap reveal, limited to the message text. */
+.home .message-marquee .msg .words.l44-flap-feed{display:block!important;line-height:1.55!important}
+.home .message-marquee .msg .words .l44-flap-char{display:inline-block;position:relative;white-space:pre;transform-origin:center 50%;animation:l44-flap-arrive .52s steps(2,end) both;animation-delay:var(--flap-delay,0ms);backface-visibility:hidden}
+.home .message-marquee .msg .words .l44-flap-char.l44-guest-highlight{color:#ff55ad!important;text-shadow:0 0 7px #ff55ad,0 0 15px #ff55ad80!important}
+@keyframes l44-flap-arrive{0%{opacity:.15;transform:perspective(220px) rotateX(-88deg);filter:brightness(1.7)}45%{opacity:1;transform:perspective(220px) rotateX(38deg)}75%{transform:perspective(220px) rotateX(-14deg)}100%{opacity:1;transform:perspective(220px) rotateX(0);filter:none}}
+@media(prefers-reduced-motion:reduce){.home .message-marquee .msg .words .l44-flap-char{animation:none!important}}
 /* Avoid repeating the guest's name when the message already mentions it. */
 .home .message-marquee .msg.l44-name-in-message .name-line{display:none!important}
 .home .message-marquee .msg.l44-name-in-message .message-line{margin-top:0!important}
@@ -2076,6 +2082,25 @@ function playNextMessage(continueVisible=false){
  $('who').classList.remove('level44-wish-name');
  el.classList.toggle('l44-name-in-message',nameInMessage);
  $('words').textContent=messageText.toLocaleUpperCase('nl-BE');
+ // The existing responsive message observer must see the plain text first.
+ // Render the flip tiles on the next task, keeping textContent identical.
+ const flapMessageId=window.level44FlapMessageId=(window.level44FlapMessageId||0)+1;
+ setTimeout(()=>{
+  if(window.level44FlapMessageId!==flapMessageId)return;
+  const words=$('words'),value=messageText.toLocaleUpperCase('nl-BE');
+  if(words.textContent!==value)return;
+  const guest=guestName.toLocaleUpperCase('nl-BE');
+  const start=guest.length>1?value.indexOf(guest):-1;
+  const end=start<0?-1:start+guest.length;
+  const fragment=document.createDocumentFragment();
+  for(let i=0;i<value.length;i++){
+   const ch=document.createElement('span');ch.className='l44-flap-char';
+   if(i>=start&&i<end)ch.classList.add('l44-guest-highlight');
+   ch.style.setProperty('--flap-delay',Math.min(i*28,1800)+'ms');
+   ch.textContent=value[i];fragment.appendChild(ch);
+  }
+  words.replaceChildren(fragment);words.classList.add('l44-flap-feed');
+ },0);
  const mark=['✦','★','♥','◆','♫','✧','⚡','✳'][Math.floor(Math.random()*8)];
  $('symbolBefore').textContent=mark;$('symbolAfter').textContent=mark;
  void el.offsetWidth;
