@@ -1890,12 +1890,18 @@ body>h1,body>.intro,body>.foot{display:none!important}
 .music.showcase .playlist #playlist>.history-entry{font-size:clamp(12px,1.15vw,18px)!important;min-height:34px!important}
 .music.compact .playlist #playlist>.history-entry{font-size:clamp(9px,.9vw,13px)!important;padding:3px 6px!important;line-height:1.22!important}
 
-/* Experimental airport-style split-flap reveal, limited to the message text. */
-.home .message-marquee .msg .words.l44-flap-feed{display:block!important;line-height:1.55!important}
-.home .message-marquee .msg .words .l44-flap-char{display:inline-block;position:relative;white-space:pre;transform-origin:center 50%;animation:l44-flap-arrive .52s steps(2,end) both;animation-delay:var(--flap-delay,0ms);backface-visibility:hidden}
-.home .message-marquee .msg .words .l44-flap-char.l44-guest-highlight{color:#ff55ad!important;text-shadow:0 0 7px #ff55ad,0 0 15px #ff55ad80!important}
-@keyframes l44-flap-arrive{0%{opacity:.15;transform:perspective(220px) rotateX(-88deg);filter:brightness(1.7)}45%{opacity:1;transform:perspective(220px) rotateX(38deg)}75%{transform:perspective(220px) rotateX(-14deg)}100%{opacity:1;transform:perspective(220px) rotateX(0);filter:none}}
-@media(prefers-reduced-motion:reduce){.home .message-marquee .msg .words .l44-flap-char{animation:none!important}}
+/* Mechanical airport split-flap board: physical character tiles, hinge and shutter. */
+.home .message-marquee .msg .words.l44-flap-feed{display:flex!important;flex-wrap:wrap;justify-content:center;align-content:center;align-items:center;gap:clamp(2px,.3vw,5px);width:100%;max-width:100%;line-height:1!important;overflow:visible!important;animation:none!important;transform:none!important}
+.home .message-marquee .msg .words .l44-flap-word{display:inline-flex;white-space:nowrap;gap:clamp(2px,.3vw,5px);max-width:100%}
+.home .message-marquee .msg .words .l44-flap-space{width:clamp(7px,1vw,17px);flex:none}
+.home .message-marquee .msg .words .l44-flap-char{--tile-size:clamp(11px,2.1vw,29px);position:relative;display:inline-flex;align-items:center;justify-content:center;flex:none;width:calc(var(--tile-size)*.79);height:calc(var(--tile-size)*1.13);background:linear-gradient(#30313a 0 47%,#08090d 49% 52%,#20212a 54% 100%);border:1px solid #535766;border-radius:3px;color:#f5f2d9!important;font:800 var(--tile-size)/1 'Courier New',monospace!important;text-shadow:0 1px 2px #000!important;box-shadow:inset 0 2px 2px #ffffff18,inset 0 -3px 4px #0009,1px 3px 1px #000b;perspective:160px;overflow:hidden}
+.home .message-marquee .msg .words .l44-flap-char::after{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:#020305;box-shadow:0 1px 1px #ffffff20;z-index:3;pointer-events:none}
+.home .message-marquee .msg .words .l44-flap-char.l44-guest-highlight{color:#ff55ad!important;text-shadow:0 0 5px #ff55ad80!important}
+.home .message-marquee .msg .words .l44-flap-char .l44-flap-face{display:block;position:relative;z-index:1}
+.home .message-marquee .msg .words .l44-flap-char .l44-flap-shutter{position:absolute;left:0;right:0;top:0;height:50%;background:#3c3e49;border-bottom:1px solid #07080c;transform-origin:bottom center;backface-visibility:hidden;animation:l44-shutter-flip .17s ease-in-out var(--flap-delay,0ms) 3 both;z-index:2;box-shadow:inset 0 2px 2px #ffffff1b}
+@keyframes l44-shutter-flip{0%{transform:rotateX(0deg)}50%{transform:rotateX(-88deg)}100%{transform:rotateX(0deg)}}
+@media(max-width:700px){.home .message-marquee .msg .words .l44-flap-char{--tile-size:clamp(9px,2.4vw,17px)}}
+@media(prefers-reduced-motion:reduce){.home .message-marquee .msg .words .l44-flap-char .l44-flap-shutter{animation:none!important;display:none!important}}
 /* Avoid repeating the guest's name when the message already mentions it. */
 .home .message-marquee .msg.l44-name-in-message .name-line{display:none!important}
 .home .message-marquee .msg.l44-name-in-message .message-line{margin-top:0!important}
@@ -2081,25 +2087,35 @@ function playNextMessage(continueVisible=false){
  $('who').textContent=guestName.toLocaleUpperCase('nl-BE');
  $('who').classList.remove('level44-wish-name');
  el.classList.toggle('l44-name-in-message',nameInMessage);
+ $('words').classList.remove('l44-flap-feed');$('words').removeAttribute('aria-label');
  $('words').textContent=messageText.toLocaleUpperCase('nl-BE');
- // The existing responsive message observer must see the plain text first.
- // Render the flip tiles on the next task, keeping textContent identical.
+ // Build a genuine tile board; retain the plain text as accessible label.
  const flapMessageId=window.level44FlapMessageId=(window.level44FlapMessageId||0)+1;
  setTimeout(()=>{
   if(window.level44FlapMessageId!==flapMessageId)return;
   const words=$('words'),value=messageText.toLocaleUpperCase('nl-BE');
   if(words.textContent!==value)return;
   const guest=guestName.toLocaleUpperCase('nl-BE');
-  const start=guest.length>1?value.indexOf(guest):-1;
-  const end=start<0?-1:start+guest.length;
+  const guestStart=guest.length>1?value.indexOf(guest):-1;
+  const guestEnd=guestStart<0?-1:guestStart+guest.length;
   const fragment=document.createDocumentFragment();
-  for(let i=0;i<value.length;i++){
-   const ch=document.createElement('span');ch.className='l44-flap-char';
-   if(i>=start&&i<end)ch.classList.add('l44-guest-highlight');
-   ch.style.setProperty('--flap-delay',Math.min(i*28,1800)+'ms');
-   ch.textContent=value[i];fragment.appendChild(ch);
+  let index=0;
+  for(const token of value.match(/\\S+|\\s+/g)||[]){
+   if(/^\\s+$/.test(token)){
+    const gap=document.createElement('span');gap.className='l44-flap-space';gap.setAttribute('aria-hidden','true');fragment.appendChild(gap);index+=token.length;continue;
+   }
+   const word=document.createElement('span');word.className='l44-flap-word';word.setAttribute('aria-hidden','true');
+   for(const letter of token){
+    const tile=document.createElement('span');tile.className='l44-flap-char';
+    if(index>=guestStart&&index<guestEnd)tile.classList.add('l44-guest-highlight');
+    tile.style.setProperty('--flap-delay',Math.min(index*35,1800)+'ms');
+    const face=document.createElement('span');face.className='l44-flap-face';face.textContent=letter;
+    const shutter=document.createElement('span');shutter.className='l44-flap-shutter';
+    tile.append(face,shutter);word.appendChild(tile);index++;
+   }
+   fragment.appendChild(word);
   }
-  words.replaceChildren(fragment);words.classList.add('l44-flap-feed');
+  words.replaceChildren(fragment);words.classList.add('l44-flap-feed');words.setAttribute('aria-label',value);
  },0);
  const mark=['✦','★','♥','◆','♫','✧','⚡','✳'][Math.floor(Math.random()*8)];
  $('symbolBefore').textContent=mark;$('symbolAfter').textContent=mark;
@@ -2732,6 +2748,7 @@ function level44RefreshSongMarquees(){
   if(inner){const overflow=Math.max(0,inner.scrollWidth-words.clientWidth+8);words.style.setProperty('--wish-scroll-x',(-overflow)+'px');words.style.setProperty('--wish-scroll-time',Math.max(9,overflow/45)+'s')}
  }
  const watcher=new MutationObserver(()=>{
+  if(words.classList.contains('l44-flap-feed')){requestAnimationFrame(layout);return}
   const value=words.textContent||'';if(words.dataset.lastMessage===value)return;words.dataset.lastMessage=value;
   words.classList.remove('level44-long-message');words.textContent=value;
   if(value.length>55){const span=document.createElement('span');span.textContent=value;words.replaceChildren(span);words.classList.add('level44-long-message')}
