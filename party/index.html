@@ -2067,10 +2067,10 @@ function playNextMessage(continueVisible=false){
  const el=$('message');
  el.classList.remove('led-arriving','queue-switch');
  if(continueVisible){el.classList.add('queue-switch')}
- const guestName=String(m[0]||'').replace(/:+\\s*$/,'').trim();
+ const guestName=String(m[0]||'').replace(/:+\s*$/,'').trim();
  const messageText=String(m[1]||'');
- const normalizedName=guestName.toLocaleLowerCase('nl-BE').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'');
- const normalizedText=messageText.toLocaleLowerCase('nl-BE').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'');
+ const normalizedName=guestName.toLocaleLowerCase('nl-BE').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+ const normalizedText=messageText.toLocaleLowerCase('nl-BE').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
  const nameInMessage=normalizedName.length>1&&normalizedText.includes(normalizedName);
  $('who').textContent=guestName.toLocaleUpperCase('nl-BE');
  $('who').classList.remove('level44-wish-name');
