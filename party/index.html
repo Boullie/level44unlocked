@@ -1825,6 +1825,18 @@ body>h1,body>.intro,body>.foot{display:none!important}
 @keyframes l44-vogue-leg-right{0%,100%{transform:rotate(12deg)}20%{transform:rotate(-18deg)}40%{transform:rotate(22deg)}60%{transform:rotate(-12deg)}80%{transform:rotate(8deg)}}
 @keyframes l44-vogue-body{0%,100%{transform:rotate(-8deg)}20%{transform:rotate(8deg)}40%{transform:rotate(-12deg)}60%{transform:rotate(12deg)}80%{transform:rotate(0deg)}}
 @keyframes l44-vogue-head{0%,100%{transform:rotate(10deg)}20%{transform:rotate(-10deg)}40%{transform:rotate(15deg)}60%{transform:rotate(-15deg)}80%{transform:rotate(0deg)}}
+
+/* Bass-like concentric vinyl ripples; clipped inside the deck in both playlist sizes. */
+.music .record-deck{position:relative!important;overflow:hidden!important;isolation:isolate}
+.music .record-rim{position:relative!important;isolation:isolate;flex-shrink:0;z-index:1}
+.music .record-rim::before,.music .record-rim::after{content:"";position:absolute;inset:-1px;border:3px solid #65e7f1;border-radius:50%;pointer-events:none;z-index:-1;opacity:0;animation:l44-vinyl-ripple 2.4s ease-out infinite}
+.music .record-rim::after{border-color:#ffdc67;animation-delay:1.2s}
+@keyframes l44-vinyl-ripple{0%{transform:scale(.97);opacity:0;box-shadow:0 0 0 0 #ff55ad55}18%{opacity:.8}100%{transform:scale(1.7);opacity:0;box-shadow:0 0 0 9px #ff55ad00}}
+/* Confetti is confined to the robot's stage and never covers other TV content. */
+.music.showcase .nextsong.unknown-next .l44-confetti-layer{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:7;contain:paint}
+.l44-confetti-piece{position:absolute;top:-12px;width:7px;height:12px;background:var(--confetti-color,#ffe06d);left:var(--confetti-left,50%);opacity:0;animation:l44-confetti-fall var(--confetti-time,2.7s) linear var(--confetti-delay,0s) 1 both}
+@keyframes l44-confetti-fall{0%{transform:translate3d(0,-8px,0) rotate(0deg);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translate3d(var(--confetti-drift,18px),240px,0) rotate(540deg);opacity:0}}
+@media(prefers-reduced-motion:reduce){.music .record-rim::before,.music .record-rim::after,.l44-confetti-piece{animation:none!important;display:none!important}}
 </style><link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet"></head><body><h1>★ LEVEL 44 UNLOCKED ★</h1><p class="intro">PARTY TV · ORIGINELE ARCADE LOOK · 20 UNIEKE ACHTERGRONDEN · 50 POWER-UPS</p><main class="layout"><section><div class="tv" id="tv"><canvas id="ambient" width="1280" height="720"></canvas><div class="scan"></div><div class="home" id="home"><div class="arcade-corners"><span>★ LEVEL 44 • PARTY ARCADE ★</span><span>● PARTY ONLINE</span></div><div class="hero-stack"><div class="achievement">★ ACHIEVEMENT UNLOCKED ★</div><div class="hero"><div class="topline"><span class="hero-first">LEVEL <span class="age">44</span></span><span class="hero-second">UNLOCKED!</span></div></div><div class="insertcake" id="cakePrompt">INSERT CAKE TO CONTINUE</div></div><div class="message-marquee"><div class="caption"><div class="ticker-track" aria-label="PARTY MESSAGE FEED"><span class="ticker-copy">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span><span class="ticker-copy" aria-hidden="true">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span></div></div><div class="insert" id="messagePrompt">✦ INSERT MESSAGE ✦</div><div class="msg" id="message"><div class="name-line"><span class="message-symbol" id="symbolBefore" aria-hidden="true">✦</span><div class="who" id="who"></div><span class="message-symbol" id="symbolAfter" aria-hidden="true">✦</span></div><div class="message-line"><div class="words" id="words"></div></div></div></div><div class="below-feed-prompt" id="belowFeedPrompt">INSERT CAKE TO CONTINUE</div><div class="scanplay"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUAQAAAABdRz15AAABS0lEQVR4nM2WQW4kQQgEg5HvyQ/6/8/qHyQvyD3U2LK88sHLSOuqUyMRokigqfD1zOMvE/w/W1X1VPX00FXVS54SmvjiAiW7+N6ghIbK0O7SmgcMTQ/uH/l+bzOG0H4FL0YePFET73iVAn18Duje8EiSQCwrSRLveEokITtGZstLFBsb+0S644EJxiGJlrw3COlMirTrJ77fvFfCJnaQYm3jg5SN2qZpLeNDJ4MKQlnmr9JwiwZgUmJVzw/gvqqZG8PgF+jh6DRdZO30ILLlAMRiz0sIKLJIWPMISuzg2CzrjzxDlBNsadtvmgIqM4hObfWV5CCESMIL3qszSxVgPU+T5FkwVrTU9/w/DNOhBHi1v5x573NRWObvAdUAc92tKZb7xrtNui/f+F98P5+zb4ge3QI06/pL5EhRElj2x9F3/AzSoJW+9cv33T+Au/yGE9/wPgAAAABJRU5ErkJggg==" alt="QR-code voor gastbediening"><div><strong>SCAN &amp; PLAY</strong><span>📱 Pak je gsm. Unlock de party!</span></div></div></div><div class="music" id="music">
 <div class="music-bulbs" aria-hidden="true"></div>
 <div class="music-header"><div class="music-kicker">★ LEVEL 44 ★ PLAYER ONE RADIO ★</div><div class="eyebrow">♫ PARTY PLAYLIST ♫</div><div class="music-subtitle">NOW LOADING THE NEXT BANGER...</div></div>
@@ -2638,6 +2650,22 @@ function level44RefreshSongMarquees(){
 /* Advance exactly once per showcase opening, never on a timer. */
 const level44DanceNames=["MOONWALK / THRILLER","RUNNING MAN","CABBAGE PATCH","THE SPRINKLER","WALK LIKE AN EGYPTIAN","ELECTRIC SLIDE","BREAKDANCE / FREEZE","ROGER RABBIT","BREAKFAST CLUB","RISKY BUSINESS SLIDE","VOGUE"];
 let level44DanceIndex=-1,level44DanceLabelTimer=0;
+function level44RobotConfetti(stage){
+ if(!stage||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ stage.querySelector('.l44-confetti-layer')?.remove();
+ const layer=document.createElement('div');layer.className='l44-confetti-layer';layer.setAttribute('aria-hidden','true');
+ const colors=['#ffe06d','#65e7f1','#ff55ad','#ffffff','#b98aff'];
+ for(let n=0;n<28;n++){
+  const p=document.createElement('i');p.className='l44-confetti-piece';
+  p.style.setProperty('--confetti-color',colors[n%colors.length]);
+  p.style.setProperty('--confetti-left',(5+(n*37)%90)+'%');
+  p.style.setProperty('--confetti-delay',(n%8*.11)+'s');
+  p.style.setProperty('--confetti-time',(2.1+(n%5)*.24)+'s');
+  p.style.setProperty('--confetti-drift',(((n*19)%61)-30)+'px');
+  layer.appendChild(p);
+ }
+ stage.appendChild(layer);setTimeout(()=>layer.remove(),4800);
+}
 function level44NextDanceRoutine(){
  const dancer=document.querySelector('#music .mystery-dancer');
  if(!dancer)return;
@@ -2647,6 +2675,9 @@ function level44NextDanceRoutine(){
  let label=document.getElementById('level44DanceLabel');
  if(!label){label=document.createElement('div');label.id='level44DanceLabel';label.className='level44-dance-label';dancer.closest('.nextsong')?.appendChild(label)}
  label.textContent='NOW DANCING: '+level44DanceNames[level44DanceIndex];
+ /* Celebrate roughly one in four playlist openings, without covering the vinyl. */
+ if(level44DanceIndex%4===2)level44RobotConfetti(dancer.closest('.nextsong'));
+
  label.classList.add('visible');clearTimeout(level44DanceLabelTimer);
  level44DanceLabelTimer=setTimeout(()=>label.classList.remove('visible'),3600);
 }
