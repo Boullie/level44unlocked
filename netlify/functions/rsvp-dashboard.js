@@ -1,4 +1,5 @@
 'use strict';
+const {read:hasAdminSession}=require('./admin-session');
 const JSON_HEADERS={'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'};
 const respond=(statusCode,data)=>({statusCode,headers:JSON_HEADERS,body:JSON.stringify(data)});
 exports.handler=async(event)=>{
@@ -6,12 +7,14 @@ exports.handler=async(event)=>{
   const {GOOGLE_CLIENT_ID,ADMIN_GOOGLE_EMAIL,NETLIFY_API_TOKEN,NETLIFY_FORM_ID}=process.env;
   if(!GOOGLE_CLIENT_ID||!ADMIN_GOOGLE_EMAIL||!NETLIFY_API_TOKEN||!NETLIFY_FORM_ID)return respond(503,{error:'Dashboard nog niet geconfigureerd'});
   let payload;try{payload=JSON.parse(event.body||'{}')}catch{return respond(400,{error:'Ongeldige aanvraag'})}
-  if(typeof payload.idToken!=='string'||payload.idToken.length>5000)return respond(401,{error:'Aanmelden vereist'});
+  if(!hasAdminSession(event)&& (typeof payload.idToken!=='string'||payload.idToken.length>5000))return respond(401,{error:'Aanmelden vereist'});
   try{
+    if(!hasAdminSession(event)){
     const verify=await fetch('https://oauth2.googleapis.com/tokeninfo?id_token='+encodeURIComponent(payload.idToken),{signal:AbortSignal.timeout(8000)});
     if(!verify.ok)return respond(401,{error:'Ongeldige of verlopen aanmelding'});
     const identity=await verify.json();
     if(identity.aud!==GOOGLE_CLIENT_ID||identity.email_verified!=='true'||identity.email?.toLowerCase()!==ADMIN_GOOGLE_EMAIL.trim().toLowerCase()||!['accounts.google.com','https://accounts.google.com'].includes(identity.iss))return respond(403,{error:'Geen toegang'});
+    }
     // Netlify pagineert inzendingen. Haal alle pagina's op, ook wanneer
     // meerdere antwoorden dezelfde RSVP-code gebruiken.
     const records=[];

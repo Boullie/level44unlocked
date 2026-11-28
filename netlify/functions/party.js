@@ -37,9 +37,12 @@ exports.handler=async(event)=>{
    store=getStore({name:'level44-party-v1',siteID,token});
   }
   const now=Date.now();
+  if(data.op==='tv-control-poll'){
+   return reply(200,{command:await store.get('tv-control-latest',{type:'json'})||null});
+  }
   if(data.op==='feed'){
    const [recent,approved]=await Promise.all([store.get('recent',{type:'json'}),store.get('approved',{type:'json'})]);
-   return reply(200,{events:(recent||[]).filter(x=>now-x.at<120000).slice(-30),messages:(approved||[]).filter(x=>Number.isFinite(x.at)&&now-x.at<30*60*1000).slice(0,30)});
+   return reply(200,{events:(recent||[]).filter(x=>now-x.at<120000).slice(-30),messages:(approved||[]).filter(x=>Number.isFinite(x.at)&&now-x.at<30*60*1000).slice(-60)});
   }
   if(data.op==='send'){
    const kind=data.kind==='action'?'action':data.kind==='message'?'message':null;
@@ -52,14 +55,17 @@ exports.handler=async(event)=>{
    const ip=(event.headers?.['x-nf-client-connection-ip']||event.headers?.['x-forwarded-for']||'unknown').split(',')[0].trim();
    const key='cool-'+crypto.createHash('sha256').update(ip+'|'+new Date().toISOString().slice(0,10)).digest('hex');
    const last=Number(await store.get(key))||0;
-   if(now-last<4000)return reply(429,{error:'Wacht een paar seconden voor je opnieuw iets verstuurt'});
+   if(now-last<(kind==='action'?350:4000))return reply(429,{error:'Wacht een paar seconden voor je opnieuw iets verstuurt'});
    await store.set(key,String(now));
    const item={id:crypto.randomUUID(),at:now,name,value};
    if(kind==='message'){
-    await store.set('pending-'+item.id,JSON.stringify(item));
-    const pending=await store.get('pending-index',{type:'json'})||[];
-    await store.setJSON('pending-index',[item.id,...pending].slice(0,150));
-    return reply(200,{ok:true,status:'pending'});
+    // Public messages go live immediately and remain in a dated archive.
+    const approved=await store.get('approved',{type:'json'})||[];
+    await store.setJSON('approved',[...approved,{...item,at:now}].slice(-120));
+    const archive=await store.get('archive-index',{type:'json'})||[];
+    await store.set('archive-'+item.id,JSON.stringify(item));
+    await store.setJSON('archive-index',[item.id,...archive].slice(0,5000));
+    return reply(200,{ok:true,status:'live'});
    }
    const recent=await store.get('recent',{type:'json'})||[];
    await store.setJSON('recent',[...recent.filter(x=>now-x.at<120000),item].slice(-60));
@@ -68,6 +74,20 @@ exports.handler=async(event)=>{
   if(data.op==='admin'){
    if(!await authorized(data.idToken))return reply(403,{error:'Geen toegang'});
    const pendingIds=await store.get('pending-index',{type:'json'})||[];
+   if(data.command==='tv-control'){
+    const action=String(data.action||'');
+    const allowed=['playlist-large','playlist-small','playlist-switch','queue-clear','power-clear','power-stop','power-laser','power-dance','power-confetti','power-fireworks','message-demo','status'];
+    if(!allowed.includes(action))return reply(400,{error:'Onbekende testactie'});
+    if(action==='status')return reply(200,{ok:true,command:await store.get('tv-control-latest',{type:'json'})});
+    const command={id:crypto.randomUUID(),action,at:now};
+    await store.setJSON('tv-control-latest',command);
+    return reply(200,{ok:true,command});
+   }
+   if(data.command==='archive'){
+    const ids=await store.get('archive-index',{type:'json'})||[];
+    const entries=(await Promise.all(ids.slice(0,500).map(id=>store.get('archive-'+id,{type:'json'})))).filter(Boolean);
+    return reply(200,{messages:entries});
+   }
    if(data.command==='list'){
     const pending=(await Promise.all(pendingIds.slice(0,150).map(id=>store.get('pending-'+id,{type:'json'})))).filter(Boolean);
     return reply(200,{pending});
