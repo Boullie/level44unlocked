@@ -2100,8 +2100,8 @@ function playNextMessage(continueVisible=false){
   const guestEnd=guestStart<0?-1:guestStart+guest.length;
   const fragment=document.createDocumentFragment();
   let index=0;
-  for(const token of value.match(/\\S+|\\s+/g)||[]){
-   if(/^\\s+$/.test(token)){
+  for(const token of value.match(/\S+|\s+/g)||[]){
+   if(/^\s+$/.test(token)){
     const gap=document.createElement('span');gap.className='l44-flap-space';gap.setAttribute('aria-hidden','true');fragment.appendChild(gap);index+=token.length;continue;
    }
    const word=document.createElement('span');word.className='l44-flap-word';word.setAttribute('aria-hidden','true');
