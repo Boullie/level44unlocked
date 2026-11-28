@@ -1850,7 +1850,7 @@ body>h1,body>.intro,body>.foot{display:none!important}
 .music.compact .record-deck .l44-vinyl-ripples{opacity:.78!important}
 .music.showcase .record-deck .l44-vinyl-ripples{opacity:.65!important}
 /* The label sits below the floor line, not over the dancer. */
-.music.showcase .nextsong.unknown-next .level44-dance-label{top:auto!important;bottom:0!important;left:50%!important;width:95%!important;transform:translateX(-50%)!important;font-size:clamp(8px,.85vw,13px)!important;line-height:1.1!important;z-index:9!important}
+.music.showcase .nextsong.unknown-next .level44-dance-label{top:auto!important;bottom:10px!important;left:50%!important;width:95%!important;transform:translateX(-50%)!important;font-size:clamp(8px,.85vw,13px)!important;line-height:1.1!important;z-index:9!important}
 .music.showcase .nextsong.unknown-next .dancer-stage-line{bottom:var(--robot-line-bottom,12px)!important}
 @media(prefers-reduced-motion:reduce){.music .record-deck .l44-vinyl-ripples i{animation:none!important}}
 </style><link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet"></head><body><h1>★ LEVEL 44 UNLOCKED ★</h1><p class="intro">PARTY TV · ORIGINELE ARCADE LOOK · 20 UNIEKE ACHTERGRONDEN · 50 POWER-UPS</p><main class="layout"><section><div class="tv" id="tv"><canvas id="ambient" width="1280" height="720"></canvas><div class="scan"></div><div class="home" id="home"><div class="arcade-corners"><span>★ LEVEL 44 • PARTY ARCADE ★</span><span>● PARTY ONLINE</span></div><div class="hero-stack"><div class="achievement">★ ACHIEVEMENT UNLOCKED ★</div><div class="hero"><div class="topline"><span class="hero-first">LEVEL <span class="age">44</span></span><span class="hero-second">UNLOCKED!</span></div></div><div class="insertcake" id="cakePrompt">INSERT CAKE TO CONTINUE</div></div><div class="message-marquee"><div class="caption"><div class="ticker-track" aria-label="PARTY MESSAGE FEED"><span class="ticker-copy">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span><span class="ticker-copy" aria-hidden="true">PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ PARTY MESSAGE FEED ★ </span></div></div><div class="insert" id="messagePrompt">✦ INSERT MESSAGE ✦</div><div class="msg" id="message"><div class="name-line"><span class="message-symbol" id="symbolBefore" aria-hidden="true">✦</span><div class="who" id="who"></div><span class="message-symbol" id="symbolAfter" aria-hidden="true">✦</span></div><div class="message-line"><div class="words" id="words"></div></div></div></div><div class="below-feed-prompt" id="belowFeedPrompt">INSERT CAKE TO CONTINUE</div><div class="scanplay"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUAQAAAABdRz15AAABS0lEQVR4nM2WQW4kQQgEg5HvyQ/6/8/qHyQvyD3U2LK88sHLSOuqUyMRokigqfD1zOMvE/w/W1X1VPX00FXVS54SmvjiAiW7+N6ghIbK0O7SmgcMTQ/uH/l+bzOG0H4FL0YePFET73iVAn18Duje8EiSQCwrSRLveEokITtGZstLFBsb+0S644EJxiGJlrw3COlMirTrJ77fvFfCJnaQYm3jg5SN2qZpLeNDJ4MKQlnmr9JwiwZgUmJVzw/gvqqZG8PgF+jh6DRdZO30ILLlAMRiz0sIKLJIWPMISuzg2CzrjzxDlBNsadtvmgIqM4hObfWV5CCESMIL3qszSxVgPU+T5FkwVrTU9/w/DNOhBHi1v5x573NRWObvAdUAc92tKZb7xrtNui/f+F98P5+zb4ge3QI06/pL5EhRElj2x9F3/AzSoJW+9cv33T+Au/yGE9/wPgAAAABJRU5ErkJggg==" alt="QR-code voor gastbediening"><div><strong>SCAN &amp; PLAY</strong><span>📱 Pak je gsm. Unlock de party!</span></div></div></div><div class="music" id="music">
@@ -2650,8 +2650,8 @@ function level44RefreshSongMarquees(){
   if(!music.classList.contains('showcase'))return;
   const stage=music.querySelector('.nextsong.unknown-next');if(!stage)return;
   const h=stage.clientHeight,w=stage.clientWidth;
-  const ball=stage.querySelector('.disco-ball');const ballBottom=ball?ball.getBoundingClientRect().bottom-stage.getBoundingClientRect().top:Math.round(h*.25);const lineBottomTarget=Math.max(9,Math.round(h*.035));const headHeight=28;const baseScale=Math.max(.7,Math.min(4,Math.min(w*.38/60,Math.max(75,h-ballBottom-lineBottomTarget)/110)));const maxScale=Math.max(.5,(h-ballBottom-lineBottomTarget-12)/Math.max(1,96-headHeight));const scale=Math.max(.5,Math.min(baseScale*1.5,maxScale,Math.max(.6,(w-30)/110),5));
-  const lineBottom=Math.max(9,Math.round(h*.035));
+  const ball=stage.querySelector('.disco-ball');const ballBottom=ball?ball.getBoundingClientRect().bottom-stage.getBoundingClientRect().top:Math.round(h*.25);const lineBottomTarget=Math.max(32,Math.round(h*.09));const headHeight=28;const baseScale=Math.max(.7,Math.min(4,Math.min(w*.38/60,Math.max(75,h-ballBottom-lineBottomTarget)/110)));const maxScale=Math.max(.5,(h-ballBottom-lineBottomTarget-12)/Math.max(1,96-headHeight));const scale=Math.max(.5,Math.min(baseScale*1.5,maxScale,Math.max(.6,(w-30)/110),5));
+  const lineBottom=Math.max(32,Math.round(h*.09));
   music.style.setProperty('--robot-scale',String(scale));
   music.style.setProperty('--robot-line-bottom',lineBottom+'px');
   music.style.setProperty('--robot-floor-bottom',(lineBottom+Math.max(6,scale*10))+'px');
@@ -2710,6 +2710,6 @@ function level44NextDanceRoutine(){
  if(level44DanceIndex%4===2)level44RobotConfetti(dancer.closest('.nextsong'));
 
  label.classList.add('visible');clearTimeout(level44DanceLabelTimer);
- level44DanceLabelTimer=setTimeout(()=>label.classList.remove('visible'),3600);
+ /* Keep the current routine name visible until the next playlist opening. */
 }
 </script></body></html>
